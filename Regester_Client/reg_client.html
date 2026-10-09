@@ -1,0 +1,291 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Client Registration | TEAMLY</title>
+
+<!-- Shared CSS -->
+<link rel="stylesheet" href="../style.css">
+
+<!-- Client Registration CSS -->
+<link rel="stylesheet" href="Reg_client.css">
+
+<!-- Font Awesome 4.7 -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+    <main class="register-page">
+
+    <!-- LEFT SIDE -->
+    <section class="register-welcome">
+
+        <a href="../home_page/home.html" class="register-logo">
+            <img src="../img/logo3.png" alt="TEAMLY Logo" width="190px">
+        </a>
+
+        <div class="welcome-content">
+            <span class="welcome-label">WELCOME TO TEAMLY</span>
+
+            <h1>Build Your<br>Perfect Team.</h1>
+
+            <p>
+                Bring your ideas to life by connecting with the right
+                professionals for your project. Your perfect team starts here.
+            </p>
+
+            <div class="computer-illustration" aria-hidden="true">
+                <div class="computer-screen">
+                    <div class="screen-top">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <div class="screen-content">
+                        <div class="screen-sidebar">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+
+                        <div class="screen-main">
+                            <div class="screen-heading"></div>
+
+                            <div class="screen-cards">
+                                <div>
+                                    <i class="fa fa-users"></i>
+                                    <span></span>
+                                </div>
+
+                                <div>
+                                    <i class="fa fa-lightbulb-o"></i>
+                                    <span></span>
+                                </div>
+                            </div>
+
+                            <div class="screen-line"></div>
+                            <div class="screen-line short"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="computer-stand"></div>
+                <div class="computer-base"></div>
+
+                <div class="floating-icon floating-team">
+                    <i class="fa fa-users"></i>
+                </div>
+
+                <div class="floating-icon floating-check">
+                    <i class="fa fa-check"></i>
+                </div>
+            </div>
+
+            <div class="welcome-footer">
+                <i class="fa fa-heart"></i>
+                <span>Great projects start with great teams.</span>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- RIGHT SIDE -->
+    <section class="register-form-side">
+
+        <div class="register-form-container">
+
+            <div class="form-heading">
+                <span class="form-eyebrow">LET'S GET STARTED</span>
+
+                <h2>Create Your Account</h2>
+
+                <p>Register as a Client</p>
+            </div>
+
+
+            <form id="clientRegisterForm" novalidate>
+
+                <!-- Full Name -->
+                <div class="register-field">
+                    <label for="fullName">Full Name</label>
+
+                    <div class="input-wrapper">
+                        <i class="fa fa-user-o" aria-hidden="true"></i>
+
+                        <input
+                            type="text"
+                            id="fullName"
+                            name="fullName"
+                            placeholder="Enter your full name"
+                            autocomplete="name"
+                            required
+                        >
+                    </div>
+
+                    <small class="field-error" id="fullNameError"></small>
+                </div>
+
+
+                <!-- Email Address -->
+                <div class="register-field">
+                    <label for="email">Email Address</label>
+
+                    <div class="input-wrapper">
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email address"
+                            autocomplete="email"
+                            required
+                        >
+                    </div>
+
+                    <small class="field-error" id="emailError"></small>
+                </div>
+
+
+                <!-- Confirm Email -->
+                <div class="register-field">
+                    <label for="confirmEmail">Confirm Email Address</label>
+
+                    <div class="input-wrapper">
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+
+                        <input
+                            type="email"
+                            id="confirmEmail"
+                            name="confirmEmail"
+                            placeholder="Confirm your email address"
+                            autocomplete="off"
+                            required
+                        >
+                    </div>
+
+                    <small class="field-error" id="confirmEmailError"></small>
+                </div>
+
+
+                <!-- Password -->
+                <div class="register-field">
+                    <label for="password">Password</label>
+
+                    <div class="input-wrapper">
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            data-target="password"
+                            aria-label="Show password"
+                            title="Show password"
+                        >
+                            <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                        </button>
+                    </div>
+
+                    <small class="field-error" id="passwordError"></small>
+                </div>
+
+
+                <!-- Confirm Password -->
+                <div class="register-field">
+                    <label for="confirmPassword">Confirm Password</label>
+
+                    <div class="input-wrapper">
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            placeholder="Confirm your password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            data-target="confirmPassword"
+                            aria-label="Show password"
+                            title="Show password"
+                        >
+                            <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                        </button>
+                    </div>
+
+                    <small class="field-error" id="confirmPasswordError"></small>
+                </div>
+
+
+                <!-- Terms and Conditions -->
+                <div class="terms-row">
+
+                    <input
+                        type="checkbox"
+                        id="terms"
+                        name="terms"
+                        required
+                    >
+
+                    <label for="terms">
+                        I agree to the
+                        <a href="terms.html" target="_blank">Terms of Service</a>
+                        and
+                        <a href="privacy.html" target="_blank">Privacy Policy</a>.
+                    </label>
+
+                </div>
+
+                <small class="field-error terms-error" id="termsError"></small>
+
+
+                <!-- Submit -->
+                <button type="submit" class="create-account-btn">
+                    Create Account
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </button>
+
+                <p class="form-message" id="formMessage" aria-live="polite"></p>
+
+            </form>
+
+
+            <!-- Divider -->
+            <div class="register-divider">
+                <span></span>
+                <img src="../img/logo2.png" width="50px">
+                <span></span>
+            </div>
+
+
+            <!-- Login -->
+            <div class="register-login">
+                <span>Already have an account?</span>
+                <a href="login.html">Login</a>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script src="Reg_client.js"></script>
+
+</body>
+</html>

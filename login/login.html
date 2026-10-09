@@ -1,0 +1,199 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | TEAMLY</title><!-- Your shared stylesheet -->
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Login page stylesheet -->
+<link rel="stylesheet" href="login.css">
+
+</head>
+<body><main class="login-section"><!-- Left Side -->
+<section class="login-image">
+    <div class="image-overlay">
+
+        <a href="../home_page/home.html" class="login-logo">
+            <img src="../img/logo3.png" alt="TEAMLY Logo">
+        </a>
+
+        <span class="welcome-label">WELCOME TO TEAMLY</span>
+
+        <h1>Bring Your Ideas to Life.</h1>
+
+        <p>
+            Connect with the right professionals, organize your projects,
+            and make every event an unforgettable experience.
+        </p>
+
+    </div>
+</section>
+
+<!-- Right Side -->
+<section class="login-form-container">
+    <div class="login-form-wrapper">
+
+        <div class="login-top">
+            <a href="../home_page/home.html" class="back-home">
+                &larr; Back to Home
+            </a>
+        </div>
+
+        <form id="loginForm" class="login-form">
+
+            <div class="form-heading">
+                <h2>Welcome Back!</h2>
+                <p>Login to continue your journey with TEAMLY.</p>
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email Address</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email address"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+
+                <div class="password-wrapper">
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <button type="button" id="togglePassword" class="toggle-password" aria-label="Show password" title="Show password">
+                        <i id="eyeIcon" class="fa fa-eye-slash" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-options">
+
+                <label class="remember-me">
+                    <input type="checkbox" id="rememberMe">
+                    <span>Remember me</span>
+                </label>
+
+                <button
+                    type="button"
+                    id="forgotPassword"
+                    class="forgot-password"
+                >
+                    Forgot password?
+                </button>
+
+            </div>
+
+            <button type="submit" class="login-button">
+                Login
+            </button>
+
+            <p id="loginMessage" class="message" aria-live="polite"></p>
+
+            <div class="signup-link">
+                Don't have an account?
+                <a href="register.html">Create an account</a>
+            </div>
+
+        </form>
+    </div>
+
+</section>
+
+</main><!-- Forgot Password Popup --><div
+    class="reset-overlay"
+    id="resetOverlay"
+    aria-hidden="true"
+    hidden
+>
+    <section
+        class="reset-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="resetTitle"
+        aria-describedby="resetDescription"
+    >    <button
+        type="button"
+        class="close-modal"
+        id="closeReset"
+        aria-label="Close popup"
+    >
+        &times;
+    </button>
+
+    <!-- Progress indicator -->
+    <div class="reset-progress" id="resetProgress">
+        <span class="active"></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <div class="reset-icon" aria-hidden="true">
+        &#9993;
+    </div>
+
+    <h2 id="resetTitle">Forgot Password?</h2>
+
+    <p id="resetDescription">
+        No worries! Enter the email address associated with your account
+        and we'll send you a verification code.
+    </p>
+
+    <form id="resetForm" novalidate>
+
+        <div class="reset-input-group">
+
+            <label for="resetInput" id="resetLabel">
+                Email Address
+            </label>
+
+            <input
+                type="email"
+                id="resetInput"
+                name="resetEmail"
+                placeholder="you@example.com"
+                autocomplete="off"
+                required
+            >
+
+        </div>
+
+        <!-- Additional fields appear in later steps -->
+        <div id="resetExtraFields"></div>
+
+        <button type="submit" class="reset-submit" id="resetSubmit">
+            Send Verification Code
+        </button>
+
+        <p
+            class="reset-message"
+            id="resetMessage"
+            aria-live="polite"
+        ></p>
+
+    </form>
+
+    <p class="reset-note">
+        Password recovery will be connected to the backend.
+    </p>
+
+    <button type="button" class="back-to-login" id="backToLogin">
+        &larr; Back to Login
+    </button>
+
+</section>
+
+</div><script src="lgin.js"></script></body>
+</html>

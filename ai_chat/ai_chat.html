@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TEAMLY AI Chat</title>
+
+    <!-- Shared CSS -->
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- AI Chat CSS -->
+    <link rel="stylesheet" href="ai_chat.css">
+<link rel="stylesheet" href="../sidebar_client/sidbar.css">
+    <!-- Font Awesome 4.7 -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+    <div class="ai-layout">
+
+        <!-- Existing Sidebar -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <main class="ai-main">
+
+            <!-- Chat Section -->
+            <section class="chat-section">
+
+                <!-- Welcome -->
+                <div class="chat-welcome">
+
+                    <h1>
+                        Welcome to <span id="welcomeName">TEAMLY</span>
+                        <i class="fa fa-hand-paper-o welcome-hand"
+                           aria-hidden="true"></i>
+                    </h1>
+
+                    <p class="welcome-subtitle">
+                        Your AI Project Planning Assistant
+                    </p>
+
+                    <p class="welcome-description">
+                        Tell TEAMLY what you need, and we'll help you
+                        build your team.
+                    </p>
+
+                </div>
+
+                <!-- Conversation Messages -->
+                <div class="chat-messages"
+                     id="chatMessages"
+                     aria-live="polite">
+
+                    <div class="message ai-message">
+
+                        <div class="message-avatar">
+                            <i class="fa fa-magic"
+                               aria-hidden="true"></i>
+                        </div>
+
+                        <div class="message-content">
+                            <p>
+                                Hi! I'm TEAMLY AI. Tell me about your
+                                project, and I'll help you identify the
+                                services you need, organize your plans,
+                                and build your team.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Chat Input -->
+                <div class="chat-bottom">
+
+                    <form class="chat-input-form" id="chatForm">
+
+                        <label for="chatInput" class="sr-only">
+                            Tell me about your project
+                        </label>
+
+                        <textarea
+                            id="chatInput"
+                            placeholder="Tell me more about your project type..."
+                            rows="1"
+                            maxlength="2000"
+                            required
+                        ></textarea>
+
+                        <button
+                            type="submit"
+                            class="send-button"
+                            aria-label="Send message"
+                            title="Send message"
+                        >
+                             <i class="fa fa-arrow-right"
+                           aria-hidden="true"></i>
+                        </button>
+
+                    </form>
+
+                    <button
+                        type="button"
+                        class="search-team-button"
+                        id="searchTeamButton"
+                    >
+                        <i class="fa fa-users"
+                           aria-hidden="true"></i>
+
+                        <span>Search for Team</span>
+
+                        <i class="fa fa-arrow-right"
+                           aria-hidden="true"></i>
+                    </button>
+
+                    <p class="chat-disclaimer">
+                        TEAMLY AI helps you plan your project and find
+                        services available through TEAMLY.
+                    </p>
+
+                </div>
+
+            </section>
+
+            <!-- Project Summary -->
+            <aside class="project-summary">
+
+                <div class="summary-header">
+
+                    <div>
+                        <h2>Project Summary</h2>
+                        <p>Your project at a glance</p>
+                    </div>
+
+                    <div class="summary-header-icon">
+                        <i class="fa fa-file-text-o"
+                           aria-hidden="true"></i>
+                    </div>
+
+                </div>
+
+                <!-- Empty State -->
+                <div class="summary-empty" id="summaryEmpty">
+
+                    <div class="empty-summary-icon">
+                        <i class="fa fa-clipboard"
+                           aria-hidden="true"></i>
+                    </div>
+
+                    <h3>Your project starts here</h3>
+
+                    <p>
+                        Share your ideas with TEAMLY AI, and your
+                        project details will appear here.
+                    </p>
+
+                </div>
+
+                <!-- Summary Details -->
+                <div class="summary-details"
+                     id="summaryDetails"
+                     hidden>
+
+                    <!-- Project Type -->
+                    <div class="summary-item">
+
+                        <div class="summary-item-heading">
+                            <i class="fa fa-folder-open-o"
+                               aria-hidden="true"></i>
+                            <h3>Project Type</h3>
+                        </div>
+
+                        <p id="summaryType">Not specified yet</p>
+
+                    </div>
+
+                    <!-- Services Needed -->
+                    <div class="summary-item">
+
+                        <div class="summary-item-heading">
+                            <i class="fa fa-users"
+                               aria-hidden="true"></i>
+                            <h3>Services Needed</h3>
+                        </div>
+
+                        <p id="summaryServices">Not specified yet</p>
+
+                    </div>
+
+                    <!-- Project Details -->
+                    <div class="summary-item">
+
+                        <div class="summary-item-heading">
+                            <i class="fa fa-align-left"
+                               aria-hidden="true"></i>
+                            <h3>Project Details</h3>
+                        </div>
+
+                        <p id="summaryDescription">
+                            Not specified yet
+                        </p>
+
+                    </div>
+
+                    <!-- Date, Location and Budget in One Row -->
+                    <div class="summary-meta-row">
+
+                        <div class="summary-item">
+
+                            <div class="summary-item-heading">
+                                <i class="fa fa-calendar"
+                                   aria-hidden="true"></i>
+                                <h3>Date</h3>
+                            </div>
+
+                            <p id="summaryDate">Not specified yet</p>
+
+                        </div>
+
+                        <div class="summary-item">
+
+                            <div class="summary-item-heading">
+                                <i class="fa fa-map-marker"
+                                   aria-hidden="true"></i>
+                                <h3>Location</h3>
+                            </div>
+
+                            <p id="summaryLocation">
+                                Not specified yet
+                            </p>
+
+                        </div>
+
+                        <div class="summary-item">
+
+                            <div class="summary-item-heading">
+                                <i class="fa fa-money"
+                                   aria-hidden="true"></i>
+                                <h3>Budget</h3>
+                            </div>
+
+                            <p id="summaryBudget">Not specified yet</p>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Team Status -->
+                    <div class="summary-item">
+
+                        <div class="summary-item-heading">
+                            <i class="fa fa-tasks"
+                               aria-hidden="true"></i>
+                            <h3>Team Status</h3>
+                        </div>
+
+                        <p id="summaryTeamStatus">Not started</p>
+
+                    </div>
+
+                    <!-- Planning -->
+                    <div class="summary-item">
+
+                        <div class="summary-item-heading">
+                            <i class="fa fa-list-alt"
+                               aria-hidden="true"></i>
+                            <h3>Planning</h3>
+                        </div>
+
+                        <p id="summaryPlanning">
+                            Waiting for project details
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- Summary Footer -->
+                <div class="summary-footer">
+
+                    <i class="fa fa-lightbulb-o"
+                       aria-hidden="true"></i>
+
+                    <p>
+                        The more details you share, the better we can
+                        organize your project.
+                    </p>
+
+                </div>
+
+            </aside>
+
+        </main>
+
+    </div>
+
+    <script src="ai_chat.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,259 @@
+document.addEventListener("DOMContentLoaded", function () {
+
+const form = document.getElementById("clientRegisterForm");
+
+const fullName = document.getElementById("fullName");
+const email = document.getElementById("email");
+const confirmEmail = document.getElementById("confirmEmail");
+const password = document.getElementById("password");
+const confirmPassword = document.getElementById("confirmPassword");
+const terms = document.getElementById("terms");
+
+const formMessage = document.getElementById("formMessage");
+const submitButton = form.querySelector(".create-account-btn");
+
+
+// Show or hide password
+
+document.querySelectorAll(".password-toggle").forEach(function (button) {
+
+    button.addEventListener("click", function () {
+
+        const input = document.getElementById(
+            button.getAttribute("data-target")
+        );
+
+        const icon = button.querySelector("i");
+        const isHidden = input.type === "password";
+
+        input.type = isHidden ? "text" : "password";
+
+        icon.classList.toggle("fa-eye", isHidden);
+        icon.classList.toggle("fa-eye-slash", !isHidden);
+
+        button.setAttribute(
+            "aria-label",
+            isHidden ? "Hide password" : "Show password"
+        );
+
+        button.setAttribute(
+            "title",
+            isHidden ? "Hide password" : "Show password"
+        );
+
+    });
+
+});
+
+
+// Display field error
+
+function showError(field, errorId, message) {
+
+    const errorElement = document.getElementById(errorId);
+
+    errorElement.textContent = message;
+
+    if (field) {
+        field.classList.toggle("input-invalid", Boolean(message));
+        field.setAttribute("aria-invalid", String(Boolean(message)));
+    }
+
+}
+
+
+// Clear error while typing
+
+[
+    fullName,
+    email,
+    confirmEmail,
+    password,
+    confirmPassword
+].forEach(function (field) {
+
+    field.addEventListener("input", function () {
+
+        field.classList.remove("input-invalid");
+        field.removeAttribute("aria-invalid");
+
+        const errorId = field.id + "Error";
+        const errorElement = document.getElementById(errorId);
+
+        if (errorElement) {
+            errorElement.textContent = "";
+        }
+
+        formMessage.textContent = "";
+        formMessage.className = "form-message";
+
+    });
+
+});
+
+
+// Validate and submit
+
+form.addEventListener("submit", function (event) {
+
+    event.preventDefault();
+
+    formMessage.textContent = "";
+    formMessage.className = "form-message";
+
+    let isValid = true;
+
+    // Full name
+
+    if (fullName.value.trim().length < 2) {
+
+        showError(
+            fullName,
+            "fullNameError",
+            "Please enter your full name."
+        );
+
+        isValid = false;
+
+    } else {
+
+        showError(fullName, "fullNameError", "");
+
+    }
+
+
+    // Email format
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email.value.trim())) {
+
+        showError(
+            email,
+            "emailError",
+            "Please enter a valid email address."
+        );
+
+        isValid = false;
+
+    } else {
+
+        showError(email, "emailError", "");
+
+    }
+
+
+    // Confirm email
+
+    if (
+        !confirmEmail.value.trim() ||
+        confirmEmail.value.trim().toLowerCase() !==
+        email.value.trim().toLowerCase()
+    ) {
+
+        showError(
+            confirmEmail,
+            "confirmEmailError",
+            "Email addresses do not match."
+        );
+
+        isValid = false;
+
+    } else {
+
+        showError(confirmEmail, "confirmEmailError", "");
+
+    }
+
+
+    // Password length
+
+    if (password.value.length < 8) {
+
+        showError(
+            password,
+            "passwordError",
+            "Password must be at least 8 characters."
+        );
+
+        isValid = false;
+
+    } else {
+
+        showError(password, "passwordError", "");
+
+    }
+
+
+    // Confirm password
+
+    if (
+        !confirmPassword.value ||
+        confirmPassword.value !== password.value
+    ) {
+
+        showError(
+            confirmPassword,
+            "confirmPasswordError",
+            "Passwords do not match."
+        );
+
+        isValid = false;
+
+    } else {
+
+        showError(confirmPassword, "confirmPasswordError", "");
+
+    }
+
+
+    // Terms and conditions
+
+    const termsError = document.getElementById("termsError");
+
+    if (!terms.checked) {
+
+        termsError.textContent =
+            "Please agree to the Terms of Service and Privacy Policy.";
+
+        isValid = false;
+
+    } else {
+
+        termsError.textContent = "";
+
+    }
+
+
+    // Stop if validation fails
+
+    if (!isValid) {
+
+        formMessage.textContent =
+            "Please check the highlighted fields.";
+
+        formMessage.classList.add("error");
+
+        const firstInvalidField = form.querySelector(
+            ".input-invalid, input[type='checkbox']:invalid"
+        );
+
+        if (firstInvalidField) {
+            firstInvalidField.focus();
+        }
+
+        return;
+
+    }
+
+
+    // Frontend demonstration only
+
+    formMessage.textContent =
+        "Your information is valid! Account creation will be available once the backend is connected.";
+
+    formMessage.classList.add("success");
+
+});
+
+});

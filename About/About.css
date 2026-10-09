@@ -1,0 +1,65 @@
+@import url(../style.css);
+/* ABOUT */
+
+.about {
+    background-color: var(--white);
+}
+
+.about-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 72px;
+}
+
+.about-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 340px;
+    padding: 30px;
+
+    border-radius: var(--radius-xl);
+    background-color: var(--primary-light);
+}
+
+.about-visual-card {
+    width: min(100%, 320px);
+    padding: 36px;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+
+    background-color: var(--white);
+    box-shadow: var(--shadow-md);
+}
+
+.about-symbol {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 65px;
+    height: 65px;
+    margin-bottom: var(--space-5);
+
+    border-radius: var(--radius-lg);
+    background-color: var(--primary);
+    color: var(--primary-deep);
+
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.about-visual-card h3 {
+    font-size: 27px;
+}
+
+.about-visual-card p {
+    margin-top: var(--space-2);
+}
+
+.about-content > p {
+    margin: var(--space-4) 0 var(--space-5);
+}
