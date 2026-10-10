@@ -1,124 +1,164 @@
-/* =========================
-   TEAMLY FOOTER
-========================= */
+@import url("../style.css");
 
+/* TEAMLY shared footer */
 .teamly-footer {
-    background-color: #EAF4E8;
-    color: #26332A;
-    padding: 65px 0 20px 0;
-    
-    border-top: 1px solid #DCE8DB;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    margin-top: 48px;
+    padding: 42px clamp(16px, 4vw, 48px) 24px;
+    color: var(--text, #26332A);
+    background:
+        radial-gradient(ellipse at 12% 0%, rgba(168, 201, 165, 0.28), transparent 42%),
+        linear-gradient(145deg, #F3F8F1, #EAF4E8 62%, #F8FBF7);
+}
+
+.teamly-footer::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-top: 1px solid rgba(255, 255, 255, 0.86);
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.28), transparent 48%);
+    content: "";
+    pointer-events: none;
 }
 
 .footer-container {
-    max-width: 1250px;
-    margin: 0 auto;
     display: grid;
-    grid-template-columns: 1.6fr 1fr 1fr 1fr;
-    gap: 45px;
+    grid-template-columns: minmax(230px, 1.55fr) repeat(3, minmax(130px, 1fr));
+    gap: clamp(24px, 4vw, 48px);
+    width: min(1250px, 100%);
+    margin: 0 auto;
+    padding: clamp(26px, 4vw, 42px);
+    border: 1px solid rgba(255, 255, 255, 0.82);
+    border-radius: 26px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.76), rgba(234, 244, 232, 0.63));
+    box-shadow: 0 16px 42px rgba(38, 51, 42, 0.09), inset 0 1px rgba(255, 255, 255, 0.8);
+    -webkit-backdrop-filter: blur(18px) saturate(125%);
+    backdrop-filter: blur(18px) saturate(125%);
 }
 
-/* Brand */
+.footer-brand,
+.footer-column {
+    min-width: 0;
+}
 
 .footer-logo {
-    display: inline-block;
-    text-decoration: none;
-    color: #355E3B;
-    font-size: 30px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    margin-bottom: 18px;
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    margin-bottom: 14px;
+    border-radius: 12px;
 }
 
-.footer-logo span {
-    color: #6F9B73;
+.footer-logo img {
+    width: min(176px, 100%);
+    height: auto;
+    filter: drop-shadow(0 3px 6px rgba(53, 94, 59, 0.1));
 }
 
-.footer-brand p {
-    max-width: 290px;
-    color: #6B756D;
+.footer-brand > p {
+    max-width: 310px;
+    margin-bottom: 20px;
+    color: var(--text-secondary, #6B756D);
     font-size: 14px;
     line-height: 1.8;
-    margin-bottom: 22px;
 }
-
-/* Social Links */
 
 .footer-socials {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 8px;
 }
 
 .footer-socials a,
 .footer-socials span {
-    text-decoration: none;
-    color: #355E3B;
-    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 6px 11px;
+    border: 1px solid rgba(111, 155, 115, 0.17);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.52);
+    color: var(--primary-deep, #355E3B);
+    font-size: 12px;
     font-weight: 600;
-    transition: color 0.3s ease;
+    text-decoration: none;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .footer-socials a:hover {
-    color: #6F9B73;
+    transform: translateY(-2px);
+    border-color: rgba(111, 155, 115, 0.38);
+    background: rgba(168, 201, 165, 0.25);
+    color: var(--primary-deep, #355E3B);
 }
-
-/* Footer Columns */
 
 .footer-column {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 14px;
+    gap: 11px;
 }
 
 .footer-column h3 {
-    font-size: 16px;
-    color: #26332A;
-    margin-bottom: 8px;
+    margin: 2px 0 5px;
+    color: var(--text, #26332A);
+    font-size: 15px;
+    font-weight: 700;
 }
 
 .footer-column a,
 .footer-column span {
+    max-width: 100%;
+    color: var(--text-secondary, #6B756D);
+    font-size: 13px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
     text-decoration: none;
-    color: #6B756D;
-    font-size: 14px;
-    transition: color 0.3s ease,
-                transform 0.3s ease;
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .footer-column a:hover {
-    color: #355E3B;
-    transform: translateX(4px);
+    transform: translateX(3px);
+    color: var(--primary-deep, #355E3B);
 }
 
-/* Bottom Section */
+.footer-logo:focus-visible,
+.footer-socials a:focus-visible,
+.footer-column a:focus-visible {
+    outline: 3px solid rgba(111, 155, 115, 0.58);
+    outline-offset: 3px;
+}
 
 .footer-bottom {
-    max-width: 1250px;
-    margin: 45px auto 0;
-    padding-top: 20px;
-    border-top: 1px solid #D1E0D0;
-
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 10px 20px;
+    width: min(1250px, 100%);
+    margin: 22px auto 0;
+    padding: 18px 8px 0;
+    border-top: 1px solid rgba(111, 155, 115, 0.2);
 }
 
 .footer-bottom p {
-    color: #6B756D;
+    color: var(--text-secondary, #6B756D);
     font-size: 12px;
     line-height: 1.7;
 }
 
-/* Tablet */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .footer-container {
+        background: #F8FBF7;
+    }
+}
 
 @media (max-width: 900px) {
     .footer-container {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 35px;
+        gap: 32px clamp(20px, 5vw, 48px);
     }
 
     .footer-brand {
@@ -126,38 +166,42 @@
     }
 }
 
-/* Mobile */
-
-@media (max-width: 500px) {
+@media (max-width: 520px) {
     .teamly-footer {
-        padding: 45px 22px 20px;
-        margin-top: 40px;
+        margin-top: 32px;
+        padding: 28px 14px 18px;
     }
 
     .footer-container {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 35px 20px;
+        gap: 28px 16px;
+        padding: 24px 18px;
+        border-radius: 22px;
     }
 
     .footer-brand {
         grid-column: 1 / -1;
     }
 
-    .footer-logo {
-        font-size: 27px;
-    }
-
     .footer-column h3 {
-        font-size: 15px;
+        font-size: 14px;
     }
 
-    .footer-column a {
-        font-size: 13px;
+    .footer-column a,
+    .footer-column span {
+        font-size: 12px;
     }
 
     .footer-bottom {
-        margin-top: 30px;
         align-items: flex-start;
         flex-direction: column;
+        padding-inline: 4px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .footer-socials a,
+    .footer-column a {
+        transition-duration: 0.01ms;
     }
 }
