@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Project Tracking | TEAMLY</title>
+
+    <!-- Shared CSS -->
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- Font Awesome 4.7 -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Tracking CSS -->
+    <link rel="stylesheet" href="tracking.css">
+    <link rel="stylesheet" href="../sidebar_client/sidbar.css">
+</head>
+
+<body>
+
+<div class="tracking-layout">
+
+    <!-- Existing Sidebar -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Page -->
+    <main class="tracking-main">
+
+        <!-- Page Heading -->
+        <header class="tracking-heading">
+
+            <div>
+                <h1>Your Projects</h1>
+                <p>Your Selected Team and Request State</p>
+            </div>
+
+            <button type="button" class="refresh-btn" id="refreshBtn">
+                <i class="fa fa-refresh"></i>
+                Refresh
+            </button>
+
+        </header>
+
+
+        <div class="tracking-grid">
+
+            <!-- LEFT SIDE -->
+            <section class="tracking-left">
+
+                <!-- Project Information -->
+                <div class="tracking-card">
+
+                    <div class="project-top">
+
+                        <div>
+                            <span class="section-label">PROJECT NAME</span>
+
+                            <h2 id="projectName">Wedding Project</h2>
+
+                            <p class="project-id">
+                                Project ID:
+                                <strong id="projectId">TML-2026-014</strong>
+                            </p>
+                        </div>
+
+                        <span class="status-badge" id="projectStatus">
+                            In Progress
+                        </span>
+
+                    </div>
+
+
+                    <!-- Location, Budget, Team -->
+                    <div class="project-info-grid">
+
+                        <div class="info-box">
+                            <i class="fa fa-map-marker"></i>
+
+                            <div>
+                                <span>Location</span>
+                                <strong id="projectLocation">Amman, Jordan</strong>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <i class="fa fa-money"></i>
+
+                            <div>
+                                <span>Budget</span>
+                                <strong id="projectBudget">850 JOD</strong>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <i class="fa fa-users"></i>
+
+                            <div>
+                                <span>Selected Team</span>
+                                <strong id="projectTeamCount">1 Provider</strong>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Team Process -->
+                    <div class="team-process">
+
+                        <h3>Team Process</h3>
+
+                        <div class="process-line">
+
+                            <div class="process-step completed">
+
+                                <div class="step-circle">
+                                    <i class="fa fa-check"></i>
+                                </div>
+
+                                <h4>Request Sent</h4>
+                                <p>Completed</p>
+
+                            </div>
+
+
+                            <div class="process-step active" id="waitingStep">
+
+                                <div class="step-circle" id="waitingCircle">
+                                    2
+                                </div>
+
+                                <h4>Waiting</h4>
+                                <p id="waitingText">Awaiting reply</p>
+
+                            </div>
+
+
+                            <div class="process-step" id="confirmedStep">
+
+                                <div class="step-circle" id="confirmedCircle">
+                                    <i class="fa fa-check"></i>
+                                </div>
+
+                                <h4>Confirmed</h4>
+                                <p id="confirmedText">Not confirmed</p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Selected Provider -->
+                <div class="tracking-card">
+
+                    <div class="card-heading">
+
+                        <div>
+                            <h3>Selected Provider</h3>
+                            <p>Provider request information</p>
+                        </div>
+
+                        <span class="status-badge pending" id="providerStatus">
+                            Pending Request
+                        </span>
+
+                    </div>
+
+
+                    <div class="provider-information">
+
+                        <div class="provider-avatar" id="providerAvatar">
+                            JD
+                        </div>
+
+                        <div class="provider-details">
+
+                            <h3 id="providerName">Jordan Doe</h3>
+
+                            <p id="providerService">Photographer</p>
+
+                            <div class="provider-rating">
+                                <i class="fa fa-star"></i>
+
+                                <span id="providerRating">4.8</span>
+
+                                <span class="rating-label">Rating</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Timer -->
+                    <div class="request-timer" id="requestTimerBox">
+
+                        <div class="timer-icon">
+                            <i class="fa fa-clock-o"></i>
+                        </div>
+
+                        <div>
+                            <h4>Response Time</h4>
+
+                            <p>
+                                Time remaining:
+                                <strong id="timeRemaining">23h 18m</strong>
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <!-- PENDING STATE -->
+                    <div class="state-panel pending-panel" id="pendingPanel">
+
+                        <div class="state-heading">
+                            <i class="fa fa-info-circle"></i>
+
+                            <h3>What Happens Next?</h3>
+                        </div>
+
+                        <p>
+                            The provider will review your request and respond
+                            within 24 hours. Once accepted, you can continue
+                            to payment and team chat.
+                        </p>
+
+                    </div>
+
+
+                    <!-- REJECTED STATE -->
+                    <div class="state-panel alternatives-panel"
+                         id="alternativesPanel"
+                         hidden>
+
+                        <div class="state-heading">
+                            <i class="fa fa-lightbulb-o"></i>
+
+                            <h3>Team AI found alternative providers</h3>
+                        </div>
+
+                        <p class="state-description">
+                            Here are matched photography providers based on
+                            your project. Choose the provider that works
+                            best for you.
+                        </p>
+
+                        <div id="alternativeProviders" class="alternative-list">
+                            <!-- Alternative providers added by JavaScript -->
+                        </div>
+
+                        <button type="button"
+                                class="send-request-btn"
+                                id="sendRequestBtn"
+                                disabled>
+
+                            <i class="fa fa-paper-plane"></i>
+                            Send Request
+
+                        </button>
+
+                        <p class="selection-message"
+                           id="selectionMessage"
+                           aria-live="polite"></p>
+
+                    </div>
+
+
+                    <!-- ACCEPTED STATE -->
+                    <div class="state-panel connect-panel"
+                         id="connectPanel"
+                         hidden>
+
+                        <div class="connect-icon">
+                            <i class="fa fa-check"></i>
+                        </div>
+
+                        <div class="connect-content">
+
+                            <h3>Ready to Connect</h3>
+
+                            <p>
+                                Open your project chat and start communication
+                                with
+                                <strong id="acceptedProviderName">Jordan Doe</strong>.
+                            </p>
+
+                        </div>
+
+                        <a href="../chat_butween_Them/chat.html"
+                           class="open-chat-btn"
+                           id="openChatBtn">
+
+                            Open Chat
+                            <i class="fa fa-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- RIGHT SIDE -->
+            <aside class="tracking-right">
+
+                <!-- Selected Team -->
+                <div class="tracking-card">
+
+                    <div class="right-card-heading">
+
+                        <div>
+                            <h3>Selected Team</h3>
+                            <p>Your requested providers</p>
+                        </div>
+
+                        <i class="fa fa-users heading-icon"></i>
+
+                    </div>
+
+
+                    <div class="team-statistics">
+
+                        <div>
+                            <span>Providers Selected</span>
+                            <strong id="selectedCount">1 of 1</strong>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div id="teamProgress"></div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="team-provider">
+
+                        <div class="provider-avatar small-avatar"
+                             id="sideProviderAvatar">
+                            JD
+                        </div>
+
+                        <div class="side-provider-details">
+
+                            <h4 id="sideProviderName">Jordan Doe</h4>
+
+                            <p id="sideProviderService">Photographer</p>
+
+                            <div class="side-rating">
+                                <i class="fa fa-star"></i>
+                                <span id="sideProviderRating">4.8</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="side-status-row">
+
+                        <span>Request Status</span>
+
+                        <span class="status-badge pending"
+                              id="sideProviderStatus">
+                            Pending
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Project Details -->
+                <div class="tracking-card project-details-card">
+
+                    <div class="right-card-heading">
+
+                        <div>
+                            <h3>Project Details</h3>
+                            <p>Your project information</p>
+                        </div>
+
+                        <i class="fa fa-file-text-o heading-icon"></i>
+
+                    </div>
+
+
+                    <div class="detail-item">
+                        <span>Project Type</span>
+                        <strong id="detailType">Wedding</strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Services Needed</span>
+                        <strong id="detailServices">Photography</strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Project Date</span>
+                        <strong id="detailDate">Not set</strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Location</span>
+                        <strong id="detailLocation">Amman, Jordan</strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Budget</span>
+                        <strong id="detailBudget">850 JOD</strong>
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+
+        <p class="tracking-message"
+           id="trackingMessage"
+           aria-live="polite"></p>
+
+    </main>
+
+</div>
+
+
+
+<!-- Provider Profile Modal -->
+<div class="profile-modal"
+     id="profileModal"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="profileModalName"
+     hidden>
+
+    <div class="profile-modal-content">
+
+        <button type="button"
+                class="close-modal-btn"
+                id="closeProfileModal"
+                aria-label="Close profile">
+
+            <i class="fa fa-times"></i>
+
+        </button>
+
+        <div class="profile-modal-avatar" id="profileModalAvatar">
+            JD
+        </div>
+
+        <h2 id="profileModalName">Provider Name</h2>
+
+        <p id="profileModalService">Photographer</p>
+
+        <div class="modal-rating">
+            <i class="fa fa-star"></i>
+            <span id="profileModalRating">4.8</span>
+            <span>Rating</span>
+        </div>
+
+        <p id="profileModalBio" class="profile-bio"></p>
+
+        <button type="button"
+                class="send-request-btn modal-select-btn"
+                id="modalSelectBtn">
+
+            Select Provider
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<script src="tracking.js"></script>
+<script src="../sidebar_client/sidbar.js"> </script>
+</body>
+</html>

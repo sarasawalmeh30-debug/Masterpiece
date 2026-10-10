@@ -7,7 +7,7 @@ backButton.addEventListener("click", function () {
     if (window.history.length > 1) {
         window.history.back();
     } else {
-        window.location.href = "index.html";
+        window.location.href = "../home_page/home.html";
     }
 
 });

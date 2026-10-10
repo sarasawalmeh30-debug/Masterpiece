@@ -1,62 +1,52 @@
-
-fetch("./sidebar_client/sidebar.html")
-    .then(function (response) {
-        if (!response.ok) {
-            throw new Error("Could not load sidebar.html");
-        }
-
-        return response.text();
-    })
-    .then(function (html) {
-        document.getElementById("sidebar-container").innerHTML = html;
-
-        initializeSidebar();
-    })
-    .catch(function (error) {
-        console.error("Sidebar loading error:", error);
-    });
-
 function initializeSidebar() {
     const sidebar = document.getElementById("sidebar");
     const openButton = document.getElementById("sidebarOpen");
     const closeButton = document.getElementById("sidebarClose");
     const overlay = document.getElementById("sidebarOverlay");
 
-    function openSidebar() {
+    if (!sidebar || sidebar.dataset.initialized === "true") return;
+    sidebar.dataset.initialized = "true";
+
+    const openSidebar = () => {
         sidebar.classList.add("open");
-        overlay.classList.add("show");
-    }
-
-    function closeSidebar() {
+        if (overlay) overlay.classList.add("show");
+        if (openButton) openButton.setAttribute("aria-expanded", "true");
+    };
+    const closeSidebar = () => {
         sidebar.classList.remove("open");
-        overlay.classList.remove("show");
-    }
+        if (overlay) overlay.classList.remove("show");
+        if (openButton) openButton.setAttribute("aria-expanded", "false");
+    };
 
-    openButton.addEventListener("click", openSidebar);
-    closeButton.addEventListener("click", closeSidebar);
-    overlay.addEventListener("click", closeSidebar);
+    if (openButton) openButton.addEventListener("click", openSidebar);
+    if (closeButton) closeButton.addEventListener("click", closeSidebar);
+    if (overlay) overlay.addEventListener("click", closeSidebar);
 
-    document.addEventListener("keydown", function (event) {
-        if (event.key === "Escape") {
-            closeSidebar();
-        }
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape") closeSidebar();
     });
 
-    // Highlight the current page
-    const currentPage = window.location.pathname
-        .split("/")
-        .pop() || "dashboard.html";
-
-    sidebar.querySelectorAll(".sidebar-link").forEach(function (link) {
-        const linkPage = link.getAttribute("href").split("/").pop();
-
-        if (linkPage === currentPage) {
-            link.classList.add("active");
+    const currentPath = window.location.pathname.toLowerCase();
+    sidebar.querySelectorAll(".sidebar-link[href]").forEach(link => {
+        const linkPath = new URL(link.href, window.location.href).pathname.toLowerCase();
+        const isCurrentPage = linkPath === currentPath;
+        link.classList.toggle("active", isCurrentPage);
+        if (isCurrentPage) {
+            link.setAttribute("aria-current", "page");
+        } else {
+            link.removeAttribute("aria-current");
         }
-    });
-
-    // Close the sidebar after selecting a link on mobile
-    sidebar.querySelectorAll(".sidebar-link").forEach(function (link) {
         link.addEventListener("click", closeSidebar);
     });
 }
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeSidebar);
+} else {
+    initializeSidebar();
+}
+
+new MutationObserver(initializeSidebar).observe(document.documentElement, {
+    childList: true,
+    subtree: true
+});

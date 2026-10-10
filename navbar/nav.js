@@ -1,14 +1,23 @@
 
 fetch("../navbar/nav.html")
-    .then(response => response.text())
+    .then(response => {
+        if (!response.ok) throw new Error("Navbar HTML could not be loaded.");
+        return response.text();
+    })
     .then(data => {
-        document.getElementById("navbar-container").innerHTML = data;
+        const container = document.getElementById("navbar-container");
+        if (!container) return;
+        container.innerHTML = data;
+        initializeNavbar();
     })
     .catch(error => console.error("Error loading navbar:", error));
-    const navbar = document.getElementById("navbar");
+
+function initializeNavbar() {
+const navbar = document.getElementById("navbar");
 const menuToggle = document.getElementById("menuToggle");
 const navLinks = document.getElementById("navLinks");
 const navItems = document.querySelectorAll(".nav-link");
+if (!navbar || !menuToggle || !navLinks) return;
 
 // Navbar scroll effect
 function handleScroll() {
@@ -62,3 +71,4 @@ document.addEventListener("keydown", (event) => {
         menuToggle.setAttribute("aria-expanded", "false");
     }
 });
+}

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TEAMLY | Group Chat</title>
+
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="chat.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+<div class="chat-layout">
+
+    <!-- LEFT SIDEBAR -->
+    <div id="sidebar-container"></div>
+
+
+    <!-- MAIN CHAT -->
+    <main class="chat-main">
+
+        <!-- Chat Header -->
+        <header class="chat-header">
+
+            <div class="group-info">
+
+                <div class="group-avatar">
+                    <i class="fa fa-users"></i>
+                </div>
+
+                <div>
+                    <h1>Wedding Team</h1>
+                    <p>Group conversation · 4 members</p>
+                </div>
+
+            </div>
+
+            <div class="chat-header-actions">
+
+                <button class="header-action"
+                        id="zoom-button"
+                        title="Start Zoom Meeting">
+
+                    <i class="fa fa-video-camera"></i>
+                    <span>Zoom</span>
+
+                </button>
+
+                <button class="header-action"
+                        id="payment-button"
+                        title="Payment">
+
+                    <i class="fa fa-credit-card"></i>
+                    <span>Payment</span>
+
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- Messages -->
+        <section class="messages-area" id="messages-area">
+
+            <div class="chat-date">
+                <span>Today</span>
+            </div>
+
+            <div class="system-message">
+                Welcome to your Wedding Team group chat!
+                Coordinate your project with your team members.
+            </div>
+
+            <!-- Example messages -->
+
+            <div class="message received">
+
+                <div class="message-avatar">A</div>
+
+                <div class="message-content">
+
+                    <span class="sender-name">Ahmad · Photographer</span>
+
+                    <div class="message-bubble">
+                        Hello everyone! I'm excited to work with you.
+                    </div>
+
+                    <span class="message-time">10:30 AM</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="message received">
+
+                <div class="message-avatar decoration-avatar">D</div>
+
+                <div class="message-content">
+
+                    <span class="sender-name">Dana · Decorator</span>
+
+                    <div class="message-bubble">
+                        Hi! I'll prepare the decoration ideas for the project.
+                    </div>
+
+                    <span class="message-time">10:32 AM</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="message sent">
+
+                <div class="message-content">
+
+                    <span class="sender-name">You</span>
+
+                    <div class="message-bubble">
+                        Great! Let's discuss the details and our timeline.
+                    </div>
+
+                    <span class="message-time">10:35 AM</span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Message Limit -->
+        <div class="usage-container">
+
+            <div class="usage-info">
+                <span id="usage-text">Your free messages</span>
+                <span id="usage-count">0 / 4</span>
+            </div>
+
+            <div class="usage-track">
+                <div class="usage-progress" id="usage-progress"></div>
+            </div>
+
+        </div>
+
+
+        <!-- Composer -->
+        <form class="message-composer" id="message-form">
+
+            <button type="button"
+                    class="attach-button"
+                    id="attach-button"
+                    title="Attach an image">
+
+                <i class="fa fa-plus"></i>
+
+            </button>
+
+            <input type="file"
+                   id="image-input"
+                   accept="image/*"
+                   hidden>
+
+            <div class="message-input-wrapper">
+
+                <textarea
+                    id="message-input"
+                    placeholder="Write your message..."
+                    rows="1"
+                    maxlength="250"
+                    aria-label="Write your message"></textarea>
+
+                <span id="character-count">0 / 250</span>
+
+            </div>
+
+            <button type="submit"
+                    class="send-button"
+                    id="send-button"
+                    title="Send message">
+
+                <i class="fa fa-paper-plane"></i>
+
+            </button>
+
+        </form>
+
+
+        <!-- Payment Prompt -->
+        <div class="payment-prompt" id="payment-prompt" hidden>
+
+            <div class="payment-prompt-icon">
+                <i class="fa fa-lock"></i>
+            </div>
+
+            <div class="payment-prompt-text">
+
+                <strong>You've used all your free messages</strong>
+
+                <p>
+                    Upgrade your plan to continue chatting with your team.
+                </p>
+
+            </div>
+
+            <button type="button"
+                    id="unlock-chat-button"
+                    class="unlock-button">
+
+                <i class="fa fa-credit-card"></i>
+                Continue to Payment
+
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <!-- RIGHT PROJECT DETAILS -->
+    <aside class="project-sidebar">
+
+        <div class="project-details-card">
+
+            <div class="project-heading">
+                <h2>Project Details</h2>
+
+                <span class="project-status">
+                    <i class="fa fa-check-circle"></i>
+                    Team Confirmed
+                </span>
+            </div>
+
+
+            <div class="project-name-area">
+
+                <div class="project-icon">
+                    <i class="fa fa-heart"></i>
+                </div>
+
+                <div>
+                    <h3>Wedding Project</h3>
+                    <p>Project #TM-1024</p>
+                </div>
+
+            </div>
+
+
+            <div class="project-detail-row">
+                <span><i class="fa fa-money"></i> Budget</span>
+                <strong>2,500 JOD</strong>
+            </div>
+
+            <div class="project-detail-row">
+                <span><i class="fa fa-map-marker"></i> Location</span>
+                <strong>Amman, Jordan</strong>
+            </div>
+
+            <div class="project-detail-row">
+                <span><i class="fa fa-calendar"></i> Event Date</span>
+                <strong>25 October 2026</strong>
+            </div>
+
+
+            <!-- Team Members -->
+            <div class="team-section">
+
+                <h3>Team Members</h3>
+
+                <div class="team-member">
+
+                    <div class="member-avatar photographer-avatar">
+                        A
+                    </div>
+
+                    <div class="member-info">
+                        <strong>Ahmad</strong>
+                        <span>Photography</span>
+                    </div>
+
+                    <span class="accepted-status">
+                        <i class="fa fa-check"></i>
+                        Accepted
+                    </span>
+
+                </div>
+
+
+                <div class="team-member">
+
+                    <div class="member-avatar decorator-avatar">
+                        D
+                    </div>
+
+                    <div class="member-info">
+                        <strong>Dana</strong>
+                        <span>Decoration</span>
+                    </div>
+
+                    <span class="accepted-status">
+                        <i class="fa fa-check"></i>
+                        Accepted
+                    </span>
+
+                </div>
+
+
+                <div class="team-member">
+
+                    <div class="member-avatar">
+                        M
+                    </div>
+
+                    <div class="member-info">
+                        <strong>Mohammad</strong>
+                        <span>Videography</span>
+                    </div>
+
+                    <span class="accepted-status">
+                        <i class="fa fa-check"></i>
+                        Accepted
+                    </span>
+
+                </div>
+
+
+                <div class="team-member">
+
+                    <div class="member-avatar client-avatar">
+                        Y
+                    </div>
+
+                    <div class="member-info">
+                        <strong>You</strong>
+                        <span>Project Owner</span>
+                    </div>
+
+                    <span class="owner-status">Owner</span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Project State -->
+            <div class="project-state">
+
+                <h3>Project State</h3>
+
+                <div class="state-line">
+                    <span class="state-dot completed"></span>
+
+                    <div>
+                        <strong>Team Confirmed</strong>
+                        <p>All providers have accepted.</p>
+                    </div>
+                </div>
+
+                <div class="state-line">
+                    <span class="state-dot pending"></span>
+
+                    <div>
+                        <strong>Payment</strong>
+                        <p>Review your payment details.</p>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Payment Link -->
+            <button type="button"
+                    class="project-payment-button"
+                    id="project-payment-button">
+
+                <i class="fa fa-credit-card"></i>
+                View Payment
+
+                <i class="fa fa-arrow-right"></i>
+
+            </button>
+
+
+        </div>
+
+    </aside>
+
+</div>
+
+
+<script src="chat.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TEAMLY | Payments</title>
+
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="payment.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+<div class="payments-layout">
+
+    <!-- LEFT SIDEBAR -->
+    <div id="sidebar-container"></div>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="payments-main">
+
+        <!-- Page Header -->
+        <header class="payments-header">
+            <a href="../chat_butween_Them/chat.html" class="back-link">
+                <i class="fa fa-arrow-left"></i>
+                Back to Project
+            </a>
+
+            <h1>Complete Your Payment</h1>
+
+            <p>
+                Secure your team and continue with your project.
+            </p>
+        </header>
+
+
+        <!-- Project Information -->
+        <section class="payment-project-card">
+
+            <div class="project-cover">
+                <i class="fa fa-heart"></i>
+            </div>
+
+            <div class="payment-project-info">
+                <div class="project-title-row">
+                    <h2>Wedding Project</h2>
+
+                    <span class="confirmed-badge">
+                        <i class="fa fa-check-circle"></i>
+                        Team Confirmed
+                    </span>
+                </div>
+
+                <div class="payment-project-meta">
+                    <span>
+                        <i class="fa fa-map-marker"></i>
+                        Amman, Jordan
+                    </span>
+
+                    <span>
+                        <i class="fa fa-calendar"></i>
+                        25 October 2026
+                    </span>
+                </div>
+
+                <div class="project-team-preview">
+                    <div class="team-avatar avatar-one">A</div>
+                    <div class="team-avatar avatar-two">D</div>
+                    <div class="team-avatar avatar-three">M</div>
+
+                    <span>3 providers confirmed</span>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- Payment Method -->
+        <section class="payment-section">
+
+            <div class="section-title">
+                <div class="section-number">1</div>
+
+                <div>
+                    <h2>Payment Method</h2>
+                    <p>Enter your card details securely.</p>
+                </div>
+            </div>
+
+
+            <form id="payment-form" novalidate>
+
+                <div class="payment-columns">
+
+                    <!-- CARD FORM -->
+                    <div class="payment-card-form">
+
+                        <div class="card-brand-row">
+                            <div>
+                                <h3>Credit or Debit Card</h3>
+                                <p>Pay securely with your card.</p>
+                            </div>
+
+                            <span class="visa-logo">VISA</span>
+                        </div>
+
+
+                        <label for="card-number">Card Number</label>
+
+                        <div class="input-with-icon">
+                            <i class="fa fa-credit-card"></i>
+
+                            <input
+                                type="text"
+                                id="card-number"
+                                placeholder="1234 5678 9012 3456"
+                                inputmode="numeric"
+                                autocomplete="cc-number"
+                                maxlength="19"
+                                required>
+                        </div>
+
+                        <p class="field-error" id="card-number-error"></p>
+
+
+                        <div class="card-fields-row">
+
+                            <div class="form-field">
+                                <label for="card-expiry">Expiry Date</label>
+
+                                <input
+                                    type="text"
+                                    id="card-expiry"
+                                    placeholder="MM/YY"
+                                    inputmode="numeric"
+                                    autocomplete="cc-exp"
+                                    maxlength="5"
+                                    required>
+
+                                <p class="field-error" id="card-expiry-error"></p>
+                            </div>
+
+
+                            <div class="form-field">
+                                <label for="card-cvv">CVV</label>
+
+                                <input
+                                    type="password"
+                                    id="card-cvv"
+                                    placeholder="123"
+                                    inputmode="numeric"
+                                    autocomplete="cc-csc"
+                                    maxlength="4"
+                                    required>
+
+                                <p class="field-error" id="card-cvv-error"></p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="secure-note">
+                            <i class="fa fa-lock"></i>
+
+                            <span>
+                                Your payment details are not stored by this demo.
+                            </span>
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            id="pay-button"
+                            class="pay-button"
+                            disabled>
+
+                            <i class="fa fa-lock"></i>
+                            Pay <span id="button-total">375.00 JOD</span>
+
+                        </button>
+
+                        <p class="payment-result"
+                           id="payment-result"
+                           aria-live="polite"></p>
+
+                    </div>
+
+
+                    <!-- PAYMENT SUMMARY -->
+                    <aside class="payment-summary">
+
+                        <div class="summary-heading">
+                            <h3>Payment Summary</h3>
+
+                            <i class="fa fa-file-text-o"></i>
+                        </div>
+
+                        <p class="summary-description">
+                            Review your project costs before proceeding.
+                        </p>
+
+
+                        <div class="summary-row">
+                            <span>Project Budget</span>
+                            <strong id="project-budget">2,500.00 JOD</strong>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>Provider Deposit</span>
+                            <strong id="provider-deposit">300.00 JOD</strong>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>TEAMLY Service Fee (15%)</span>
+                            <strong id="service-fee">75.00 JOD</strong>
+                        </div>
+
+
+                        <div class="summary-divider"></div>
+
+
+                        <div class="summary-total">
+                            <div>
+                                <span>Total to Pay Now</span>
+                                <p>Includes the deposit and service fee.</p>
+                            </div>
+
+                            <strong id="total-to-pay">375.00 JOD</strong>
+                        </div>
+
+
+                        <div class="summary-security">
+                            <i class="fa fa-shield"></i>
+
+                            <div>
+                                <strong>Secure Checkout</strong>
+
+                                <p>
+                                    Your payment will be processed through
+                                    a secure payment provider when connected.
+                                </p>
+                            </div>
+                        </div>
+
+                    </aside>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- After Payment -->
+        <section class="after-payment-section">
+
+            <div class="section-title">
+                <div class="section-number">2</div>
+
+                <div>
+                    <h2>What Happens After Payment?</h2>
+                    <p>Here's what you can expect next.</p>
+                </div>
+            </div>
+
+
+            <div class="after-payment-grid">
+
+                <div class="after-payment-item">
+                    <div class="after-payment-icon">
+                        <i class="fa fa-comments"></i>
+                    </div>
+
+                    <h3>Your Team Group Opens</h3>
+
+                    <p>
+                        Your project group chat will be available
+                        once your payment is confirmed.
+                    </p>
+                </div>
+
+
+                <div class="after-payment-item">
+                    <div class="after-payment-icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+
+                    <h3>Connect With Providers</h3>
+
+                    <p>
+                        Communicate with your selected team
+                        and coordinate project details.
+                    </p>
+                </div>
+
+
+                <div class="after-payment-item">
+                    <div class="after-payment-icon">
+                        <i class="fa fa-calendar-check-o"></i>
+                    </div>
+
+                    <h3>Project Check-Ins</h3>
+
+                    <p>
+                        Share feedback and let us know
+                        how your project is going.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Project Check-In -->
+        <section class="checkin-section">
+
+            <div class="checkin-heading">
+                <div class="checkin-icon">
+                    <i class="fa fa-heart"></i>
+                </div>
+
+                <div>
+                    <h2>Project Check-In</h2>
+
+                    <p>
+                        We care about your experience.
+                        Let us know how things are going.
+                    </p>
+                </div>
+            </div>
+
+
+            <h3 class="checkin-question">
+                How is everything going so far?
+            </h3>
+
+
+            <div class="checkin-options">
+
+                <button
+                    type="button"
+                    class="checkin-option"
+                    data-checkin="well">
+
+                    <span class="checkin-emoji">😊</span>
+
+                    <strong>Everything is going well</strong>
+
+                    <span class="checkin-option-description">
+                        My project is progressing smoothly.
+                    </span>
+                </button>
+
+
+                <button
+                    type="button"
+                    class="checkin-option"
+                    data-checkin="concern">
+
+                    <span class="checkin-emoji">🤔</span>
+
+                    <strong>I have a concern</strong>
+
+                    <span class="checkin-option-description">
+                        Something needs my attention.
+                    </span>
+                </button>
+
+
+                <button
+                    type="button"
+                    class="checkin-option"
+                    data-checkin="help">
+
+                    <span class="checkin-emoji">🆘</span>
+
+                    <strong>I need help</strong>
+
+                    <span class="checkin-option-description">
+                        I'd like assistance with my project.
+                    </span>
+                </button>
+
+            </div>
+
+
+            <p class="checkin-feedback"
+               id="checkin-feedback"
+               aria-live="polite"></p>
+
+        </section>
+
+
+        <footer class="payments-footer">
+            <i class="fa fa-leaf"></i>
+            TEAMLY · Better projects, better experiences.
+        </footer>
+
+    </main>
+
+
+    <!-- RIGHT SELECTED ITEM -->
+    <aside class="selected-item-sidebar">
+
+        <div class="selected-item-card">
+
+            <div class="selected-item-heading">
+                <h2>Selected Items</h2>
+
+                <span class="selected-count">3</span>
+            </div>
+
+            <p class="selected-item-subtitle">
+                Your confirmed project team.
+            </p>
+
+
+            <div class="selected-project-image">
+                <i class="fa fa-heart"></i>
+
+                <span>Wedding Project</span>
+            </div>
+
+
+            <div class="selected-item">
+
+                <div class="selected-item-avatar avatar-one">
+                    A
+                </div>
+
+                <div class="selected-item-info">
+                    <strong>Ahmad</strong>
+                    <span>Photography</span>
+                    <small>Confirmed</small>
+                </div>
+
+                <i class="fa fa-check-circle selected-check"></i>
+
+            </div>
+
+
+            <div class="selected-item">
+
+                <div class="selected-item-avatar avatar-two">
+                    D
+                </div>
+
+                <div class="selected-item-info">
+                    <strong>Dana</strong>
+                    <span>Decoration</span>
+                    <small>Confirmed</small>
+                </div>
+
+                <i class="fa fa-check-circle selected-check"></i>
+
+            </div>
+
+
+            <div class="selected-item">
+
+                <div class="selected-item-avatar avatar-three">
+                    M
+                </div>
+
+                <div class="selected-item-info">
+                    <strong>Mohammad</strong>
+                    <span>Videography</span>
+                    <small>Confirmed</small>
+                </div>
+
+                <i class="fa fa-check-circle selected-check"></i>
+
+            </div>
+
+
+            <div class="selected-item-total">
+                <span>Amount Due Now</span>
+                <strong>375.00 JOD</strong>
+            </div>
+
+
+            <div class="selected-item-note">
+                <i class="fa fa-info-circle"></i>
+
+                <p>
+                    Review the details before completing your payment.
+                </p>
+            </div>
+
+
+            <a href="../chat_butween_Them/chat.html" class="return-chat-link">
+                <i class="fa fa-comments"></i>
+                Return to Team Chat
+            </a>
+
+        </div>
+
+    </aside>
+
+</div>
+
+
+<script src="payment.js"></script>
+
+</body>
+</html>

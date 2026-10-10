@@ -1,0 +1,241 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teamly Support</title><link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="Help.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body><div id="sidebar-container"></div>
+
+<main class="support-page">
+
+    <header class="support-header">
+        <div>
+            <span class="page-label">HELP CENTER</span>
+            <h1>Teamly Support</h1>
+            <p>We're here to help you with your project.</p>
+        </div>
+
+        <div class="support-icon">
+            <i class="fa fa-headphones"></i>
+        </div>
+    </header>
+
+    <section class="request-notice">
+        <div class="notice-icon">
+            <i class="fa fa-check-circle"></i>
+        </div>
+
+        <div>
+            <h3>Your support request has been received.</h3>
+            <p>A Teamly support specialist will review your request and connect with you.</p>
+            <span class="request-status">
+                <i class="fa fa-circle"></i> Support Open
+            </span>
+        </div>
+    </section>
+
+    <div class="support-layout">
+
+        <div class="support-main">
+
+            <section class="support-card">
+                <div class="section-heading">
+                    <div class="heading-icon">
+                        <i class="fa fa-commenting-o"></i>
+                    </div>
+
+                    <div>
+                        <h2>Tell us what happened</h2>
+                        <p>Describe the issue, and our support team will help you.</p>
+                    </div>
+                </div>
+
+                <form id="support-form">
+
+                    <div class="form-group">
+                        <label for="issue-type">Issue Type <span>*</span></label>
+
+                        <select id="issue-type" required>
+                            <option value="">Select an issue type</option>
+                            <option value="Payment Issue">Payment Issue</option>
+                            <option value="Provider Issue">Provider Issue</option>
+                            <option value="Project Issue">Project Issue</option>
+                            <option value="Communication Issue">Communication Issue</option>
+                            <option value="Booking or Scheduling">Booking or Scheduling</option>
+                            <option value="Technical Issue">Technical Issue</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group hidden" id="other-subject-group">
+                        <label for="other-subject">Subject <span>*</span></label>
+                        <input
+                            type="text"
+                            id="other-subject"
+                            placeholder="Tell us what your issue is about"
+                            maxlength="100"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="problem-description">
+                            Description of Your Problem <span>*</span>
+                        </label>
+
+                        <textarea
+                            id="problem-description"
+                            rows="6"
+                            placeholder="Please explain what happened and how we can help..."
+                            maxlength="2000"
+                            required
+                        ></textarea>
+
+                        <div class="character-count">
+                            <span id="description-count">0</span>/2000 characters
+                        </div>
+                    </div>
+
+                    <div class="form-note">
+                        <i class="fa fa-info-circle"></i>
+                        Please provide enough details to help us understand your issue.
+                    </div>
+
+                    <button type="submit" class="submit-request-btn">
+                        <i class="fa fa-paper-plane"></i>
+                        Submit Support Request
+                    </button>
+
+                    <p id="form-message" class="form-message" role="status"></p>
+
+                </form>
+            </section>
+
+            <section class="support-card assigned-team-card">
+
+                <div class="section-heading">
+                    <div class="heading-icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+
+                    <div>
+                        <h2>Your Teamly Support Team</h2>
+                        <p>Our team is ready to help you resolve your issue.</p>
+                    </div>
+                </div>
+
+                <div class="specialist-info">
+                    <div class="specialist-avatar">
+                        <i class="fa fa-headphones"></i>
+                    </div>
+
+                    <div class="specialist-details">
+                        <h3>Teamly Support Specialist</h3>
+                        <p>Your assigned support contact</p>
+                        <span class="specialist-status">
+                            <i class="fa fa-circle"></i>
+                            Support team available
+                        </span>
+                    </div>
+                </div>
+
+                <button type="button" id="support-chat-btn" class="support-chat-btn">
+                    <i class="fa fa-comments"></i>
+                    Start Support Chat
+                </button>
+
+                <p class="chat-note">
+                    Your support chat will be available when a support specialist connects with you.
+                </p>
+
+            </section>
+
+        </div>
+
+        <aside class="support-sidebar">
+
+            <section class="support-card project-support-card">
+                <div class="side-card-heading">
+                    <i class="fa fa-folder-open"></i>
+                    <h2>Your Support</h2>
+                </div>
+
+                <div class="project-image">
+                    <i class="fa fa-picture-o"></i>
+                </div>
+
+                <span class="side-label">PROJECT</span>
+                <h3 id="project-name">My Project</h3>
+
+                <div class="side-divider"></div>
+
+                <span class="side-label">SELECTED PROVIDER</span>
+
+                <div class="provider-info">
+                    <div class="provider-avatar">
+                        <i class="fa fa-user"></i>
+                    </div>
+
+                    <div>
+                        <h4 id="provider-name">Selected Provider</h4>
+                        <p id="provider-service">Service Provider</p>
+                    </div>
+                </div>
+
+                <div class="support-open-time">
+                    <i class="fa fa-clock-o"></i>
+                    <div>
+                        <strong>Support Open</strong>
+                        <p>Response within 24 hours</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="support-card next-steps-card">
+                <div class="side-card-heading">
+                    <i class="fa fa-list-alt"></i>
+                    <h2>What Happens Next?</h2>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="timeline-number">1</div>
+                    <div>
+                        <h4>We review your issue</h4>
+                        <p>Our team reviews the details you submit.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="timeline-number">2</div>
+                    <div>
+                        <h4>Support contacts you</h4>
+                        <p>A specialist will connect with you within 24 hours.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="timeline-number">3</div>
+                    <div>
+                        <h4>We help you resolve it</h4>
+                        <p>We'll work with you to find a solution.</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="privacy-note">
+                <i class="fa fa-shield"></i>
+                <p>Your information is handled carefully by the Teamly support team.</p>
+            </div>
+
+        </aside>
+
+    </div>
+
+</main>
+
+<script src="Help.js"></script>
+
+</body>
+</html>

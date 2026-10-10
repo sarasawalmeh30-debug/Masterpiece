@@ -1,14 +1,19 @@
 
-<aside class="sidebar" id="sidebar">
+<button class="sidebar-open" id="sidebarOpen" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar">
+    <i class="fa fa-bars" aria-hidden="true"></i>
+</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
+<aside class="sidebar" id="sidebar">
     <div class="sidebar-top">
-        <a href="index.html" class="sidebar-logo">
-            <img src="../img/logo3.png" width="190px">
+        <a href="../home_page/home.html" class="sidebar-logo" aria-label="TEAMLY home">
+            <img src="../img/logo3.png" alt="TEAMLY" width="190">
+            <span class="sidebar-brand-caption">YOUR PROJECT. YOUR TEAM.</span>
         </a>
 
         <button class="sidebar-close" id="sidebarClose"
-                type="button" aria-label="Close sidebar">
-            &times;
+                type="button" aria-label="Close navigation">
+            <i class="fa fa-times" aria-hidden="true"></i>
         </button>
     </div>
 
@@ -23,39 +28,39 @@
 
     <nav class="sidebar-nav">
 
-        <p class="sidebar-heading">MAIN MENU</p>
-
-
-        <a href="projects.html" class="sidebar-link">
-            <i class="bi bi-kanban"></i>
+        <p class="sidebar-heading">WORKSPACE</p>
+        <a href="../Tracking/tracking.html" class="sidebar-link">
+            <i class="fa fa-th-large" aria-hidden="true"></i>
             <span>My Projects</span>
         </a>
 
-        <a href="find-team.html" class="sidebar-link">
-            <i class="bi bi-people"></i>
-            <span>my Team</span>
+        <a href="../select_provider/select_provider.html" class="sidebar-link">
+            <i class="fa fa-users" aria-hidden="true"></i>
+            <span>My Team</span>
         </a>
 
-        <a href="messages.html" class="sidebar-link">
-            <i class="bi bi-chat-dots"></i>
+        <a href="../chat_butween_Them/chat.html" class="sidebar-link">
+            <i class="fa fa-comments" aria-hidden="true"></i>
             <span>Messages</span>
         </a>
-
-        
-
-       
     </nav>
-     <p class="sidebar-heading-1">ACCOUNT</p>
 
-        <a href="settings.html" class="sidebar-link">
-            <i class="bi bi-gear"></i>
-            <span>Settings</span>
+    <div class="sidebar-bottom">
+        <a href="../needHelp/Help.html" class="sidebar-link sidebar-help-link">
+            <i class="fa fa-question-circle" aria-hidden="true"></i>
+            <span>Help Center</span>
         </a>
 
-    <a href="login.html" class="sidebar-logout">
-        <i class="bi bi-box-arrow-right"></i>
-        <span>Logout</span>
-    </a>
+        <p class="sidebar-heading sidebar-account-heading">ACCOUNT</p>
+        <span class="sidebar-link sidebar-unavailable" aria-disabled="true" title="Settings page is not available yet">
+            <i class="fa fa-cog" aria-hidden="true"></i>
+            <span>Settings</span>
+        </span>
 
+        <a href="../login/login.html" class="sidebar-logout">
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+            <span>Logout</span>
+        </a>
+    </div>
 </aside>
 

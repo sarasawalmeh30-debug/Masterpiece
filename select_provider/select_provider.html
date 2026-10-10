@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Find Your Team | TEAMLY</title>
+
+    <!-- Shared styles -->
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- Font Awesome 4.7 -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Page styles -->
+    <link rel="stylesheet" href="select_provider.css">
+    <link rel="stylesheet" href="../sidebar_client/sidbar.css">
+</head>
+
+<body>
+
+    <div class="provider-layout">
+
+        <!-- Existing Sidebar -->
+        <div id="sidebar-container"></div>
+
+        <main class="provider-main">
+
+            <!-- Page Header -->
+            <header class="page-header">
+                <div>
+                    <span class="eyebrow">TEAMLY MARKETPLACE</span>
+                    <h1>Find Your Team</h1>
+                    <p>Choose the best providers for your project.</p>
+                </div>
+
+                <button class="refresh-btn" id="refresh-btn" type="button">
+                    <i class="fa fa-refresh"></i>
+                    Refresh
+                </button>
+            </header>
+
+            <!-- Project Information -->
+            <section class="project-summary">
+
+                <div class="project-summary-main">
+                    <div class="project-icon">
+                        <i class="fa fa-folder-open"></i>
+                    </div>
+
+                    <div>
+                        <span class="small-label">YOUR PROJECT</span>
+                        <h2 id="project-name">Wedding Photography Project</h2>
+
+                        <div class="project-meta">
+                            <span>
+                                <i class="fa fa-map-marker"></i>
+                                <span id="project-location">Amman, Jordan</span>
+                            </span>
+
+                            <span>
+                                <i class="fa fa-money"></i>
+                                Budget:
+                                <strong id="project-budget">2,000 JOD</strong>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="required-services">
+                    <span class="required-number" id="required-count">2</span>
+
+                    <div>
+                        <strong>Services Required</strong>
+                        <p>Based on your project</p>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Main Content -->
+            <div class="provider-content">
+
+                <section class="provider-list-section">
+
+                    <div class="section-heading">
+                        <div>
+                            <h2>Choose Your Providers</h2>
+                            <p>Explore professionals who match your project.</p>
+                        </div>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="search-box">
+                        <i class="fa fa-search"></i>
+
+                        <input
+                            type="search"
+                            id="provider-search"
+                            placeholder="Search by name, service, or location..."
+                            aria-label="Search providers">
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="filters-panel">
+
+                        <div class="filter-heading">
+                            <h3>
+                                <i class="fa fa-sliders"></i>
+                                Filters
+                            </h3>
+
+                            <button id="clear-filters" type="button">
+                                Clear all
+                            </button>
+                        </div>
+
+                        <div class="filters-grid">
+
+                            <div class="filter-field">
+                                <label for="service-filter">Service</label>
+
+                                <select id="service-filter">
+                                    <option value="all">All services</option>
+                                    <option value="Photography">Photography</option>
+                                    <option value="Videography">Videography</option>
+                                    <option value="Decoration">Decoration</option>
+                                    <option value="Catering">Catering</option>
+                                </select>
+                            </div>
+
+                            <div class="filter-field">
+                                <label for="rating-filter">Minimum Rating</label>
+
+                                <select id="rating-filter">
+                                    <option value="0">Any rating</option>
+                                    <option value="3">3.0+ stars</option>
+                                    <option value="4">4.0+ stars</option>
+                                    <option value="4.5">4.5+ stars</option>
+                                </select>
+                            </div>
+
+                            <div class="filter-field">
+                                <label for="price-filter">Maximum Price</label>
+
+                                <select id="price-filter">
+                                    <option value="all">Any price</option>
+                                    <option value="500">Up to 500 JOD</option>
+                                    <option value="850">Up to 850 JOD</option>
+                                    <option value="1000">Up to 1,000 JOD</option>
+                                    <option value="1500">Up to 1,500 JOD</option>
+                                </select>
+                            </div>
+
+                            <div class="filter-field">
+                                <label for="location-filter">Location</label>
+
+                                <select id="location-filter">
+                                    <option value="all">All locations</option>
+                                    <option value="Amman">Amman</option>
+                                    <option value="Irbid">Irbid</option>
+                                    <option value="Zarqa">Zarqa</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="sort-row">
+                            <span id="results-count">0 providers found</span>
+
+                            <div class="sort-control">
+                                <label for="sort-filter">Sort by</label>
+
+                                <select id="sort-filter">
+                                    <option value="recommended">Recommended</option>
+                                    <option value="rating">Highest rating</option>
+                                    <option value="price-low">Price: low to high</option>
+                                    <option value="price-high">Price: high to low</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Provider Cards -->
+                    <div class="providers-grid" id="providers-grid"></div>
+
+                    <div class="empty-state" id="empty-state" hidden>
+                        <i class="fa fa-search"></i>
+                        <h3>No providers found</h3>
+                        <p>Try changing your search or filters.</p>
+
+                        <button type="button" id="empty-clear-btn">
+                            Clear filters
+                        </button>
+                    </div>
+
+                </section>
+
+                <!-- Right Side: Your Team -->
+                <aside class="team-sidebar">
+
+                    <div class="team-card">
+
+                        <div class="team-card-heading">
+                            <div>
+                                <h2>Your Team</h2>
+                                <p>Your selected professionals</p>
+                            </div>
+
+                            <i class="fa fa-users team-heading-icon"></i>
+                        </div>
+
+                        <div class="team-progress-info">
+                            <strong id="team-progress-text">
+                                0 of 2 services selected
+                            </strong>
+
+                            <span id="team-progress-percent">0%</span>
+                        </div>
+
+                        <div
+                            class="progress-track"
+                            role="progressbar"
+                            aria-label="Selected services progress"
+                            aria-valuemin="0"
+                            aria-valuemax="2"
+                            aria-valuenow="0"
+                            id="team-progress-bar">
+
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+
+                        <div class="team-services" id="team-services"></div>
+
+                        <div class="team-total">
+                            <span>Selected providers total</span>
+                            <strong id="team-total-price">0 JOD</strong>
+                        </div>
+
+                        <button
+                            type="button"
+                            class="send-request-btn"
+                            id="send-request-btn">
+
+                            <i class="fa fa-paper-plane"></i>
+                            Send Request
+                        </button>
+
+                        <p class="request-note" id="request-note">
+                            Select a provider for each required service.
+                        </p>
+
+                    </div>
+
+                    <!-- Project Details -->
+                    <div class="details-card">
+
+                        <h3>
+                            <i class="fa fa-file-text-o"></i>
+                            Project Details
+                        </h3>
+
+                        <div class="detail-row">
+                            <span>Project</span>
+                            <strong id="details-project-name">
+                                Wedding Photography Project
+                            </strong>
+                        </div>
+
+                        <div class="detail-row">
+                            <span>Location</span>
+                            <strong id="details-location">Amman, Jordan</strong>
+                        </div>
+
+                        <div class="detail-row">
+                            <span>Budget</span>
+                            <strong id="details-budget">2,000 JOD</strong>
+                        </div>
+
+                        <div class="detail-row">
+                            <span>Required services</span>
+                            <strong id="details-required">2</strong>
+                        </div>
+
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Account Required Modal -->
+    <div
+        class="modal-overlay"
+        id="account-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="account-modal-title"
+        hidden>
+
+        <div class="account-modal">
+
+            <button
+                type="button"
+                class="modal-close"
+                id="close-account-modal"
+                aria-label="Close dialog">
+
+                <i class="fa fa-times"></i>
+            </button>
+
+            <div class="lock-icon">
+                <i class="fa fa-lock"></i>
+            </div>
+
+            <h2 id="account-modal-title">Create your free account</h2>
+
+            <p>
+                Create a free account to send your request and connect
+                with your team.
+            </p>
+
+            <button
+                type="button"
+                class="continue-btn"
+                id="continue-btn">
+
+                Continue
+                <i class="fa fa-arrow-right"></i>
+            </button>
+
+            <div class="login-prompt">
+                Already have an account?
+                <button type="button" id="login-btn">Login</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- General message dialog -->
+    <div
+        class="modal-overlay"
+        id="message-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="message-title"
+        hidden>
+
+        <div class="account-modal message-modal">
+
+            <button
+                type="button"
+                class="modal-close"
+                id="close-message-modal"
+                aria-label="Close dialog">
+
+                <i class="fa fa-times"></i>
+            </button>
+
+            <div class="lock-icon message-icon">
+                <i class="fa fa-info"></i>
+            </div>
+
+            <h2 id="message-title">Notice</h2>
+            <p id="message-text"></p>
+
+            <button type="button" class="continue-btn" id="message-ok-btn">
+                OK
+            </button>
+
+        </div>
+    </div>
+
+    <script src="select_provider.js"></script>
+    <script src="../sidebar_client/sidbar.js"></script>
+
+</body>
+</html>

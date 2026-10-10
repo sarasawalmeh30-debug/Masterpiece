@@ -1,0 +1,969 @@
+/* ==================================
+   TEAMLY - FIND YOUR TEAM
+================================== */
+
+/*
+  DEMO SETTINGS
+
+  false = user is not logged in
+  true  = user is logged in
+
+  This is only for testing the interface.
+  Real authentication must be connected later.
+*/
+
+const IS_LOGGED_IN = false;
+
+
+/* ==================================
+   PROJECT DATA
+================================== */
+
+const project = {
+    name: "Wedding Photography Project",
+    location: "Amman, Jordan",
+    budget: 2000,
+
+    /*
+      The AI determines the required services.
+      Change this array to test different numbers of services.
+    */
+
+    requiredServices: [
+        "Photography",
+        "Decoration"
+    ]
+};
+
+
+/* ==================================
+   PROVIDER DATA
+================================== */
+
+const providers = [
+    {
+        id: 1,
+        firstName: "Ahmad",
+        lastName: "Khaled",
+        service: "Photography",
+        rating: 4.9,
+        location: "Amman",
+        price: 850,
+        recommended: 1
+    },
+    {
+        id: 2,
+        firstName: "Sara",
+        lastName: "Omar",
+        service: "Photography",
+        rating: 4.8,
+        location: "Irbid",
+        price: 700,
+        recommended: 2
+    },
+    {
+        id: 3,
+        firstName: "Lina",
+        lastName: "Hassan",
+        service: "Photography",
+        rating: 4.6,
+        location: "Amman",
+        price: 950,
+        recommended: 3
+    },
+    {
+        id: 4,
+        firstName: "Omar",
+        lastName: "Naser",
+        service: "Videography",
+        rating: 4.9,
+        location: "Amman",
+        price: 650,
+        recommended: 1
+    },
+    {
+        id: 5,
+        firstName: "Maya",
+        lastName: "Adel",
+        service: "Videography",
+        rating: 4.7,
+        location: "Zarqa",
+        price: 550,
+        recommended: 2
+    },
+    {
+        id: 6,
+        firstName: "Yazan",
+        lastName: "Saleh",
+        service: "Decoration",
+        rating: 4.9,
+        location: "Amman",
+        price: 600,
+        recommended: 1
+    },
+    {
+        id: 7,
+        firstName: "Noor",
+        lastName: "Ahmad",
+        service: "Decoration",
+        rating: 4.7,
+        location: "Irbid",
+        price: 750,
+        recommended: 2
+    },
+    {
+        id: 8,
+        firstName: "Khaled",
+        lastName: "Sami",
+        service: "Catering",
+        rating: 4.8,
+        location: "Amman",
+        price: 500,
+        recommended: 1
+    }
+];
+
+
+/* ==================================
+   STATE
+================================== */
+
+/*
+  One provider can be selected for each required service.
+*/
+
+const selectedProviders = new Map();
+
+let searchQuery = "";
+
+
+/* ==================================
+   DOM ELEMENTS
+================================== */
+
+const providersGrid = document.getElementById("providers-grid");
+const searchInput = document.getElementById("provider-search");
+
+const serviceFilter = document.getElementById("service-filter");
+const ratingFilter = document.getElementById("rating-filter");
+const priceFilter = document.getElementById("price-filter");
+const locationFilter = document.getElementById("location-filter");
+const sortFilter = document.getElementById("sort-filter");
+
+const resultsCount = document.getElementById("results-count");
+const emptyState = document.getElementById("empty-state");
+
+const teamServices = document.getElementById("team-services");
+const teamProgressText = document.getElementById("team-progress-text");
+const teamProgressPercent = document.getElementById("team-progress-percent");
+const teamProgressBar = document.getElementById("team-progress-bar");
+const progressFill = document.getElementById("progress-fill");
+
+const teamTotalPrice = document.getElementById("team-total-price");
+const sendRequestButton = document.getElementById("send-request-btn");
+const requestNote = document.getElementById("request-note");
+
+const accountModal = document.getElementById("account-modal");
+const messageModal = document.getElementById("message-modal");
+
+
+/* ==================================
+   HELPERS
+================================== */
+
+function formatPrice(price) {
+    return `${price.toLocaleString("en-US")} JOD`;
+}
+
+
+function getProviderName(provider) {
+    return `${provider.firstName} ${provider.lastName}`;
+}
+
+
+function getInitials(provider) {
+    return (
+        provider.firstName.charAt(0) +
+        provider.lastName.charAt(0)
+    ).toUpperCase();
+}
+
+
+function getProviderById(id) {
+    return providers.find(provider => provider.id === id);
+}
+
+
+function isRequiredService(service) {
+    return project.requiredServices.includes(service);
+}
+
+
+function isProviderSelected(providerId) {
+    return [...selectedProviders.values()].includes(providerId);
+}
+
+
+/* ==================================
+   PROJECT INFORMATION
+================================== */
+
+function renderProjectInformation() {
+    const name = project.name;
+    const location = project.location;
+    const budget = formatPrice(project.budget);
+    const requiredCount = project.requiredServices.length;
+
+    document.getElementById("project-name").textContent = name;
+    document.getElementById("project-location").textContent = location;
+    document.getElementById("project-budget").textContent = budget;
+    document.getElementById("required-count").textContent = requiredCount;
+
+    document.getElementById("details-project-name").textContent = name;
+    document.getElementById("details-location").textContent = location;
+    document.getElementById("details-budget").textContent = budget;
+    document.getElementById("details-required").textContent = requiredCount;
+
+    teamProgressBar.setAttribute("aria-valuemax", requiredCount);
+}
+
+
+/* ==================================
+   RENDER PROVIDER CARDS
+================================== */
+
+function renderProviders(list) {
+    providersGrid.innerHTML = "";
+
+    resultsCount.textContent =
+        `${list.length} provider${list.length === 1 ? "" : "s"} found`;
+
+    emptyState.hidden = list.length !== 0;
+
+    list.forEach(provider => {
+        const selected = isProviderSelected(provider.id);
+
+        const card = document.createElement("article");
+
+        card.className =
+            `provider-card ${selected ? "selected" : ""}`;
+
+        card.innerHTML = `
+            <div class="provider-card-top">
+
+                <div class="provider-avatar">
+                    ${getInitials(provider)}
+                </div>
+
+                <div class="provider-heading">
+                    <h3>${getProviderName(provider)}</h3>
+
+                    <div class="provider-service">
+                        ${provider.service}
+                    </div>
+
+                    <div class="provider-rating">
+                        <i class="fa fa-star"></i>
+                        <strong>${provider.rating.toFixed(1)}</strong>
+                        <span>Rating</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="provider-location">
+                <i class="fa fa-map-marker"></i>
+                <span>${provider.location}, Jordan</span>
+            </div>
+
+            <div class="provider-price">
+                <span>Starting from</span>
+
+                <strong>${formatPrice(provider.price)}</strong>
+            </div>
+
+            <div class="provider-actions">
+
+                <button
+                    type="button"
+                    class="view-profile-btn ${IS_LOGGED_IN ? "" : "login-required"}"
+                    data-action="view-profile"
+                    data-provider-id="${provider.id}"
+                    aria-label="View profile of ${getProviderName(provider)}">
+
+                    <i class="fa fa-user"></i>
+                    View Profile
+                </button>
+
+                <button
+                    type="button"
+                    class="select-provider-btn ${selected ? "is-selected" : ""}"
+                    data-action="select-provider"
+                    data-provider-id="${provider.id}">
+
+                    <i class="fa ${selected ? "fa-check" : "fa-plus"}"></i>
+
+                    ${selected ? "Selected" : "Select"}
+                </button>
+
+            </div>
+        `;
+
+        providersGrid.appendChild(card);
+    });
+}
+
+
+/* ==================================
+   SEARCH AND FILTER
+================================== */
+
+function getFilteredProviders() {
+    let result = [...providers];
+
+    const service = serviceFilter.value;
+    const minRating = Number(ratingFilter.value);
+
+    const maxPrice =
+        priceFilter.value === "all"
+            ? Infinity
+            : Number(priceFilter.value);
+
+    const location = locationFilter.value;
+
+    const query = searchQuery.trim().toLowerCase();
+
+
+    // Search by name, service, or location
+
+    if (query) {
+        result = result.filter(provider => {
+            const searchableText = [
+                getProviderName(provider),
+                provider.service,
+                provider.location
+            ].join(" ").toLowerCase();
+
+            return searchableText.includes(query);
+        });
+    }
+
+
+    // Filter by service
+
+    if (service !== "all") {
+        result = result.filter(provider =>
+            provider.service === service
+        );
+    }
+
+
+    // Filter by minimum rating
+
+    result = result.filter(provider =>
+        provider.rating >= minRating
+    );
+
+
+    // Filter by maximum price
+
+    result = result.filter(provider =>
+        provider.price <= maxPrice
+    );
+
+
+    // Filter by location
+
+    if (location !== "all") {
+        result = result.filter(provider =>
+            provider.location === location
+        );
+    }
+
+
+    // Sorting
+
+    switch (sortFilter.value) {
+        case "rating":
+            result.sort((a, b) => b.rating - a.rating);
+            break;
+
+        case "price-low":
+            result.sort((a, b) => a.price - b.price);
+            break;
+
+        case "price-high":
+            result.sort((a, b) => b.price - a.price);
+            break;
+
+        case "recommended":
+        default:
+            result.sort((a, b) =>
+                a.recommended - b.recommended
+            );
+            break;
+    }
+
+    return result;
+}
+
+
+function applyFilters() {
+    const filteredProviders = getFilteredProviders();
+
+    renderProviders(filteredProviders);
+}
+
+
+function clearFilters() {
+    searchInput.value = "";
+    searchQuery = "";
+
+    serviceFilter.value = "all";
+    ratingFilter.value = "0";
+    priceFilter.value = "all";
+    locationFilter.value = "all";
+    sortFilter.value = "recommended";
+
+    applyFilters();
+}
+
+
+/* ==================================
+   SELECT PROVIDER
+================================== */
+
+function selectProvider(providerId) {
+    const provider = getProviderById(providerId);
+
+    if (!provider) {
+        return;
+    }
+
+    if (!isRequiredService(provider.service)) {
+        showMessage(
+            "Service not required",
+            `Your current project does not require ${provider.service}.`
+        );
+
+        return;
+    }
+
+
+    // Clicking a selected provider again removes the selection.
+
+    if (selectedProviders.get(provider.service) === providerId) {
+        selectedProviders.delete(provider.service);
+
+        updateTeam();
+        applyFilters();
+
+        return;
+    }
+
+
+    /*
+      If another provider is already selected for this service,
+      replace the old provider with the new one.
+    */
+
+    selectedProviders.set(provider.service, providerId);
+
+    updateTeam();
+    applyFilters();
+}
+
+
+/* ==================================
+   RENDER YOUR TEAM
+================================== */
+
+function updateTeam() {
+    const requiredServices = project.requiredServices;
+
+    const totalRequired = requiredServices.length;
+    const selectedCount = selectedProviders.size;
+
+    const percent = totalRequired === 0
+        ? 0
+        : Math.round((selectedCount / totalRequired) * 100);
+
+
+    teamProgressText.textContent =
+        `${selectedCount} of ${totalRequired} services selected`;
+
+    teamProgressPercent.textContent = `${percent}%`;
+    progressFill.style.width = `${percent}%`;
+
+    teamProgressBar.setAttribute(
+        "aria-valuenow",
+        selectedCount
+    );
+
+
+    teamServices.innerHTML = "";
+
+    let totalPrice = 0;
+
+
+    requiredServices.forEach(service => {
+        const providerId = selectedProviders.get(service);
+
+        const provider = providerId
+            ? getProviderById(providerId)
+            : null;
+
+        const item = document.createElement("div");
+
+        item.className = "team-service-item";
+
+
+        if (provider) {
+            totalPrice += provider.price;
+
+            item.innerHTML = `
+                <div class="team-service-top">
+
+                    <strong>${service}</strong>
+
+                    <span class="service-check completed">
+                        <i class="fa fa-check"></i>
+                    </span>
+
+                </div>
+
+                <div class="selected-provider-info">
+
+                    <div class="selected-provider-avatar">
+                        ${getInitials(provider)}
+                    </div>
+
+                    <div class="selected-provider-text">
+
+                        <strong>${getProviderName(provider)}</strong>
+
+                        <span>${provider.location}, Jordan</span>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="remove-provider-btn"
+                        data-action="remove-provider"
+                        data-service="${service}"
+                        aria-label="Remove ${getProviderName(provider)}">
+
+                        <i class="fa fa-times"></i>
+
+                    </button>
+
+                </div>
+
+                <div class="selected-price">
+                    ${formatPrice(provider.price)}
+                </div>
+            `;
+
+        } else {
+            item.innerHTML = `
+                <div class="team-service-top">
+
+                    <strong>${service}</strong>
+
+                    <span class="service-check">
+                        <i class="fa fa-clock-o"></i>
+                    </span>
+
+                </div>
+
+                <div class="team-service-empty">
+                    No provider selected.
+                </div>
+
+                <button
+                    type="button"
+                    class="choose-provider-link"
+                    data-action="choose-service"
+                    data-service="${service}">
+
+                    <i class="fa fa-plus"></i>
+                    Choose a provider
+                </button>
+            `;
+        }
+
+        teamServices.appendChild(item);
+    });
+
+
+    teamTotalPrice.textContent = formatPrice(totalPrice);
+
+
+    // Update request button state
+
+    const allServicesSelected =
+        totalRequired > 0 && selectedCount === totalRequired;
+
+    sendRequestButton.disabled = !allServicesSelected;
+
+    sendRequestButton.style.opacity =
+        allServicesSelected ? "1" : "0.55";
+
+    sendRequestButton.style.cursor =
+        allServicesSelected ? "pointer" : "not-allowed";
+
+
+    if (!allServicesSelected) {
+        requestNote.textContent =
+            `Select a provider for all ${totalRequired} required services before sending your request.`;
+    } else if (!IS_LOGGED_IN) {
+        requestNote.textContent =
+            "Create a free account to send your request.";
+    } else {
+        requestNote.textContent =
+            "Your team is ready to receive your request.";
+    }
+}
+
+
+/* ==================================
+   VIEW PROFILE
+================================== */
+
+function viewProviderProfile(providerId) {
+    const provider = getProviderById(providerId);
+
+    if (!provider) {
+        return;
+    }
+    const params = new URLSearchParams({
+        name: getProviderName(provider),
+        service: provider.service,
+        rating: String(provider.rating),
+        location: `${provider.location}, Jordan`,
+        price: `${provider.price} JOD`
+    });
+    window.location.href = `../Show_Profie_from_client/Profile.html?${params}`;
+}
+
+
+/* ==================================
+   SEND REQUEST
+================================== */
+
+function sendRequest() {
+    const totalRequired = project.requiredServices.length;
+
+    if (selectedProviders.size !== totalRequired) {
+        showMessage(
+            "Complete your team",
+            "Please select one provider for every required service."
+        );
+
+        return;
+    }
+
+
+    // Require an account before sending a request.
+
+    if (!IS_LOGGED_IN) {
+        openAccountModal();
+        return;
+    }
+
+
+    /*
+      Backend integration will be added later.
+      This is only a successful demo message.
+    */
+
+    showMessage(
+        "Request Ready",
+        "Your selected team is ready. The request can now be connected to your backend."
+    );
+}
+
+
+/* ==================================
+   ACCOUNT MODAL
+================================== */
+
+function openAccountModal() {
+    accountModal.hidden = false;
+
+    document.body.style.overflow = "hidden";
+
+    document.getElementById("close-account-modal").focus();
+}
+
+
+function closeAccountModal() {
+    accountModal.hidden = true;
+
+    document.body.style.overflow = "";
+}
+
+
+function openContinuePage() {
+    /*
+      Replace this with your actual registration page path.
+    */
+
+    window.location.href = "../choose_account/choose_account.html";
+}
+
+
+function openLoginPage() {
+    /*
+      Replace this with your actual login page path.
+    */
+
+    window.location.href = "../login/login.html";
+}
+
+
+/* ==================================
+   GENERAL MESSAGE MODAL
+================================== */
+
+function showMessage(title, message) {
+    document.getElementById("message-title").textContent = title;
+
+    document.getElementById("message-text").textContent = message;
+
+    messageModal.hidden = false;
+
+    document.body.style.overflow = "hidden";
+
+    document.getElementById("message-ok-btn").focus();
+}
+
+
+function closeMessageModal() {
+    messageModal.hidden = true;
+
+    document.body.style.overflow = "";
+}
+
+
+/* ==================================
+   SIDEBAR
+================================== */
+
+async function loadSidebar() {
+    const container = document.getElementById("sidebar-container");
+
+    if (!container) {
+        return;
+    }
+
+    try {
+        const response = await fetch("../sidebar_client/sidbar.html");
+
+        if (!response.ok) {
+            throw new Error(
+                `Unable to load sidebar.html: ${response.status}`
+            );
+        }
+
+        container.innerHTML = await response.text();
+
+
+        // Load sidebar CSS
+
+        if (!document.getElementById("sidebar-styles")) {
+            const css = document.createElement("link");
+
+            css.id = "sidebar-styles";
+            css.rel = "stylesheet";
+            css.href = "../sidebar_client/sidbar.css";
+
+            document.head.appendChild(css);
+        }
+
+
+        // Load sidebar JavaScript
+
+        if (!document.getElementById("sidebar-script")) {
+            const script = document.createElement("script");
+
+            script.id = "sidebar-script";
+            script.src = "../sidebar_client/sidbar.js";
+
+            script.onerror = () => {
+                console.error("Unable to load sidebar.js");
+            };
+
+            document.body.appendChild(script);
+        }
+
+    } catch (error) {
+        console.error("Sidebar loading failed:", error);
+    }
+}
+
+
+/* ==================================
+   EVENT LISTENERS
+================================== */
+
+// Search
+
+searchInput.addEventListener("input", () => {
+    searchQuery = searchInput.value;
+    applyFilters();
+});
+
+
+// Filters
+
+serviceFilter.addEventListener("change", applyFilters);
+ratingFilter.addEventListener("change", applyFilters);
+priceFilter.addEventListener("change", applyFilters);
+locationFilter.addEventListener("change", applyFilters);
+sortFilter.addEventListener("change", applyFilters);
+
+
+// Clear filters
+
+document.getElementById("clear-filters")
+    .addEventListener("click", clearFilters);
+
+document.getElementById("empty-clear-btn")
+    .addEventListener("click", clearFilters);
+
+
+// Provider card buttons
+
+providersGrid.addEventListener("click", event => {
+    const button = event.target.closest("button[data-action]");
+
+    if (!button) {
+        return;
+    }
+
+    const action = button.dataset.action;
+    const providerId = Number(button.dataset.providerId);
+
+
+    if (action === "select-provider") {
+        selectProvider(providerId);
+    }
+
+
+    if (action === "view-profile") {
+        viewProviderProfile(providerId);
+    }
+});
+
+
+// Your Team buttons
+
+teamServices.addEventListener("click", event => {
+    const button = event.target.closest("button[data-action]");
+
+    if (!button) {
+        return;
+    }
+
+    const action = button.dataset.action;
+    const service = button.dataset.service;
+
+
+    if (action === "remove-provider") {
+        selectedProviders.delete(service);
+
+        updateTeam();
+        applyFilters();
+    }
+
+
+    if (action === "choose-service") {
+        serviceFilter.value = service;
+
+        searchQuery = "";
+        searchInput.value = "";
+
+        applyFilters();
+
+        document.querySelector(".provider-list-section")
+            .scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+    }
+});
+
+
+// Send request
+
+sendRequestButton.addEventListener("click", sendRequest);
+
+
+// Account modal
+
+document.getElementById("close-account-modal")
+    .addEventListener("click", closeAccountModal);
+
+document.getElementById("continue-btn")
+    .addEventListener("click", openContinuePage);
+
+document.getElementById("login-btn")
+    .addEventListener("click", openLoginPage);
+
+
+// Message modal
+
+document.getElementById("close-message-modal")
+    .addEventListener("click", closeMessageModal);
+
+document.getElementById("message-ok-btn")
+    .addEventListener("click", closeMessageModal);
+
+
+// Clicking the dark background closes the dialogs.
+
+[accountModal, messageModal].forEach(modal => {
+    modal.addEventListener("click", event => {
+        if (event.target === modal) {
+            modal.hidden = true;
+            document.body.style.overflow = "";
+        }
+    });
+});
+
+
+// Escape closes open dialogs.
+
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+        closeAccountModal();
+        closeMessageModal();
+    }
+});
+
+
+// Refresh
+
+document.getElementById("refresh-btn")
+    .addEventListener("click", () => {
+        applyFilters();
+        updateTeam();
+    });
+
+
+/* ==================================
+   INITIALIZE PAGE
+================================== */
+
+function initializeProviderPage() {
+    renderProjectInformation();
+
+    applyFilters();
+
+    updateTeam();
+
+    loadSidebar();
+}
+
+initializeProviderPage();

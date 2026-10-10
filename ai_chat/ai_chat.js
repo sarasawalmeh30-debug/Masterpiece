@@ -34,6 +34,9 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(function (html) {
             sidebarContainer.innerHTML = html;
+            const script = document.createElement("script");
+            script.src = "../sidebar_client/sidbar.js";
+            document.body.appendChild(script);
         })
         .catch(function (error) {
             console.warn("Could not load the sidebar:", error);
@@ -349,7 +352,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // Replace this with the actual team-search page.
-        window.location.href = "search-team.html";
+        window.location.href = "../select_provider/select_provider.html";
     });
 
 });

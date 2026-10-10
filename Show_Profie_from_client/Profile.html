@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Provider Profile | TEAMLY</title>
+
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="Profile.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+    <main class="profile-page">
+
+        <!-- Header -->
+        <header class="profile-header">
+            <a href="../select_provider/select_provider.html" class="back-link">
+                <i class="fa fa-arrow-left"></i>
+                Back to Providers
+            </a>
+
+            <div class="header-title">
+                <h1>Provider Profile</h1>
+                <p>View portfolio and availability</p>
+            </div>
+        </header>
+
+
+        <!-- Provider Information -->
+        <section class="provider-intro">
+
+            <div class="provider-avatar" id="provider-avatar">
+                S
+            </div>
+
+            <div class="provider-intro-info">
+                <h2 id="provider-name">Sarah Photography</h2>
+
+                <p id="provider-service" class="provider-service">
+                    Photography
+                </p>
+
+                <div class="provider-meta">
+                    <span>
+                        <i class="fa fa-star"></i>
+                        <span id="provider-rating">4.8</span>
+                    </span>
+
+                    <span>
+                        <i class="fa fa-map-marker"></i>
+                        <span id="provider-location">Amman, Jordan</span>
+                    </span>
+                </div>
+
+                <p class="provider-description" id="provider-description">
+                    Capturing beautiful moments and creating
+                    memorable photography experiences.
+                </p>
+
+                <p class="starting-price">
+                    Starting from
+                    <strong id="provider-price">100 JOD</strong>
+                </p>
+            </div>
+
+        </section>
+
+
+        <!-- Portfolio -->
+        <section class="profile-section">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Portfolio</h2>
+                    <p>Explore previous work and creative projects.</p>
+                </div>
+
+                <span class="portfolio-count" id="portfolio-count">
+                    6 Photos
+                </span>
+            </div>
+
+            <div class="portfolio-grid" id="portfolio-grid">
+
+                <button class="portfolio-item" data-image="../img/photo1.jpeg"
+                        aria-label="View portfolio image 1">
+                    <img src="../img/photo1.jpeg" alt="Previous work 1">
+                    <span><i class="fa fa-search-plus"></i></span>
+                </button>
+
+                <button class="portfolio-item" data-image="../img/photo2.jpeg"
+                        aria-label="View portfolio image 2">
+                    <img src="../img/photo2.jpeg" alt="Previous work 2">
+                    <span><i class="fa fa-search-plus"></i></span>
+                </button>
+
+                <button class="portfolio-item" data-image="../img/photo3.jpeg"
+                        aria-label="View portfolio image 3">
+                    <img src="../img/photo3.jpeg" alt="Previous work 3">
+                    <span><i class="fa fa-search-plus"></i></span>
+                </button>
+
+                <button class="portfolio-item" data-image="../img/photo7.jpeg"
+                        aria-label="View portfolio image 4">
+                    <img src="../img/photo7.jpeg" alt="Previous work 4">
+                    <span><i class="fa fa-search-plus"></i></span>
+                </button>
+
+                <button class="portfolio-item" data-image="../img/photo6.jpeg"
+                        aria-label="View portfolio image 5">
+                    <img src="../img/photo6.jpeg" alt="Previous work 5">
+                    <span><i class="fa fa-search-plus"></i></span>
+                </button>
+
+                <button class="portfolio-item" data-image="../img/photo5.jpeg"
+                        aria-label="View portfolio image 6">
+                    <img src="../img/photo5.jpeg" alt="Previous work 6">
+                    <span><i class="fa fa-search-plus"></i></span>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- Portfolio Image Viewer -->
+        <div class="image-modal" id="image-modal" hidden>
+            <button class="modal-close" id="close-image"
+                    aria-label="Close image viewer">
+                &times;
+            </button>
+
+            <button class="image-nav previous-image" id="previous-image"
+                    aria-label="Previous image">
+                <i class="fa fa-chevron-left"></i>
+            </button>
+
+            <img id="expanded-image" src="" alt="Expanded portfolio image">
+
+            <button class="image-nav next-image" id="next-image"
+                    aria-label="Next image">
+                <i class="fa fa-chevron-right"></i>
+            </button>
+        </div>
+
+
+        <!-- Profile Video -->
+        <section class="profile-section video-section">
+
+            <div class="video-icon">
+                <i class="fa fa-play"></i>
+            </div>
+
+            <div class="video-content">
+                <h2>Watch Profile Video</h2>
+
+                <p>
+                    Watch videos showcasing this provider's
+                    previous work and experience.
+                </p>
+
+                <a
+                   class="video-button"
+                   id="video-link">
+
+                    <i class="fa fa-video-camera"></i>
+                    Watch Video
+                </a>
+            </div>
+
+        </section>
+
+
+        <!-- Availability and Provider Details -->
+        <section class="availability-layout">
+
+            <div class="profile-section availability-section">
+
+                <div class="section-heading">
+                    <div>
+                        <h2>Availability</h2>
+
+                        <p>
+                            Check when this provider is available.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="calendar-header">
+
+                    <button id="previous-month"
+                            class="calendar-arrow"
+                            aria-label="Previous month">
+                        <i class="fa fa-chevron-left"></i>
+                    </button>
+
+                    <h3 id="calendar-month">October 2026</h3>
+
+                    <button id="next-month"
+                            class="calendar-arrow"
+                            aria-label="Next month">
+                        <i class="fa fa-chevron-right"></i>
+                    </button>
+
+                </div>
+
+                <div class="calendar-weekdays">
+                    <span>Sun</span>
+                    <span>Mon</span>
+                    <span>Tue</span>
+                    <span>Wed</span>
+                    <span>Thu</span>
+                    <span>Fri</span>
+                    <span>Sat</span>
+                </div>
+
+                <div class="calendar-days" id="calendar-days"></div>
+
+                <div class="calendar-legend">
+                    <span>
+                        <i class="legend-dot available-dot"></i>
+                        Available
+                    </span>
+
+                    <span>
+                        <i class="legend-dot booked-dot"></i>
+                        Booked
+                    </span>
+
+                    <span>
+                        <i class="legend-dot past-dot"></i>
+                        Past date
+                    </span>
+                </div>
+
+                <p class="selected-date" id="selected-date" aria-live="polite">
+                    Select an available date to check availability.
+                </p>
+
+            </div>
+
+
+            <!-- Provider Details -->
+            <aside class="profile-section details-section">
+
+                <h2>Provider Details</h2>
+
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fa fa-briefcase"></i>
+                    </div>
+
+                    <div>
+                        <span>Service</span>
+                        <strong id="detail-service">Photography</strong>
+                    </div>
+                </div>
+
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fa fa-map-marker"></i>
+                    </div>
+
+                    <div>
+                        <span>Location</span>
+                        <strong id="detail-location">Amman, Jordan</strong>
+                    </div>
+                </div>
+
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fa fa-star"></i>
+                    </div>
+
+                    <div>
+                        <span>Rating</span>
+                        <strong id="detail-rating">4.8 / 5</strong>
+                    </div>
+                </div>
+
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fa fa-money"></i>
+                    </div>
+
+                    <div>
+                        <span>Starting Price</span>
+                        <strong id="detail-price">100 JOD</strong>
+                    </div>
+                </div>
+
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+
+                    <div>
+                        <span>Availability</span>
+                        <strong id="detail-availability">Check calendar</strong>
+                    </div>
+                </div>
+
+                <button class="select-provider-button" id="select-provider">
+                    <i class="fa fa-check-circle"></i>
+                    Select Provider
+                </button>
+
+                <p class="select-message" id="select-message" aria-live="polite"></p>
+
+            </aside>
+
+        </section>
+
+
+        <footer class="profile-footer">
+            <p>© 2026 TEAMLY. Connecting people and projects.</p>
+        </footer>
+
+    </main>
+
+    <script src="Profile.js"></script>
+    
+
+</body>
+</html>

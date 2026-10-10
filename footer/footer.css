@@ -50,7 +50,8 @@
     gap: 15px;
 }
 
-.footer-socials a {
+.footer-socials a,
+.footer-socials span {
     text-decoration: none;
     color: #355E3B;
     font-size: 13px;
@@ -77,7 +78,8 @@
     margin-bottom: 8px;
 }
 
-.footer-column a {
+.footer-column a,
+.footer-column span {
     text-decoration: none;
     color: #6B756D;
     font-size: 14px;

@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-const accountButtons = document.querySelectorAll(".account-button");
+const accountButtons = document.querySelectorAll("a.account-button");
 
 accountButtons.forEach(function (button) {
 
@@ -13,8 +13,7 @@ accountButtons.forEach(function (button) {
             return;
         }
 
-        // The browser opens the selected registration page.
-        // Make sure the target HTML file exists in your project.
+        // Native anchor navigation handles the existing registration page.
 
     });
 
