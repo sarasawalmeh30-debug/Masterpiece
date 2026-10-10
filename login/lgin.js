@@ -313,3 +313,237 @@ resetSubmit.type = "button";
 resetSubmit.onclick = closeResetPopup;
 
 }
+
+// Proximity response stays separate from the central heart's automatic 3D spin.
+(function setupLoginVisualInteraction() {
+    const panel = document.querySelector(".login-image");
+    if (!panel) return;
+    const bubbleLayer = panel.querySelector(".mouse-bubbles");
+
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const finePointer = window.matchMedia("(pointer: fine)");
+    if (motionPreference.matches || !finePointer.matches) return;
+
+    const visuals = Array.from(panel.querySelectorAll("[data-reactive]")).map(function (element, index) {
+        return {
+            element,
+            kind: element.dataset.reactive,
+            host: element.closest(".event-object") || element,
+            near: false,
+            cameraLocked: false,
+            flashTimer: 0,
+            phase: index * 1.73,
+            centerX: 0,
+            centerY: 0,
+            x: 0,
+            y: 0,
+            tiltX: 0,
+            tiltY: 0,
+            rotation: 0,
+            scale: 1
+        };
+    });
+    let frame = 0;
+    let panelBounds = null;
+    let pointer = null;
+    let lastFrame = 0;
+    let lastBubbleX = null;
+    let lastBubbleY = null;
+    let lastBubbleAt = 0;
+    const bubbles = new Set();
+    const bubbleColors = ["255,255,255", "234,244,232", "168,201,165"];
+    const bubbleLimit = 38;
+
+    function updatePositions() {
+        pointer = null;
+        panelBounds = panel.getBoundingClientRect();
+        visuals.forEach(function (visual) {
+            const bounds = visual.element.getBoundingClientRect();
+            visual.centerX = bounds.left - panelBounds.left + bounds.width / 2;
+            visual.centerY = bounds.top - panelBounds.top + bounds.height / 2;
+        });
+    }
+
+    function animate(now) {
+        const elapsed = lastFrame ? Math.min(now - lastFrame, 48) : 16;
+        lastFrame = now;
+        const easing = 1 - Math.exp(-elapsed / 135);
+        let interactionActive = false;
+        visuals.forEach(function (visual) {
+            let targetX = 0;
+            let targetY = 0;
+            let targetTiltX = 0;
+            let targetTiltY = 0;
+            let targetRotation = 0;
+            let targetScale = 1;
+
+            const dx = pointer ? pointer.x - visual.centerX : 0;
+            const dy = pointer ? pointer.y - visual.centerY : 0;
+            const distance = pointer ? Math.hypot(dx, dy) : Infinity;
+            const radius = visual.kind === "logo" ? 168 : visual.kind === "heart" ? 106 : 148;
+            const influence = Math.max(0, 1 - distance / radius);
+            const wasNear = visual.near;
+            visual.near = distance < radius + (wasNear ? 32 : 0);
+            visual.element.classList.toggle("is-near", visual.near);
+            if (visual.host !== visual.element) visual.host.classList.toggle("is-near", visual.near);
+
+            if (visual.host.classList.contains("event-camera")) {
+                if (visual.near && !visual.cameraLocked) {
+                    visual.cameraLocked = true;
+                    visual.host.classList.add("is-flashing");
+                    visual.flashTimer = window.setTimeout(function () {
+                        visual.host.classList.remove("is-flashing");
+                        visual.flashTimer = 0;
+                    }, 500);
+                } else if (!visual.near) {
+                    visual.cameraLocked = false;
+                }
+            }
+
+            if (influence > 0) {
+                const wiggle = Math.sin(now / 74 + visual.phase);
+                const bounce = (Math.sin(now / 112 + visual.phase * 1.4) + 1) / 2;
+                const strength = visual.kind === "logo" ? .42 : visual.kind === "heart" ? .7 : 1;
+                const movement = visual.kind === "logo" ? 1.1 : visual.kind === "heart" ? 1.8 : 3.1;
+                const rotation = visual.kind === "logo" ? 1 : visual.kind === "heart" ? 2.4 : 5.2;
+                const tilt = visual.kind === "logo" ? 1 : visual.kind === "heart" ? 2.5 : 4.2;
+                targetX = wiggle * movement * influence * strength;
+                targetY = -bounce * (visual.kind === "logo" ? .55 : 1.8) * influence * strength;
+                targetTiltX = Math.max(-tilt, Math.min(tilt, -dy / radius * tilt)) * influence * strength;
+                targetTiltY = Math.max(-tilt, Math.min(tilt, dx / radius * tilt)) * influence * strength;
+                targetRotation = wiggle * rotation * influence * strength;
+                targetScale = 1 + .022 * influence * strength;
+                interactionActive = true;
+            }
+
+            visual.x += (targetX - visual.x) * easing;
+            visual.y += (targetY - visual.y) * easing;
+            visual.tiltX += (targetTiltX - visual.tiltX) * easing;
+            visual.tiltY += (targetTiltY - visual.tiltY) * easing;
+            visual.rotation += (targetRotation - visual.rotation) * easing;
+            visual.scale += (targetScale - visual.scale) * easing;
+
+            visual.element.style.setProperty("--pointer-x", visual.x.toFixed(2) + "px");
+            visual.element.style.setProperty("--pointer-y", visual.y.toFixed(2) + "px");
+            visual.element.style.setProperty("--pointer-tilt-x", visual.tiltX.toFixed(2) + "deg");
+            visual.element.style.setProperty("--pointer-tilt-y", visual.tiltY.toFixed(2) + "deg");
+            visual.element.style.setProperty("--pointer-rotation", visual.rotation.toFixed(2) + "deg");
+            visual.element.style.setProperty("--pointer-scale", visual.scale.toFixed(4));
+
+            if (Math.abs(targetX - visual.x) > .04 || Math.abs(targetY - visual.y) > .04 ||
+                Math.abs(targetTiltX - visual.tiltX) > .04 || Math.abs(targetTiltY - visual.tiltY) > .04 ||
+                Math.abs(targetRotation - visual.rotation) > .04 || Math.abs(targetScale - visual.scale) > .001) {
+                interactionActive = true;
+            }
+        });
+
+        frame = interactionActive ? window.requestAnimationFrame(animate) : 0;
+    }
+
+    function requestAnimation() {
+        if (!frame) frame = window.requestAnimationFrame(animate);
+    }
+
+    function createBubble(x, y, now) {
+        if (!bubbleLayer || motionPreference.matches) return;
+        while (bubbles.size >= bubbleLimit) {
+            const oldest = bubbles.values().next().value;
+            if (!oldest) break;
+            bubbles.delete(oldest);
+            oldest.remove();
+        }
+
+        const bubble = document.createElement("span");
+        const size = 6 + Math.random() * 8;
+        bubble.className = "mouse-bubble";
+        bubble.style.left = (x - size / 2) + "px";
+        bubble.style.top = (y - size / 2) + "px";
+        bubble.style.setProperty("--bubble-size", size.toFixed(1) + "px");
+        bubble.style.setProperty("--bubble-duration", (1.15 + Math.random() * .8).toFixed(2) + "s");
+        bubble.style.setProperty("--bubble-drift", ((Math.random() - .5) * 26).toFixed(1) + "px");
+        bubble.style.setProperty("--bubble-color", bubbleColors[Math.floor(Math.random() * bubbleColors.length)]);
+        bubbleLayer.appendChild(bubble);
+        bubbles.add(bubble);
+        bubble.addEventListener("animationend", function () {
+            bubbles.delete(bubble);
+            bubble.remove();
+        }, { once: true });
+        lastBubbleAt = now;
+    }
+
+    function spawnMouseBubbles(x, y, now) {
+        if (!bubbleLayer || motionPreference.matches) return;
+        if (lastBubbleX === null) {
+            lastBubbleX = x;
+            lastBubbleY = y;
+            createBubble(x, y, now);
+            return;
+        }
+
+        const distance = Math.hypot(x - lastBubbleX, y - lastBubbleY);
+        if (distance < 17 || now - lastBubbleAt < 24) return;
+        const steps = Math.min(6, Math.max(1, Math.floor(distance / 17)));
+        for (let step = 1; step <= steps; step++) {
+            const progress = step / steps;
+            createBubble(lastBubbleX + (x - lastBubbleX) * progress, lastBubbleY + (y - lastBubbleY) * progress, now);
+        }
+        lastBubbleX = x;
+        lastBubbleY = y;
+    }
+
+    function trackPointer(event) {
+        const x = event.clientX - panelBounds.left;
+        const y = event.clientY - panelBounds.top;
+        pointer = { x, y };
+        if (event.pointerType !== "touch") spawnMouseBubbles(x, y, performance.now());
+        requestAnimation();
+    }
+
+    function clearPointer() {
+        pointer = null;
+        lastBubbleX = null;
+        lastBubbleY = null;
+        requestAnimation();
+    }
+
+    function handleMotionPreference() {
+        if (!motionPreference.matches) return;
+        pointer = null;
+        if (frame) window.cancelAnimationFrame(frame);
+        frame = 0;
+        lastBubbleX = null;
+        lastBubbleY = null;
+        bubbles.forEach(function (bubble) { bubble.remove(); });
+        bubbles.clear();
+        visuals.forEach(function (visual) {
+            if (visual.flashTimer) window.clearTimeout(visual.flashTimer);
+            visual.flashTimer = 0;
+            visual.near = false;
+            visual.cameraLocked = false;
+            visual.host.classList.remove("is-near", "is-flashing");
+            ["--pointer-x", "--pointer-y", "--pointer-tilt-x", "--pointer-tilt-y", "--pointer-rotation", "--pointer-scale"]
+                .forEach(function (property) { visual.element.style.removeProperty(property); });
+        });
+    }
+
+    updatePositions();
+    panel.addEventListener("pointermove", trackPointer, { passive: true });
+    panel.addEventListener("pointerleave", clearPointer, { passive: true });
+    window.addEventListener("resize", updatePositions, { passive: true });
+    motionPreference.addEventListener("change", handleMotionPreference);
+    window.addEventListener("pagehide", function cleanup() {
+        panel.removeEventListener("pointermove", trackPointer);
+        panel.removeEventListener("pointerleave", clearPointer);
+        window.removeEventListener("resize", updatePositions);
+        motionPreference.removeEventListener("change", handleMotionPreference);
+        if (frame) window.cancelAnimationFrame(frame);
+        bubbles.forEach(function (bubble) { bubble.remove(); });
+        bubbles.clear();
+        visuals.forEach(function (visual) {
+            if (visual.flashTimer) window.clearTimeout(visual.flashTimer);
+            visual.host.classList.remove("is-near", "is-flashing");
+            ["--pointer-x", "--pointer-y", "--pointer-tilt-x", "--pointer-tilt-y", "--pointer-rotation", "--pointer-scale"]
+                .forEach(function (property) { visual.element.style.removeProperty(property); });
+        });
+    }, { once: true });
+})();

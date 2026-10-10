@@ -12,22 +12,63 @@
 </head>
 <body><main class="login-section"><!-- Left Side -->
 <section class="login-image">
-    <div class="image-overlay">
+    <div class="login-animation" aria-hidden="true">
+        <svg class="background-heart background-heart-one reactive-visual" data-reactive="heart" viewBox="0 0 100 90"><path d="M50 82C39 72 8 52 8 31 8 12 31 5 50 27 69 5 92 12 92 31 92 52 61 72 50 82Z"/></svg>
+        <svg class="background-heart background-heart-two reactive-visual" data-reactive="heart" viewBox="0 0 100 90"><path d="M50 82C39 72 8 52 8 31 8 12 31 5 50 27 69 5 92 12 92 31 92 52 61 72 50 82Z"/></svg>
+        <div class="mouse-bubbles" aria-hidden="true"></div>
+        <svg class="connection-lines" viewBox="0 0 1000 900" preserveAspectRatio="none">
+            <defs><linearGradient id="connectionGradient"><stop stop-color="#A8C9A5" stop-opacity=".12"/><stop offset=".5" stop-color="#6F9B73" stop-opacity=".72"/><stop offset="1" stop-color="#355E3B" stop-opacity=".16"/></linearGradient></defs>
+            <path class="connection-line" d="M500 450C625 365 710 245 832 190"/>
+            <path class="connection-line connection-line-two" d="M470 450C365 365 270 305 155 310"/>
+            <path class="connection-line connection-line-three" d="M515 470C650 535 735 625 830 710"/>
+            <path class="connection-line connection-line-four" d="M475 470C355 545 250 635 165 715"/>
+            <path class="connection-line connection-line-five" d="M500 430C520 315 530 205 520 105"/>
+            <g class="connection-hearts"><path transform="translate(832 190)" d="M0 4C-9-2-5-10 0-5 5-10 9-2 0 4Z"/><path transform="translate(155 310)" d="M0 4C-9-2-5-10 0-5 5-10 9-2 0 4Z"/><path transform="translate(830 710)" d="M0 4C-9-2-5-10 0-5 5-10 9-2 0 4Z"/><path transform="translate(165 715)" d="M0 4C-9-2-5-10 0-5 5-10 9-2 0 4Z"/><path transform="translate(520 105)" d="M0 4C-9-2-5-10 0-5 5-10 9-2 0 4Z"/></g>
+        </svg>
+        <div class="scene-hub">
+            <div class="hub-logo-stage" data-reactive="logo">
+                <div class="heart-3d-spin">
+                    <img class="heart-face heart-depth heart-depth-one" src="../img/logo3.png" alt="">
+                    <img class="heart-face heart-depth heart-depth-two" src="../img/logo3.png" alt="">
+                    <img class="heart-face heart-depth heart-depth-three" src="../img/logo3.png" alt="">
+                    <img class="heart-face heart-depth heart-depth-four" src="../img/logo3.png" alt="">
+                    <img class="heart-face heart-depth heart-depth-five" src="../img/logo3.png" alt="">
+                    <img class="heart-face heart-depth heart-depth-six" src="../img/logo3.png" alt="">
+                    <img class="heart-face heart-depth heart-depth-seven" src="../img/logo3.png" alt="">
+                    <img class="heart-face heart-depth heart-depth-eight" src="../img/logo3.png" alt="">
+                    <img class="heart-face heart-depth heart-depth-nine" src="../img/logo3.png" alt="">
+                    <img class="heart-face heart-depth heart-depth-ten" src="../img/logo3.png" alt="">
+                    <img class="heart-face heart-face-front" src="../img/logo3.png" alt="">
+                    <img class="heart-face heart-face-back" src="../img/logo3.png" alt="">
+                </div>
+            </div>
+        </div>
 
-        <a href="../home_page/home.html" class="login-logo">
-            <img src="../img/logo3.png" alt="TEAMLY Logo">
-        </a>
+        <div class="event-object event-arch">
+            <svg class="reactive-visual" data-reactive="illustration" viewBox="0 0 180 210">
+                <path class="arch-frame" d="M35 195V96a55 55 0 0 1 110 0v99M48 195V97a42 42 0 0 1 84 0v98"/>
+                <path class="arch-flower-line" d="M34 108c25-9 19-31 39-38 18-7 25 11 39 0 17-13 27-3 35 12"/>
+                <g class="flower-cluster"><circle cx="41" cy="92" r="7"/><circle cx="51" cy="83" r="6"/><circle cx="59" cy="96" r="5"/><circle cx="125" cy="80" r="7"/><circle cx="137" cy="88" r="5"/><circle cx="117" cy="91" r="5"/><circle cx="77" cy="70" r="5"/><circle cx="89" cy="68" r="6"/></g>
+                <path class="arch-leaf" d="M47 104c-12 4-19-1-22-10 11-2 18 1 22 10Zm76-17c12 3 18-2 20-11-10-1-17 3-20 11Z"/><path class="arch-ground" d="M22 196h136"/>
+            </svg>
+        </div>
 
-        <span class="welcome-label">WELCOME TO TEAMLY</span>
+        <div class="event-object event-camera">
+            <svg class="reactive-visual" data-reactive="illustration" viewBox="0 0 120 90"><path class="camera-body" d="M18 27h20l8-10h29l8 10h19a7 7 0 0 1 7 7v38a7 7 0 0 1-7 7H18a7 7 0 0 1-7-7V34a7 7 0 0 1 7-7Z"/><circle class="camera-lens-outer" cx="59" cy="50" r="20"/><circle class="camera-lens-inner" cx="59" cy="50" r="12"/><circle class="camera-flash" cx="91" cy="39" r="4"/></svg>
+        </div>
 
-        <h1>Bring Your Ideas to Life.</h1>
+        <div class="event-object event-cake">
+            <svg class="reactive-visual" data-reactive="illustration" viewBox="0 0 130 140"><ellipse class="cake-plate" cx="65" cy="119" rx="49" ry="9"/><path class="cake-tier cake-tier-bottom" d="M25 83h80v28a9 9 0 0 1-9 9H34a9 9 0 0 1-9-9Z"/><path class="cake-icing" d="M25 88c10-9 12 7 22-1s13 8 22 0 13 8 22 0 8 1 14 0v12c-7 0-8-8-15-1s-12-7-20 0-12-8-20 0-14-7-25 1Z"/><path class="cake-tier cake-tier-top" d="M39 47h52v30a8 8 0 0 1-8 8H47a8 8 0 0 1-8-8Z"/><path class="cake-top-icing" d="M39 52c7-7 10 5 16-1s10 5 16-1 10 5 20 0v10c-6 1-8-6-14 0s-10-5-16 0-10-6-16 1-5-2-6-1Z"/><path class="cake-candle" d="M64 47V27"/><path class="cake-flame" d="M64 25c-8-8 2-13 1-19 9 8 8 14-1 19Z"/><circle class="cake-berry" cx="42" cy="82" r="3"/><circle class="cake-berry" cx="91" cy="81" r="3"/></svg>
+        </div>
 
-        <p>
-            Connect with the right professionals, organize your projects,
-            and make every event an unforgettable experience.
-        </p>
+        <div class="event-object event-venue">
+            <svg class="reactive-visual" data-reactive="illustration" viewBox="0 0 190 130"><path class="venue-roof" d="m25 56 70-38 70 38"/><path class="venue-building" d="M38 55h114v59H38z"/><path class="venue-door" d="M83 114V76a12 12 0 0 1 24 0v38"/><path class="venue-window" d="M52 70h15v15H52zm70 0h15v15h-15z"/><path class="venue-ground" d="M19 115h152"/><g class="venue-tables"><ellipse cx="49" cy="98" rx="15" ry="5"/><path d="M49 98v13m-11-6h22"/><ellipse cx="141" cy="98" rx="15" ry="5"/><path d="M141 98v13m-11-6h22"/></g><g class="venue-lights"><circle cx="60" cy="48" r="3"/><circle cx="78" cy="39" r="3"/><circle cx="96" cy="35" r="3"/><circle cx="114" cy="39" r="3"/><circle cx="132" cy="48" r="3"/></g></svg>
+        </div>
+
+        <div class="event-object event-lights"><svg class="reactive-visual" data-reactive="illustration" viewBox="0 0 250 100"><path class="light-string" d="M8 12c45 54 77 54 117 28s74-20 117 34"/><path class="light-cord" d="M43 43v15m39 10v14m45-42v16m42-13v15m42 8v15"/><path class="light-bulb bulb-one" d="M38 58h10l-2 12h-6z"/><path class="light-bulb bulb-two" d="M77 81h10l-2 12h-6z"/><path class="light-bulb bulb-three" d="M122 43h10l-2 12h-6z"/><path class="light-bulb bulb-four" d="M164 42h10l-2 12h-6z"/><path class="light-bulb bulb-five" d="M206 63h10l-2 12h-6z"/></svg></div>
 
     </div>
+
 </section>
 
 <!-- Right Side -->
