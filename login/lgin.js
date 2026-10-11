@@ -1,6 +1,3 @@
-// =========================
-// LOGIN PAGE INTERACTIONS
-// =========================
 
 const loginForm = document.getElementById("loginForm");
 const passwordInput = document.getElementById("password");
@@ -21,10 +18,12 @@ const resetExtraFields = document.getElementById("resetExtraFields");
 const resetSubmit = document.getElementById("resetSubmit");
 const resetMessage = document.getElementById("resetMessage");
 const resetProgress = document.getElementById("resetProgress");
-
+const login_button=document.getElementById("login-button");
+login_button.addEventListener("click",function(){
+window.location.href="../ai_chat/ai_chat.html";
+});
 let resetStep = 1;
 let resetEmail = "";
-
 // Show or hide password
 const eyeIcon = document.getElementById("eyeIcon");
 
@@ -60,8 +59,7 @@ if (!loginForm.checkValidity()) {
     return;
 }
 
-loginMessage.textContent =
-    "The login form is ready to be connected to your backend.";
+// loginMessage.textContent 
 loginMessage.classList.add("success");
 
 });
@@ -174,9 +172,7 @@ else if (step === 2) {
     resetInput.pattern = "[0-9]{6}";
 
     resetExtraFields.innerHTML = `
-        <p class="reset-note">
-            Demo only: enter any 6 digits to preview the next step.
-        </p>
+        <p class="reset-note"></p>
     `;
 
     resetSubmit.textContent = "Verify Code";
@@ -234,8 +230,7 @@ if (resetStep === 1) {
 
     showResetStep(2);
 
-    resetMessage.textContent =
-        "Demo: the verification screen is ready. No email was sent.";
+    // resetMessage.textContent =
     resetMessage.classList.add("success");
 }
 

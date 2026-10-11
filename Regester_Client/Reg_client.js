@@ -249,9 +249,7 @@ form.addEventListener("submit", function (event) {
 
     // Frontend demonstration only
 
-    formMessage.textContent =
-        "Your information is valid! Account creation will be available once the backend is connected.";
-
+   window.location.href="../ai_chat/ai_chat.html";
     formMessage.classList.add("success");
 
 });

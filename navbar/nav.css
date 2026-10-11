@@ -3,17 +3,17 @@
    TEAMLY GLASS NAVBAR
 ============================== */
 body{
-   padding-top: 150px;
+   padding-top: 125px;
 }
 .navbar {
     position: fixed;
-    top: 12px;
+    top: 4px;
     left: 50%;
     transform: translateX(-50%);
 
     width: calc(100% - 100px);
     max-width: 1990px;
-    padding: 12px 26px;
+    padding: 7px 26px;
 
     background: linear-gradient(
         135deg,
@@ -424,7 +424,7 @@ body{
 @media (max-width: 900px) {
     .navbar {
         width: calc(100% - 40px);
-        padding: 12px 20px;
+        padding: 7px 20px;
     }
 
     .nav-container {
@@ -450,7 +450,7 @@ body{
     .navbar {
         top: 14px;
         width: calc(100% - 28px);
-        padding: 11px 15px;
+        padding: 6px 15px;
 
         border-radius: 20px;
     }

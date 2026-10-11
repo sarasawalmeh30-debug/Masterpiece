@@ -249,7 +249,10 @@
 /* ==================================
    Project Summary
 ================================== */
-
+.wave {
+  display: inline-block;
+  font-size: 35px;
+}
 .project-summary {
     display: flex;
     flex-direction: column;

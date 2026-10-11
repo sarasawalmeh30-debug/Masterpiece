@@ -271,7 +271,7 @@ async function loadSidebar() {
 
         container.innerHTML = `
             <p style="padding: 16px;">
-                Sidebar could not be loaded. Check the file paths.
+                
             </p>
         `;
     }

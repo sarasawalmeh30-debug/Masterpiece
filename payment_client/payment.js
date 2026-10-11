@@ -157,9 +157,8 @@ paymentForm.addEventListener("submit", function (event) {
 
     // This is a UI demonstration only.
     // No card data is stored and no payment is processed.
-    paymentResult.textContent =
-        "Demo only: your card details passed basic format checks. " +
-        "Connect a secure payment provider to complete the payment.";
+    // paymentResult.textContent =
+       
 
     paymentResult.scrollIntoView({
         behavior: "smooth",

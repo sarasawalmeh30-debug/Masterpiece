@@ -717,11 +717,15 @@
 
 .team-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(0, min(100%, 360px));
+    justify-content: center;
     gap: 20px;
 }
 
 .team-card {
+    display: flex;
+    min-height: 340px;
+    flex-direction: column;
     overflow: hidden;
     border-radius: 22px;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
@@ -729,7 +733,8 @@
 
 .team-photo {
     display: flex;
-    min-height: 210px;
+    min-height: 230px;
+    flex: 0 0 230px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -765,6 +770,7 @@
 
 .team-card-copy {
     padding: 20px 21px 22px;
+    text-align: center;
 }
 
 .team-card-copy .eyebrow {
@@ -779,8 +785,11 @@
 }
 
 .team-card-copy p {
+    max-width: 280px;
+    margin-inline: auto;
     color: var(--text-secondary, #6B756D);
     font-size: 13px;
+    line-height: 1.6;
 }
 
 .team-action {
@@ -1044,7 +1053,8 @@
     }
 
     .team-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: minmax(0, min(100%, 360px));
+        justify-content: center;
     }
 
     .contact-grid {

@@ -417,6 +417,13 @@
     font-size: 11px;
 }
 
+.provider-context-note {
+    margin: 14px 0 0;
+    color: var(--text-secondary, #6B756D);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
 .provider-rating {
     display: flex;
     align-items: center;

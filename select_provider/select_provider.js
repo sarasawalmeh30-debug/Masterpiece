@@ -123,6 +123,36 @@ const providers = [
     }
 ];
 
+// Include the clicked Tracking recommendation in this page without confusing
+// its ID with a different record in the local provider catalog.
+const trackingParams = new URLSearchParams(window.location.search);
+const trackingProviderName = trackingParams.get("name");
+
+if (trackingParams.get("source") === "tracking" && trackingProviderName) {
+    const nameParts = trackingProviderName.trim().split(/\s+/);
+    const requestedService = trackingParams.get("service") || "Provider";
+    const matchingService = project.requiredServices.find(service =>
+        requestedService.toLowerCase().includes(service.toLowerCase()) ||
+        (service.toLowerCase().includes("photography") &&
+            requestedService.toLowerCase().includes("photo"))
+    );
+    const rating = Number(trackingParams.get("rating"));
+
+    providers.unshift({
+        id: -Math.max(1, Number(trackingParams.get("providerId")) || 1),
+        firstName: nameParts.shift() || trackingProviderName,
+        lastName: nameParts.join(" "),
+        service: matchingService || requestedService,
+        displayService: requestedService,
+        rating: Number.isFinite(rating) ? rating : 0,
+        location: "",
+        price: null,
+        recommended: -1,
+        trackingContext: true,
+        description: trackingParams.get("description") || ""
+    });
+}
+
 
 /* ==================================
    STATE
@@ -173,6 +203,17 @@ const messageModal = document.getElementById("message-modal");
 
 function formatPrice(price) {
     return `${price.toLocaleString("en-US")} JOD`;
+}
+
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[character]);
 }
 
 
@@ -242,24 +283,70 @@ function renderProviders(list) {
 
     list.forEach(provider => {
         const selected = isProviderSelected(provider.id);
+        const providerName = escapeHTML(getProviderName(provider));
+        const serviceName = escapeHTML(
+            provider.displayService || provider.service
+        );
+        const locationRow = provider.location
+            ? `
+                <div class="provider-location">
+                    <i class="fa fa-map-marker"></i>
+                    <span>${escapeHTML(provider.location)}, Jordan</span>
+                </div>
+            `
+            : "";
+        const priceRow = Number.isFinite(provider.price)
+            ? `
+                <div class="provider-price">
+                    <span>Starting from</span>
+                    <strong>${formatPrice(provider.price)}</strong>
+                </div>
+            `
+            : "";
+        const description = provider.trackingContext && provider.description
+            ? `<p class="provider-context-note">${escapeHTML(provider.description)}</p>`
+            : "";
+        const actions = provider.trackingContext
+            ? ""
+            : `
+                <div class="provider-actions">
+                    <button
+                        type="button"
+                        class="view-profile-btn ${IS_LOGGED_IN ? "" : "login-required"}"
+                        data-action="view-profile"
+                        data-provider-id="${provider.id}"
+                        aria-label="View profile of ${providerName}">
+                        <i class="fa fa-user"></i>
+                        View Profile
+                    </button>
+                    <button
+                        type="button"
+                        class="select-provider-btn ${selected ? "is-selected" : ""}"
+                        data-action="select-provider"
+                        data-provider-id="${provider.id}">
+                        <i class="fa ${selected ? "fa-check" : "fa-plus"}"></i>
+                        ${selected ? "Selected" : "Select"}
+                    </button>
+                </div>
+            `;
 
         const card = document.createElement("article");
 
         card.className =
-            `provider-card ${selected ? "selected" : ""}`;
+            `provider-card ${selected ? "selected" : ""}${provider.trackingContext ? " tracking-recommendation" : ""}`;
 
         card.innerHTML = `
             <div class="provider-card-top">
 
                 <div class="provider-avatar">
-                    ${getInitials(provider)}
+                    ${escapeHTML(getInitials(provider))}
                 </div>
 
                 <div class="provider-heading">
-                    <h3>${getProviderName(provider)}</h3>
+                    <h3>${providerName}</h3>
 
                     <div class="provider-service">
-                        ${provider.service}
+                        ${serviceName}
                     </div>
 
                     <div class="provider-rating">
@@ -271,42 +358,10 @@ function renderProviders(list) {
 
             </div>
 
-            <div class="provider-location">
-                <i class="fa fa-map-marker"></i>
-                <span>${provider.location}, Jordan</span>
-            </div>
-
-            <div class="provider-price">
-                <span>Starting from</span>
-
-                <strong>${formatPrice(provider.price)}</strong>
-            </div>
-
-            <div class="provider-actions">
-
-                <button
-                    type="button"
-                    class="view-profile-btn ${IS_LOGGED_IN ? "" : "login-required"}"
-                    data-action="view-profile"
-                    data-provider-id="${provider.id}"
-                    aria-label="View profile of ${getProviderName(provider)}">
-
-                    <i class="fa fa-user"></i>
-                    View Profile
-                </button>
-
-                <button
-                    type="button"
-                    class="select-provider-btn ${selected ? "is-selected" : ""}"
-                    data-action="select-provider"
-                    data-provider-id="${provider.id}">
-
-                    <i class="fa ${selected ? "fa-check" : "fa-plus"}"></i>
-
-                    ${selected ? "Selected" : "Select"}
-                </button>
-
-            </div>
+            ${description}
+            ${locationRow}
+            ${priceRow}
+            ${actions}
         `;
 
         providersGrid.appendChild(card);

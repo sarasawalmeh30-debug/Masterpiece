@@ -475,7 +475,7 @@ function selectAlternativeProvider(providerId) {
 
 
 // ========================================
-// 12. PROVIDER PROFILE MODAL
+// 12. OPEN THE EXISTING PROVIDER PROFILE PAGE
 // ========================================
 
 function openProviderProfile(providerId) {
@@ -487,53 +487,18 @@ function openProviderProfile(providerId) {
         return;
     }
 
-    getElement("profileModalAvatar").textContent =
-        provider.initials;
+    const params = new URLSearchParams({
+        source: "tracking",
+        providerId: String(provider.id),
+        name: provider.name,
+        service: provider.service,
+        rating: String(provider.rating),
+        description: provider.bio
+    });
 
-    getElement("profileModalName").textContent =
-        provider.name;
-
-    getElement("profileModalService").textContent =
-        provider.service;
-
-    getElement("profileModalRating").textContent =
-        provider.rating;
-
-    getElement("profileModalBio").textContent =
-        provider.bio;
-
-    getElement("modalSelectBtn").onclick = function () {
-        selectAlternativeProvider(provider.id);
-
-        closeProviderProfile();
-    };
-
-    getElement("profileModal").hidden = false;
-
-    getElement("closeProfileModal").focus();
+    window.location.href =
+        `../select_provider/select_provider.html?${params.toString()}`;
 }
-
-
-function closeProviderProfile() {
-    getElement("profileModal").hidden = true;
-}
-
-getElement("closeProfileModal").addEventListener(
-    "click",
-    closeProviderProfile
-);
-
-getElement("profileModal").addEventListener("click", function (event) {
-    if (event.target === this) {
-        closeProviderProfile();
-    }
-});
-
-document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape") {
-        closeProviderProfile();
-    }
-});
 
 
 // ========================================
@@ -610,23 +575,10 @@ setInterval(function () {
         updateRemainingTime();
     }
 }, 60000);
-
-
-// ========================================
-// 17. INITIAL RENDER
-// ========================================
-
 renderPage();
 
-
-// ========================================
-// 18. DEMO / BACKEND INTEGRATION
-// ========================================
-
-// Call this function when your backend reports a provider response.
-// Example:
-// updateProviderStatus("Rejected");
-// updateProviderStatus("Accepted");
+updateProviderStatus("Rejected");
+//  updateProviderStatus("Accepted");
 
 function updateProviderStatus(newStatus) {
     const allowedStatuses = ["Pending", "Rejected", "Accepted"];
