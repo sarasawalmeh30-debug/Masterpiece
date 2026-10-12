@@ -1,0 +1,48 @@
+<button class="provider-sidebar-toggle" id="providerSidebarToggle" type="button" aria-label="Open provider navigation" aria-expanded="false" aria-controls="providerSidebar">
+    <i class="fa fa-bars" aria-hidden="true"></i>
+</button>
+<div class="provider-sidebar-scrim" id="providerSidebarScrim"></div>
+
+<aside class="provider-sidebar" id="providerSidebar" aria-label="Provider navigation">
+    <div class="provider-sidebar-header">
+        <a class="provider-sidebar-logo" href="../home_page/home.html" aria-label="TEAMLY home">
+            <img src="../img/logo3.png" alt="TEAMLY">
+        </a>
+        <button class="provider-sidebar-close" id="providerSidebarClose" type="button" aria-label="Close provider navigation">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <div class="provider-sidebar-profile">
+        <span class="provider-avatar" id="providerSidebarAvatar">P</span>
+        <span class="provider-profile-copy">
+            <strong id="providerSidebarName">Provider</strong>
+            <small>Provider account</small>
+        </span>
+    </div>
+
+    <nav class="provider-sidebar-nav" aria-label="Provider">
+        <p class="provider-sidebar-label">PROVIDER</p>
+        <a class="provider-nav-link" data-provider-nav="requests" href="requests.html">
+            <i class="fa fa-inbox" aria-hidden="true"></i><span>Requests</span>
+        </a>
+        <a class="provider-nav-link" data-provider-nav="subscription" href="subscription.html">
+            <i class="fa fa-credit-card" aria-hidden="true"></i><span>Subscription</span>
+        </a>
+        <span class="provider-nav-link is-unavailable" data-provider-nav="profile" aria-disabled="true" title="Provider Profile page is not available yet">
+            <i class="fa fa-user-o" aria-hidden="true"></i><span>My Profile</span><small>Coming soon</small>
+        </span>
+        <a class="provider-nav-link" data-provider-nav="notifications" href="notifications.html">
+            <i class="fa fa-bell-o" aria-hidden="true"></i><span>Notifications</span>
+        </a>
+        <span class="provider-nav-link is-unavailable" data-provider-nav="settings" aria-disabled="true" title="Provider Settings page is not available yet">
+            <i class="fa fa-cog" aria-hidden="true"></i><span>Settings</span><small>Coming soon</small>
+        </span>
+    </nav>
+
+    <div class="provider-sidebar-bottom">
+        <a class="provider-logout" href="../login/login.html" id="providerLogout">
+            <i class="fa fa-sign-out" aria-hidden="true"></i><span>Log Out</span>
+        </a>
+    </div>
+</aside>

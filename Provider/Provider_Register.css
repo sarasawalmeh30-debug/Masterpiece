@@ -42,10 +42,9 @@
 .input-wrap > .fa:not(.select-caret) { position: absolute; left: 13px; z-index: 1; color: var(--text-light); font-size: 14px; pointer-events: none; }
 .input-wrap input, .input-wrap select { width: 100%; min-width: 0; height: 43px; padding: 0 40px; border: 1px solid var(--border); border-radius: 10px; outline: 0; background: var(--bg); color: var(--text); font-family: inherit; font-size: 12px; transition: border-color .2s, box-shadow .2s; }
 .input-wrap input::placeholder { color: var(--text-light); }
+.input-wrap input { padding-right: 12px; }
 .input-wrap input:focus, .input-wrap select:focus { border-color: var(--primary-dark); box-shadow: 0 0 0 3px rgba(168,201,165,.22); }
 .input-wrap .input-invalid { border-color: var(--error); }
-.password-toggle { position: absolute; right: 5px; display: grid; place-items: center; width: 34px; height: 34px; border: 0; border-radius: 8px; background: transparent; color: var(--text-secondary); }
-.password-toggle:hover, .password-toggle:focus-visible { background: var(--primary-light); color: var(--primary-deep); }
 .select-wrap select { appearance: none; padding-right: 38px; cursor: pointer; }
 .select-caret { position: absolute; right: 14px; color: var(--text-light); pointer-events: none; }
 .field-error { display: block; margin-top: 4px; color: var(--error); font-size: 10px; line-height: 1.35; }

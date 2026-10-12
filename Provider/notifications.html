@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7faf6">
+    <title>Provider Notifications | TEAMLY</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="provider_sidebar.css">
+    <link rel="stylesheet" href="notifications.css?v=20261013-1">
+    <script src="provider_sidebar.js" defer></script>
+    <script src="provider_request_data.js" defer></script>
+    <script src="notifications.js" defer></script>
+</head>
+<body>
+    <div class="provider-shell">
+        <div class="provider-sidebar-container" id="provider-sidebar-container"></div>
+        <div class="provider-main">
+            <main class="notifications-page">
+                <header class="page-heading">
+                    <div>
+                        <span class="eyebrow">PROVIDER UPDATES</span>
+                        <h1 id="welcome-title">Welcome! <span aria-hidden="true">&#128075;</span></h1>
+                        <p>Stay updated with your project requests.</p>
+                    </div>
+                    <div class="heading-icon" aria-hidden="true"><i class="fa fa-bell-o"></i></div>
+                </header>
+
+                <div class="notifications-layout">
+                    <div class="notifications-main-column">
+                        <section aria-labelledby="new-request-heading">
+                            <h2 class="visually-hidden" id="new-request-heading">New Project Request</h2>
+                            <article class="notification-card new-request-card" id="new-request-card">
+                                <div class="request-notification-icon" aria-hidden="true"><i class="fa fa-bell-o"></i></div>
+                                <div class="new-request-content">
+                                    <div class="notification-title-row">
+                                        <div>
+                                            <h3>New Project Request</h3>
+                                            <p class="notification-description">A client is waiting for your response.</p>
+                                        </div>
+                                        <div class="request-badges">
+                                            <span class="sample-label" id="request-source-label" hidden>SAMPLE DATA</span>
+                                            <span class="new-badge">NEW</span>
+                                        </div>
+                                    </div>
+                                    <div class="request-chips" id="request-chips"></div>
+                                    <a class="view-request-button" id="view-request-button" href="requests.html">
+                                        View Request <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </article>
+                            <p class="empty-request" id="request-unavailable" hidden>No pending request is available to show.</p>
+                        </section>
+
+                        <section class="recent-section" aria-labelledby="recent-heading">
+                            <div class="section-heading recent-heading">
+                                <h2 id="recent-heading">Recent</h2>
+                                <span class="sample-label" id="activity-source-label" hidden>SAMPLE ACTIVITY</span>
+                            </div>
+                            <div class="recent-list" id="recent-list" aria-live="polite"></div>
+                            <p class="empty-recent" id="empty-recent" hidden>No recent activity is available.</p>
+                        </section>
+                    </div>
+
+                    <aside class="pending-panel" aria-labelledby="pending-heading">
+                        <div class="pending-panel-heading">
+                            <span class="pending-icon" aria-hidden="true"><i class="fa fa-clock-o"></i></span>
+                            <span class="pending-status" id="pending-status">PENDING</span>
+                        </div>
+                        <h2 id="pending-heading">Pending Request</h2>
+                        <dl class="pending-details">
+                            <div><dt>Project</dt><dd id="pending-project">Unavailable</dd></div>
+                            <div><dt>Budget</dt><dd id="pending-budget">Unavailable</dd></div>
+                            <div><dt>Location</dt><dd id="pending-location">Unavailable</dd></div>
+                            <div><dt>Event date</dt><dd id="pending-date">Unavailable</dd></div>
+                            <div><dt>Response time</dt><dd id="pending-time">Unavailable</dd></div>
+                        </dl>
+                        <div class="pending-reminder"><i class="fa fa-info-circle" aria-hidden="true"></i><span>Respond before the request expires.</span></div>
+                        <p class="sample-disclaimer" id="pending-source-note" hidden>Preview request details. No live provider request feed is connected.</p>
+                    </aside>
+                </div>
+                <footer class="page-footer">&copy; TEAMLY · Provider workspace</footer>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7faf6">
+    <title>Complete Your Subscription | TEAMLY</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="provider_sidebar.css">
+    <link rel="stylesheet" href="payment.css?v=20261013-1">
+    <script src="provider_sidebar.js" defer></script>
+    <script src="subscription_plans.js" defer></script>
+    <script src="payment.js" defer></script>
+</head>
+<body>
+    <div class="provider-shell">
+        <div class="provider-sidebar-container" id="provider-sidebar-container"></div>
+        <div class="provider-main">
+            <main class="checkout-page">
+                <header class="checkout-heading">
+                    <span class="eyebrow">PROVIDER MEMBERSHIP</span>
+                    <h1>Complete Your Subscription</h1>
+                    <p id="checkout-subtitle">Activate your selected plan and continue growing with TEAMLY.</p>
+                </header>
+
+                <div class="checkout-feedback" id="checkout-feedback" role="status" aria-live="polite" hidden></div>
+                <form id="payment-form" novalidate>
+                    <div class="checkout-layout">
+                        <div class="checkout-main-column">
+                            <section class="selected-plan-card" aria-labelledby="selected-plan-title">
+                                <div class="selected-plan-icon" aria-hidden="true"><i class="fa fa-star-o"></i></div>
+                                <div class="selected-plan-copy">
+                                    <span class="card-eyebrow">YOUR SELECTED PLAN</span>
+                                    <h2 id="selected-plan-title">Professional</h2>
+                                    <p id="selected-plan-description">Designed for active providers who want more opportunities.</p>
+                                </div>
+                                <div class="selected-plan-price">
+                                    <strong id="selected-plan-price">—</strong>
+                                    <span id="selected-plan-billing">Monthly</span>
+                                </div>
+                            </section>
+
+                            <section class="payment-card" aria-labelledby="payment-details-title">
+                                <div class="payment-card-heading">
+                                    <span class="section-icon" aria-hidden="true"><i class="fa fa-credit-card"></i></span>
+                                    <div>
+                                        <h2 id="payment-details-title">Payment Details</h2>
+                                        <p>Enter your payment information.</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-field">
+                                    <label for="cardholder-name">Cardholder Name</label>
+                                    <input id="cardholder-name" type="text" placeholder="Enter cardholder name" autocomplete="cc-name" required aria-describedby="cardholder-name-error">
+                                    <span class="field-error" id="cardholder-name-error"></span>
+                                </div>
+                                <div class="form-field">
+                                    <label for="card-number">Card Number</label>
+                                    <div class="input-with-icon">
+                                        <input id="card-number" type="text" placeholder="0000 0000 0000 0000" inputmode="numeric" autocomplete="cc-number" maxlength="23" required aria-describedby="card-number-error">
+                                        <i class="fa fa-credit-card" aria-hidden="true"></i>
+                                    </div>
+                                    <span class="field-error" id="card-number-error"></span>
+                                </div>
+                                <div class="payment-fields-row">
+                                    <div class="form-field">
+                                        <label for="card-expiry">Expiry Date</label>
+                                        <input id="card-expiry" type="text" placeholder="MM/YY" inputmode="numeric" autocomplete="cc-exp" maxlength="5" required aria-describedby="card-expiry-error">
+                                        <span class="field-error" id="card-expiry-error"></span>
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="card-cvv">CVV</label>
+                                        <input id="card-cvv" type="password" placeholder="•••" inputmode="numeric" autocomplete="cc-csc" maxlength="4" required aria-describedby="card-cvv-error">
+                                        <span class="field-error" id="card-cvv-error"></span>
+                                    </div>
+                                </div>
+                                <p class="security-note"><i class="fa fa-lock" aria-hidden="true"></i> Card details are not sent or saved. Provider billing is not connected yet.</p>
+                            </section>
+                        </div>
+
+                        <aside class="checkout-side-column">
+                            <section class="summary-card" aria-labelledby="summary-title">
+                                <div class="summary-heading">
+                                    <div>
+                                        <span class="card-eyebrow">ORDER SUMMARY</span>
+                                        <h2 id="summary-title">Payment Summary</h2>
+                                    </div>
+                                    <span class="summary-icon" aria-hidden="true"><i class="fa fa-file-text-o"></i></span>
+                                </div>
+                                <dl class="summary-lines">
+                                    <div><dt>Plan</dt><dd id="summary-plan">Professional</dd></div>
+                                    <div><dt>Billing</dt><dd id="summary-billing">Monthly</dd></div>
+                                </dl>
+                                <div class="summary-total"><span>Total</span><strong id="summary-total">—</strong></div>
+                                <button class="secure-payment-button" type="submit"><i class="fa fa-lock" aria-hidden="true"></i> Secure Payment</button>
+                                <button class="pay-subscribe-button" type="submit" id="pay-subscribe-button">Pay &amp; Subscribe</button>
+                                <a class="cancel-link" href="subscription.html">Cancel and return to plans</a>
+                            </section>
+
+                            <section class="payment-notice" aria-labelledby="notice-title">
+                                <span class="notice-icon" aria-hidden="true"><i class="fa fa-info-circle"></i></span>
+                                <div>
+                                    <h2 id="notice-title">Before you continue</h2>
+                                    <p id="subscription-activation-note">Your subscription will become active after successful payment.</p>
+                                </div>
+                            </section>
+                        </aside>
+                    </div>
+                </form>
+                <footer class="checkout-footer">&copy; TEAMLY · Provider workspace</footer>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

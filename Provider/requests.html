@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7faf6">
+    <title>Provider Requests | TEAMLY</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="provider_sidebar.css">
+    <link rel="stylesheet" href="requests.css">
+    <script src="provider_sidebar.js" defer></script>
+    <script src="provider_request_data.js" defer></script>
+    <script src="requests.js" defer></script>
+</head>
+<body>
+    <div class="provider-shell">
+        <div class="provider-sidebar-container" id="provider-sidebar-container"></div>
+        <div class="provider-main">
+    <div class="provider-dashboard">
+        <main class="page-content">
+            <section class="welcome-row">
+                <div>
+                    <span class="eyebrow">PROVIDER WORKSPACE</span>
+                    <h1 id="welcome-title">Welcome to your dashboard <span aria-hidden="true">👋</span></h1>
+                    <p>Manage your project requests.</p>
+                </div>
+            </section>
+
+            <p class="free-request-alert">You have 1 free project request. After your free request is used, <a href="subscription.html">choose a plan</a> to continue receiving new requests.</p>
+
+            <nav class="request-tabs" role="tablist" aria-label="Project requests">
+                <button class="request-tab is-active" id="tab-new" type="button" role="tab" aria-selected="true" aria-controls="requests-panel" data-tab="new">
+                    <i class="fa fa-inbox" aria-hidden="true"></i> New Requests <span class="tab-count" id="new-count">0</span>
+                </button>
+                <button class="request-tab" id="tab-previous" type="button" role="tab" aria-selected="false" aria-controls="requests-panel" data-tab="previous">
+                    <i class="fa fa-history" aria-hidden="true"></i> Previous Requests <span class="tab-count" id="previous-count">0</span>
+                </button>
+                <button class="request-tab" id="tab-expired" type="button" role="tab" aria-selected="false" aria-controls="requests-panel" data-tab="expired">
+                    <i class="fa fa-clock-o" aria-hidden="true"></i> Expired Requests <span class="tab-count" id="expired-count">0</span>
+                </button>
+            </nav>
+            <p class="action-announcement" id="action-announcement" role="status" aria-live="polite" hidden></p>
+
+            <section class="requests-layout" id="requests-panel" role="tabpanel" aria-labelledby="tab-new">
+                <div class="request-list-column">
+                    <div class="section-heading">
+                        <div>
+                            <h2 id="list-title">New Project Requests</h2>
+                        </div>
+                        <span class="demo-tag">SAMPLE DATA</span>
+                    </div>
+                    <div class="request-list" id="request-list" aria-live="polite"></div>
+                    <div class="empty-state" id="empty-state" hidden>
+                        <span class="empty-icon"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span>
+                        <h3>No requests here yet</h3>
+                        <p>When a request appears in this category, it will show up here.</p>
+                    </div>
+                </div>
+
+                <aside class="request-status-panel" aria-label="Selected request overview">
+                    <div class="status-panel-top">
+                        <span class="status-panel-icon"><i class="fa fa-file-text-o" aria-hidden="true"></i></span>
+                        <span class="status-badge status-new" id="panel-status">New request</span>
+                    </div>
+                    <h2>Request overview</h2>
+                    <dl class="overview-list">
+                        <div><dt>Project</dt><dd id="panel-project">—</dd></div>
+                        <div><dt>Location</dt><dd id="panel-location">—</dd></div>
+                        <div><dt>Budget</dt><dd id="panel-budget">—</dd></div>
+                        <div><dt>Response deadline</dt><dd id="panel-deadline">—</dd></div>
+                    </dl>
+                </aside>
+            </section>
+
+            <section class="checkin-section" aria-labelledby="checkin-title">
+                <div class="checkin-heading">
+                    <span class="checkin-icon"><i class="fa fa-commenting-o" aria-hidden="true"></i></span>
+                    <div>
+                        <span class="eyebrow">PROJECT CHECK-IN</span>
+                        <h2 id="checkin-title">How is everything going so far?</h2>
+                    </div>
+                </div>
+                <div class="feedback-options" role="group" aria-label="Project feedback">
+                    <button class="feedback-option" type="button" data-feedback="going-well"><span aria-hidden="true">😊</span> Everything is going well!</button>
+                    <button class="feedback-option" type="button" data-feedback="concern"><span aria-hidden="true">🤔</span> I have a concern</button>
+                    <button class="feedback-option" type="button" data-feedback="help"><span aria-hidden="true">🛟</span> I need help</button>
+                </div>
+                <p class="feedback-message" id="feedback-message" role="status" aria-live="polite">Select one option.</p>
+            </section>
+        </main>
+
+        <footer class="page-footer">© TEAMLY · Provider workspace preview</footer>
+    </div>
+        </div>
+    </div>
+</body>
+</html>

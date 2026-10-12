@@ -28,16 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    document.querySelectorAll(".password-toggle").forEach(function (button) {
-        button.addEventListener("click", function () {
-            const input = document.getElementById(button.dataset.target);
-            const show = input.type === "password";
-            input.type = show ? "text" : "password";
-            button.setAttribute("aria-label", show ? "Hide password" : "Show password");
-            button.querySelector("i").className = show ? "fa fa-eye" : "fa fa-eye-slash";
-        });
-    });
-
     Object.values(fields).forEach(function (field) {
         field.addEventListener("input", function () {
             field.classList.remove("input-invalid");
@@ -221,6 +211,28 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        window.location.href = "../home_page/home.html";
+        const providerProfile = {
+            fullName: fields.fullName.value.trim(),
+            email: fields.email.value.trim(),
+            service: fields.service.value,
+            currentPlan: null,
+            registrationComplete: true
+        };
+
+        try {
+            window.localStorage.setItem("teamlyProviderProfile", JSON.stringify(providerProfile));
+            const savedProfile = JSON.parse(window.localStorage.getItem("teamlyProviderProfile") || "null");
+            if (!savedProfile || savedProfile.email !== providerProfile.email) {
+                throw new Error("Provider profile could not be verified.");
+            }
+            window.sessionStorage.setItem("teamlyLoggedIn", "true");
+            window.sessionStorage.setItem("teamlyProviderOnboardingPending", "true");
+        } catch (error) {
+            formMessage.textContent = "Your account preview could not be saved in this browser. Please check browser storage and try again.";
+            return;
+        }
+
+        // Passwords and uploaded files are intentionally not persisted in this frontend-only flow.
+        window.location.href = "../Provider/subscription.html?onboarding=1";
     });
 });

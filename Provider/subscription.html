@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7faf6">
+    <title>Provider Subscription | TEAMLY</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="provider_sidebar.css">
+    <link rel="stylesheet" href="subscription.css">
+    <script src="provider_sidebar.js" defer></script>
+    <script src="subscription_plans.js" defer></script>
+    <script src="subscription.js" defer></script>
+</head>
+<body>
+    <div class="provider-shell">
+        <div class="provider-sidebar-container" id="provider-sidebar-container"></div>
+        <div class="provider-main">
+            <div class="subscription-page">
+                <main class="subscription-content">
+                    <a class="subscription-home-link" href="../home_page/home.html"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to Home</a>
+                    <section class="subscription-heading">
+                        <span class="subscription-eyebrow">PROVIDER MEMBERSHIP</span>
+                        <h1>Choose Your Plan</h1>
+                        <p>Continue receiving project requests and grow your business with TEAMLY.</p>
+                    </section>
+
+                    <section class="free-request-notice" aria-live="polite">
+                        <span class="notice-icon"><i class="fa fa-inbox" aria-hidden="true"></i></span>
+                        <div class="notice-copy">
+                            <strong id="free-request-count">Free project requests remaining: unavailable</strong>
+                            <p id="free-request-explanation">Your free request allowance is not connected to provider account data yet. A subscription is needed to continue receiving requests after the free allowance is used.</p>
+                        </div>
+                        <span class="notice-plan" id="current-plan-label">Current plan: unavailable</span>
+                    </section>
+
+                    <div class="subscription-feedback" id="subscription-feedback" role="status" aria-live="polite" hidden></div>
+
+                    <section class="plan-grid" aria-label="Available subscription plans">
+                        <article class="plan-card" data-plan-card="free">
+                            <div class="plan-card-top">
+                                <div>
+                                    <span class="plan-kicker">START HERE</span>
+                                    <h2>Free</h2>
+                                </div>
+                                <span class="current-plan-badge" data-current-badge="free" hidden>Current plan</span>
+                            </div>
+                            <p class="plan-description">For new providers getting started.</p>
+                            <p class="plan-price"><strong data-plan-price="free">$0</strong><span>/ month</span></p>
+                            <ul class="plan-features">
+                                <li><i class="fa fa-check" aria-hidden="true"></i> Receive project requests</li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i> Manage your requests</li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i> Provider profile</li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i> Upload portfolio</li>
+                            </ul>
+                            <button class="plan-button" type="button" data-select-plan="free">Choose Free</button>
+                        </article>
+
+                        <article class="plan-card plan-card-featured" data-plan-card="professional">
+                            <div class="popular-ribbon">MOST POPULAR</div>
+                            <div class="plan-card-top">
+                                <div>
+                                    <span class="plan-kicker">GROW YOUR REACH</span>
+                                    <h2>Professional</h2>
+                                </div>
+                                <span class="current-plan-badge" data-current-badge="professional" hidden>Current plan</span>
+                            </div>
+                            <p class="plan-description">More visibility for your business.</p>
+                            <p class="plan-price"><strong data-plan-price="professional">$9.99</strong><span>/ month</span></p>
+                            <ul class="plan-features">
+                                <li><i class="fa fa-check" aria-hidden="true"></i> Everything in Starter</li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i> Featured profile</li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i> Higher visibility in searches</li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i> Extended request limit</li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i> Priority profile placement</li>
+                            </ul>
+                            <button class="plan-button" type="button" data-select-plan="professional">Choose Professional</button>
+                        </article>
+
+                        <article class="plan-card" data-plan-card="business">
+                            <div class="plan-card-top">
+                                <div>
+                                    <span class="plan-kicker">MAXIMUM EXPOSURE</span>
+                                    <h2>Business</h2>
+                                </div>
+                                <span class="current-plan-badge" data-current-badge="business" hidden>Current plan</span>
+                            </div>
+                            <p class="plan-description">Maximum exposure and priority.</p>
+                            <p class="plan-price"><strong data-plan-price="business">$14.99</strong><span>/ month</span></p>
+                            <ul class="plan-features">
+                                <li><i class="fa fa-check" aria-hidden="true"></i> Everything in Professional</li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i> Priority matching</li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i> Featured badge</li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i> Premium visibility</li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i> Advanced profile tools</li>
+                            </ul>
+                            <button class="plan-button" type="button" data-select-plan="business">Choose Business</button>
+                        </article>
+                    </section>
+
+                    <p class="billing-note"><i class="fa fa-lock" aria-hidden="true"></i> Plan selection is a preview only. Provider billing is not connected, so no subscription or payment will be activated here.</p>
+                </main>
+                <footer class="subscription-footer">© TEAMLY · Provider workspace</footer>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
