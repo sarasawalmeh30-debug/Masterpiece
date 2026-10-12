@@ -1,15 +1,166 @@
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 0;
-    padding: 20px;
-    background-color: #f4f4f4;
+:root {
+    color-scheme: light;
+    --sage: #a8c9a5;
+    --green: #355e3b;
+    --ink: #26352a;
+    --muted: #6d786f;
+    --line: #e3ebe1;
+    --surface: #fff;
 }
 
+* { box-sizing: border-box; }
+
+body {
+    min-width: 320px;
+    min-height: 100vh;
+    margin: 0;
+    padding: 28px clamp(16px, 4vw, 64px) 36px;
+    background:
+        radial-gradient(ellipse at 10% 0%, rgba(168, 201, 165, .22), transparent 36%),
+        #f7faf6;
+    color: var(--ink);
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+}
+
+.meeting-page {
+    width: min(1400px, 100%);
+    margin: 0 auto;
+}
+
+.meeting-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.header-actions { display: flex; align-items: center; gap: 10px; }
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.brand img { display: block; width: 205px; height: 72px; object-fit: contain; object-position: left center; }
+
+.back-button {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    gap: 8px;
+    padding: 0 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    color: var(--green);
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background .2s ease, transform .2s ease;
+}
+
+.back-button:hover { background: #f0f6ef; transform: translateY(-1px); }
+.back-button:focus-visible { outline: 3px solid rgba(53, 94, 59, .25); outline-offset: 2px; }
+
+.share-button {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    gap: 9px;
+    padding: 0 16px;
+    border: 1px solid #d2e1d0;
+    border-radius: 12px;
+    background: white;
+    color: var(--green);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s ease, transform .2s ease;
+}
+
+.share-button:hover { background: #f0f6ef; transform: translateY(-1px); }
+.share-button:focus-visible { outline: 3px solid rgba(53, 94, 59, .25); outline-offset: 2px; }
+
+.meeting-intro {
+    padding: clamp(30px, 5vw, 58px) 0 24px;
+    text-align: center;
+}
+
+.eyebrow {
+    color: var(--green);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .12em;
+}
+
+.meeting-intro h1 {
+    margin: 10px 0 8px;
+    color: var(--ink);
+    font-size: clamp(25px, 4vw, 38px);
+    line-height: 1.3;
+}
+
+.meeting-intro p, .meeting-help { color: var(--muted); line-height: 1.7; }
+.meeting-intro p { margin: 0; font-size: 15px; }
+
+.meeting-shell {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--surface);
+    box-shadow: 0 18px 50px rgba(38, 53, 42, .1);
+}
+
+.meeting-status {
+    display: flex;
+    min-height: 44px;
+    align-items: center;
+    gap: 9px;
+    padding: 0 16px;
+    border-bottom: 1px solid #edf1ec;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: #d5a33d; }
+.meeting-status.is-ready .status-dot { background: #4d9b62; }
+.meeting-status.is-error .status-dot { background: #cf5a4c; }
+
 #meet {
-    width: 800px;
-    height: 600px;
-    margin: 20px auto; /* توسيط الحاوية */
-    border: 2px solid #ccc;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 100%;
+    height: min(72vh, 760px);
+    min-height: 420px;
+    background: #f1f4f0;
+}
+
+#meet iframe { display: block; width: 100% !important; height: 100% !important; border: 0; }
+
+.meeting-fallback {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    min-height: 420px;
+    place-items: center;
+    color: var(--green);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.meeting-help { margin: 14px 4px 0; font-size: 12px; text-align: center; }
+
+@media (max-width: 640px) {
+    body { padding: 16px 12px 24px; }
+    .brand img { width: 155px; height: 56px; }
+    .header-actions { gap: 7px; }
+    .back-button { min-height: 38px; padding: 0 10px; font-size: 12px; }
+    .share-button { min-height: 38px; padding: 0 11px; font-size: 12px; }
+    .meeting-intro { padding: 36px 0 20px; }
+    .meeting-intro p { max-width: 340px; margin: 0 auto; font-size: 14px; }
+    .meeting-shell { border-radius: 14px; }
+    #meet { height: 68vh; min-height: 380px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }

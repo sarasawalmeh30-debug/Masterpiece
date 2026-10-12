@@ -1,19 +1,48 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اجتماع أونلاين</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="theme-color" content="#f7faf6">
+    <title>Meeting | TEAMLY</title>
+    <link rel="stylesheet" href="zoom.css">
 </head>
 <body>
-    <h1>مرحباً بك في اجتماعنا</h1>
-    <p>سيتم تحميل نافذة الاجتماع هنا:</p>
+    <main class="meeting-page">
+        <header class="meeting-header">
+            <a class="brand" href="../home_page/home.html" aria-label="TEAMLY home">
+                <img src="../img/logo3.png" alt="TEAMLY">
+            </a>
+            <div class="header-actions">
+                <a class="back-button" id="back-link" href="../chat_butween_Them/chat.html">
+                    <span aria-hidden="true">←</span>
+                    Back
+                </a>
+                <button class="share-button" id="share-meeting" type="button">
+                    <span aria-hidden="true">↗</span>
+                    Share meeting link
+                </button>
+            </div>
+        </header>
 
-    <div id="meet"></div>
+        <section class="meeting-intro" aria-labelledby="meeting-title">
+            <span class="eyebrow">YOUR TEAM SPACE</span>
+            <h1 id="meeting-title">Meet your team in one place</h1>
+            <p>Connect and coordinate your project together in a video meeting.</p>
+        </section>
 
-    <script src='https://meet.jit.si/external_api.js'></script>
-    
-    <script src="script.js"></script>
+        <section class="meeting-shell" aria-label="Meeting room">
+            <div class="meeting-status" id="meeting-status" role="status" aria-live="polite">
+                <span class="status-dot"></span>
+                Preparing your meeting room...
+            </div>
+            <div id="meet"></div>
+        </section>
+
+        <p class="meeting-help" id="meeting-help">If the meeting does not load, check your internet connection and refresh the page.</p>
+    </main>
+
+    <script src="https://meet.jit.si/external_api.js"></script>
+    <script src="zoom.js"></script>
 </body>
 </html>

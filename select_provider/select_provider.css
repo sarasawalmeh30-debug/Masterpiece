@@ -1049,3 +1049,57 @@
         padding: 35px 22px 25px;
     }
 }
+
+/* Guests use the public navigation and footer; signed-in clients use workspace navigation. */
+body.provider-authenticated { padding-top: 0; }
+body.provider-authenticated #navbar-container,
+body.provider-authenticated #footer-container { display: none; }
+body.provider-guest { padding-top: 125px; }
+body.provider-guest #navbar-container,
+body.provider-guest #footer-container { display: block; }
+body.provider-guest #sidebar-container { display: none; }
+body.provider-guest .details-card { display: none; }
+body.provider-guest .provider-layout { display: block; min-height: 0; }
+body.provider-guest .provider-main {
+    width: 100%;
+    padding: 32px max(50px, calc((100vw - 1990px) / 2));
+}
+.team-selection-empty {
+    margin: 0;
+    padding: 18px 12px;
+    border: 1px dashed var(--border, #DCE8DB);
+    border-radius: var(--radius-md, 12px);
+    color: var(--text-secondary, #6B756D);
+    font-size: 13px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.provider-count-label {
+    display: block;
+    margin: 18px 0 8px;
+    color: var(--text-primary, #26352a);
+    font-weight: 600;
+    text-align: left;
+}
+
+.provider-count-select {
+    width: 100%;
+    min-height: 48px;
+    margin-bottom: 16px;
+    padding: 0 14px;
+    border: 1px solid var(--border, #DCE8DB);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--text-primary, #26352a);
+    font: inherit;
+}
+
+@media (max-width: 900px) {
+    body.provider-guest .provider-main { padding: 24px 20px; }
+}
+
+@media (max-width: 720px) {
+    body.provider-guest { padding-top: 100px; }
+    body.provider-guest .provider-main { padding: 20px 14px; }
+}

@@ -2,17 +2,14 @@
    TEAMLY - FIND YOUR TEAM
 ================================== */
 
-/*
-  DEMO SETTINGS
-
-  false = user is not logged in
-  true  = user is logged in
-
-  This is only for testing the interface.
-  Real authentication must be connected later.
-*/
-
-const IS_LOGGED_IN = false;
+// Frontend-only session indicator until a real authentication service exists.
+let IS_LOGGED_IN = false;
+try {
+    IS_LOGGED_IN = sessionStorage.getItem("teamlyLoggedIn") === "true";
+} catch (error) {
+    IS_LOGGED_IN = false;
+}
+document.body.classList.add(IS_LOGGED_IN ? "provider-authenticated" : "provider-guest");
 
 
 /* ==================================
@@ -22,17 +19,7 @@ const IS_LOGGED_IN = false;
 const project = {
     name: "Wedding Photography Project",
     location: "Amman, Jordan",
-    budget: 2000,
-
-    /*
-      The AI determines the required services.
-      Change this array to test different numbers of services.
-    */
-
-    requiredServices: [
-        "Photography",
-        "Decoration"
-    ]
+    budget: 2000
 };
 
 
@@ -123,6 +110,8 @@ const providers = [
     }
 ];
 
+const availableServices = [...new Set(providers.map(provider => provider.service))];
+
 // Include the clicked Tracking recommendation in this page without confusing
 // its ID with a different record in the local provider catalog.
 const trackingParams = new URLSearchParams(window.location.search);
@@ -131,7 +120,7 @@ const trackingProviderName = trackingParams.get("name");
 if (trackingParams.get("source") === "tracking" && trackingProviderName) {
     const nameParts = trackingProviderName.trim().split(/\s+/);
     const requestedService = trackingParams.get("service") || "Provider";
-    const matchingService = project.requiredServices.find(service =>
+    const matchingService = availableServices.find(service =>
         requestedService.toLowerCase().includes(service.toLowerCase()) ||
         (service.toLowerCase().includes("photography") &&
             requestedService.toLowerCase().includes("photo"))
@@ -163,6 +152,7 @@ if (trackingParams.get("source") === "tracking" && trackingProviderName) {
 */
 
 const selectedProviders = new Map();
+let desiredProviderCount = null;
 
 let searchQuery = "";
 
@@ -195,6 +185,7 @@ const requestNote = document.getElementById("request-note");
 
 const accountModal = document.getElementById("account-modal");
 const messageModal = document.getElementById("message-modal");
+const providerCountModal = document.getElementById("provider-count-modal");
 
 
 /* ==================================
@@ -236,7 +227,7 @@ function getProviderById(id) {
 
 
 function isRequiredService(service) {
-    return project.requiredServices.includes(service);
+    return availableServices.includes(service);
 }
 
 
@@ -253,7 +244,7 @@ function renderProjectInformation() {
     const name = project.name;
     const location = project.location;
     const budget = formatPrice(project.budget);
-    const requiredCount = project.requiredServices.length;
+    const requiredCount = availableServices.length;
 
     document.getElementById("project-name").textContent = name;
     document.getElementById("project-location").textContent = location;
@@ -504,6 +495,11 @@ function selectProvider(providerId) {
         return;
     }
 
+    if (IS_LOGGED_IN && desiredProviderCount === null) {
+        openProviderCountModal();
+        return;
+    }
+
 
     // Clicking a selected provider again removes the selection.
 
@@ -513,6 +509,18 @@ function selectProvider(providerId) {
         updateTeam();
         applyFilters();
 
+        return;
+    }
+
+    if (
+        IS_LOGGED_IN &&
+        !selectedProviders.has(provider.service) &&
+        selectedProviders.size >= desiredProviderCount
+    ) {
+        showMessage(
+            "Your team is full",
+            `You chose ${desiredProviderCount} provider${desiredProviderCount === 1 ? "" : "s"}. Remove one before choosing another.`
+        );
         return;
     }
 
@@ -534,22 +542,20 @@ function selectProvider(providerId) {
 ================================== */
 
 function updateTeam() {
-    const requiredServices = project.requiredServices;
-
-    const totalRequired = requiredServices.length;
     const selectedCount = selectedProviders.size;
-
-    const percent = totalRequired === 0
+    const progressTarget = IS_LOGGED_IN ? desiredProviderCount : availableServices.length;
+    const percent = !progressTarget
         ? 0
-        : Math.round((selectedCount / totalRequired) * 100);
+        : Math.round((selectedCount / progressTarget) * 100);
 
-
-    teamProgressText.textContent =
-        `${selectedCount} of ${totalRequired} services selected`;
+    teamProgressText.textContent = IS_LOGGED_IN && desiredProviderCount !== null
+        ? `${selectedCount} of ${desiredProviderCount} providers selected`
+        : `${selectedCount} service${selectedCount === 1 ? "" : "s"} selected`;
 
     teamProgressPercent.textContent = `${percent}%`;
     progressFill.style.width = `${percent}%`;
 
+    teamProgressBar.setAttribute("aria-valuemax", progressTarget || availableServices.length);
     teamProgressBar.setAttribute(
         "aria-valuenow",
         selectedCount
@@ -560,123 +566,58 @@ function updateTeam() {
 
     let totalPrice = 0;
 
+    if (selectedCount === 0) {
+        teamServices.innerHTML = '<p class="team-selection-empty">Choose any providers you need to build your team.</p>';
+    }
 
-    requiredServices.forEach(service => {
-        const providerId = selectedProviders.get(service);
-
-        const provider = providerId
-            ? getProviderById(providerId)
-            : null;
-
+    selectedProviders.forEach((providerId, service) => {
+        const provider = getProviderById(providerId);
+        if (!provider) return;
         const item = document.createElement("div");
-
         item.className = "team-service-item";
 
-
-        if (provider) {
-            totalPrice += provider.price;
-
-            item.innerHTML = `
-                <div class="team-service-top">
-
-                    <strong>${service}</strong>
-
-                    <span class="service-check completed">
-                        <i class="fa fa-check"></i>
-                    </span>
-
+        if (Number.isFinite(provider.price)) totalPrice += provider.price;
+        const location = provider.location ? `${provider.location}, Jordan` : "Location not provided";
+        const price = Number.isFinite(provider.price) ? formatPrice(provider.price) : "Price on request";
+        item.innerHTML = `
+            <div class="team-service-top">
+                <strong>${escapeHTML(service)}</strong>
+                <span class="service-check completed"><i class="fa fa-check"></i></span>
+            </div>
+            <div class="selected-provider-info">
+                <div class="selected-provider-avatar">${escapeHTML(getInitials(provider))}</div>
+                <div class="selected-provider-text">
+                    <strong>${escapeHTML(getProviderName(provider))}</strong>
+                    <span>${escapeHTML(location)}</span>
                 </div>
-
-                <div class="selected-provider-info">
-
-                    <div class="selected-provider-avatar">
-                        ${getInitials(provider)}
-                    </div>
-
-                    <div class="selected-provider-text">
-
-                        <strong>${getProviderName(provider)}</strong>
-
-                        <span>${provider.location}, Jordan</span>
-
-                    </div>
-
-                    <button
-                        type="button"
-                        class="remove-provider-btn"
-                        data-action="remove-provider"
-                        data-service="${service}"
-                        aria-label="Remove ${getProviderName(provider)}">
-
-                        <i class="fa fa-times"></i>
-
-                    </button>
-
-                </div>
-
-                <div class="selected-price">
-                    ${formatPrice(provider.price)}
-                </div>
-            `;
-
-        } else {
-            item.innerHTML = `
-                <div class="team-service-top">
-
-                    <strong>${service}</strong>
-
-                    <span class="service-check">
-                        <i class="fa fa-clock-o"></i>
-                    </span>
-
-                </div>
-
-                <div class="team-service-empty">
-                    No provider selected.
-                </div>
-
-                <button
-                    type="button"
-                    class="choose-provider-link"
-                    data-action="choose-service"
-                    data-service="${service}">
-
-                    <i class="fa fa-plus"></i>
-                    Choose a provider
+                <button type="button" class="remove-provider-btn" data-action="remove-provider" data-service="${escapeHTML(service)}" aria-label="Remove ${escapeHTML(getProviderName(provider))}">
+                    <i class="fa fa-times"></i>
                 </button>
-            `;
-        }
+            </div>
+            <div class="selected-price">${price}</div>
+        `;
 
         teamServices.appendChild(item);
     });
 
-
     teamTotalPrice.textContent = formatPrice(totalPrice);
 
+    // Guests can open the login prompt from Send Request even before making a selection.
+    const canSendRequest = !IS_LOGGED_IN || (
+        desiredProviderCount !== null && selectedCount === desiredProviderCount
+    );
+    sendRequestButton.disabled = !canSendRequest;
+    sendRequestButton.style.opacity = canSendRequest ? "1" : "0.55";
+    sendRequestButton.style.cursor = canSendRequest ? "pointer" : "not-allowed";
 
-    // Update request button state
-
-    const allServicesSelected =
-        totalRequired > 0 && selectedCount === totalRequired;
-
-    sendRequestButton.disabled = !allServicesSelected;
-
-    sendRequestButton.style.opacity =
-        allServicesSelected ? "1" : "0.55";
-
-    sendRequestButton.style.cursor =
-        allServicesSelected ? "pointer" : "not-allowed";
-
-
-    if (!allServicesSelected) {
-        requestNote.textContent =
-            `Select a provider for all ${totalRequired} required services before sending your request.`;
-    } else if (!IS_LOGGED_IN) {
-        requestNote.textContent =
-            "Create a free account to send your request.";
+    if (!IS_LOGGED_IN) {
+        requestNote.textContent = "Please log in before sending your request.";
+    } else if (desiredProviderCount === null) {
+        requestNote.textContent = "Choose how many providers you need to start your team.";
+    } else if (selectedCount < desiredProviderCount) {
+        requestNote.textContent = `Select ${desiredProviderCount - selectedCount} more provider${desiredProviderCount - selectedCount === 1 ? "" : "s"} to send your request.`;
     } else {
-        requestNote.textContent =
-            "Your team is ready to receive your request.";
+        requestNote.textContent = "Your team is ready to receive your request.";
     }
 }
 
@@ -707,22 +648,23 @@ function viewProviderProfile(providerId) {
 ================================== */
 
 function sendRequest() {
-    const totalRequired = project.requiredServices.length;
-
-    if (selectedProviders.size !== totalRequired) {
-        showMessage(
-            "Complete your team",
-            "Please select one provider for every required service."
-        );
-
+    // Require an account before sending a request.
+    if (!IS_LOGGED_IN) {
+        openAccountModal();
         return;
     }
 
+    if (desiredProviderCount === null) {
+        openProviderCountModal();
+        return;
+    }
 
-    // Require an account before sending a request.
+    if (selectedProviders.size !== desiredProviderCount) {
+        showMessage(
+            "Complete your team",
+            `Please select exactly ${desiredProviderCount} provider${desiredProviderCount === 1 ? "" : "s"} before sending your request.`
+        );
 
-    if (!IS_LOGGED_IN) {
-        openAccountModal();
         return;
     }
 
@@ -733,9 +675,34 @@ function sendRequest() {
     */
 
     showMessage(
-        "Request Ready",
-        "Your selected team is ready. The request can now be connected to your backend."
+        "Request prepared",
+        "Your selected team is complete. This demo can confirm the request on screen, but saving or delivering it requires a connected backend or database."
     );
+}
+
+
+function openProviderCountModal() {
+    providerCountModal.hidden = false;
+    document.body.style.overflow = "hidden";
+    document.getElementById("provider-count-select").focus();
+}
+
+
+function closeProviderCountModal() {
+    providerCountModal.hidden = true;
+    document.body.style.overflow = "";
+}
+
+
+function confirmProviderCount() {
+    const count = Number(document.getElementById("provider-count-select").value);
+    if (!Number.isInteger(count) || count < 1 || count > availableServices.length) return;
+
+    desiredProviderCount = count;
+    selectedProviders.clear();
+    closeProviderCountModal();
+    updateTeam();
+    applyFilters();
 }
 
 
@@ -773,7 +740,8 @@ function openLoginPage() {
       Replace this with your actual login page path.
     */
 
-    window.location.href = "../login/login.html";
+    const returnTo = encodeURIComponent("../select_provider/select_provider.html");
+    window.location.href = `../login/login.html?returnTo=${returnTo}`;
 }
 
 
@@ -806,6 +774,10 @@ function closeMessageModal() {
 ================================== */
 
 async function loadSidebar() {
+    if (!IS_LOGGED_IN) {
+        return;
+    }
+
     const container = document.getElementById("sidebar-container");
 
     if (!container) {
@@ -966,6 +938,9 @@ document.getElementById("continue-btn")
 document.getElementById("login-btn")
     .addEventListener("click", openLoginPage);
 
+document.getElementById("confirm-provider-count")
+    .addEventListener("click", confirmProviderCount);
+
 
 // Message modal
 
@@ -978,7 +953,7 @@ document.getElementById("message-ok-btn")
 
 // Clicking the dark background closes the dialogs.
 
-[accountModal, messageModal].forEach(modal => {
+[accountModal, messageModal, providerCountModal].forEach(modal => {
     modal.addEventListener("click", event => {
         if (event.target === modal) {
             modal.hidden = true;
@@ -994,6 +969,7 @@ document.addEventListener("keydown", event => {
     if (event.key === "Escape") {
         closeAccountModal();
         closeMessageModal();
+        if (desiredProviderCount !== null) closeProviderCountModal();
     }
 });
 
@@ -1019,6 +995,10 @@ function initializeProviderPage() {
     updateTeam();
 
     loadSidebar();
+
+    if (IS_LOGGED_IN) {
+        openProviderCountModal();
+    }
 }
 
 initializeProviderPage();

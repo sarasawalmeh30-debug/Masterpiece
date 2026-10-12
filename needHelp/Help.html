@@ -3,11 +3,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teamly Support</title><link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../navbar/nav.css">
 <link rel="stylesheet" href="Help.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../footer/footer.css">
 
 </head>
-<body><div id="sidebar-container"></div>
+<body>
+<div id="navbar-container"></div>
 
 <main class="support-page">
 
@@ -40,9 +43,22 @@
                 <form id="support-form">
 
                     <div class="form-group">
+                        <label for="contact-email">Your Email <span>*</span></label>
+                        <input
+                            type="email"
+                            id="contact-email"
+                            name="email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                        >
+                        <small class="email-requirement">Enter a valid email to choose an issue type.</small>
+                    </div>
+
+                    <div class="form-group">
                         <label for="issue-type">Issue Type <span>*</span></label>
 
-                        <select id="issue-type" required>
+                        <select id="issue-type" required disabled>
                             <option value="">Select an issue type</option>
                             <option value="Payment Issue">Payment Issue</option>
                             <option value="Provider Issue">Provider Issue</option>
@@ -138,44 +154,6 @@
 
         </div>
 
-        <aside class="support-sidebar">
-
-            <section class="support-card project-support-card">
-                <div class="side-card-heading">
-                    <i class="fa fa-folder-open"></i>
-                    <h2>Your Support</h2>
-                </div>
-
-                <div class="project-image">
-                    <i class="fa fa-picture-o"></i>
-                </div>
-
-                <span class="side-label">PROJECT</span>
-                <h3 id="project-name">My Project</h3>
-
-                <div class="side-divider"></div>
-
-                <span class="side-label">SELECTED PROVIDER</span>
-
-                <div class="provider-info">
-                    <div class="provider-avatar">
-                        <i class="fa fa-user"></i>
-                    </div>
-
-                    <div>
-                        <h4 id="provider-name">Selected Provider</h4>
-                        <p id="provider-service">Service Provider</p>
-                    </div>
-                </div>
-
-                <div class="support-open-time">
-                    <i class="fa fa-clock-o"></i>
-                    <div>
-                        <strong>Support Open</strong>
-                        <p>Response within 24 hours</p>
-                    </div>
-                </div>
-            </section>
 
             <section class="support-card next-steps-card">
                 <div class="side-card-heading">
@@ -219,6 +197,10 @@
 
 </main>
 
+<div id="footer-container"></div>
+
+<script src="../navbar/nav.js"></script>
+<script src="../footer/footer.js"></script>
 <script src="Help.js"></script>
 
 </body>

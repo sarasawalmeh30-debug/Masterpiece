@@ -64,8 +64,22 @@ if (providerService) {
 
 // Show the subject field only when Others is selected.
 const issueType = document.getElementById("issue-type");
+const contactEmail = document.getElementById("contact-email");
 const otherSubjectGroup = document.getElementById("other-subject-group");
 const otherSubject = document.getElementById("other-subject");
+
+issueType.disabled = !contactEmail.validity.valid;
+contactEmail.addEventListener("input", () => {
+    const validEmail = contactEmail.validity.valid && contactEmail.value.trim() !== "";
+    issueType.disabled = !validEmail;
+
+    if (!validEmail) {
+        issueType.value = "";
+        otherSubjectGroup.classList.add("hidden");
+        otherSubject.required = false;
+        otherSubject.value = "";
+    }
+});
 
 issueType.addEventListener("change", () => {
     const isOther = issueType.value === "Others";
@@ -95,10 +109,11 @@ form.addEventListener("submit", (event) => {
     event.preventDefault();
 
     const selectedIssue = issueType.value;
+    const email = contactEmail.value.trim();
     const subject = otherSubject.value.trim();
     const problemDescription = description.value.trim();
 
-    if (!selectedIssue || !problemDescription || (selectedIssue === "Others" && !subject)) {
+    if (!contactEmail.validity.valid || !email || !selectedIssue || !problemDescription || (selectedIssue === "Others" && !subject)) {
         formMessage.textContent = "Please complete all required fields.";
         formMessage.className = "form-message error";
         return;
@@ -106,8 +121,9 @@ form.addEventListener("submit", (event) => {
 
     // Front-end demonstration only: no server request is made.
     const request = {
-        project: document.getElementById("project-name").textContent,
-        provider: document.getElementById("provider-name").textContent,
+        project: document.getElementById("project-name")?.textContent || params.get("project") || "",
+        provider: document.getElementById("provider-name")?.textContent || params.get("provider") || "",
+        email,
         issueType: selectedIssue,
         subject: selectedIssue === "Others" ? subject : selectedIssue,
         description: problemDescription,

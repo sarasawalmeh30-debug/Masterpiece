@@ -21,6 +21,16 @@ function initializeSidebar() {
     if (openButton) openButton.addEventListener("click", openSidebar);
     if (closeButton) closeButton.addEventListener("click", closeSidebar);
     if (overlay) overlay.addEventListener("click", closeSidebar);
+    const logoutLink = sidebar.querySelector(".sidebar-logout");
+    if (logoutLink) {
+        logoutLink.addEventListener("click", () => {
+            try {
+                sessionStorage.removeItem("teamlyLoggedIn");
+            } catch (error) {
+                // The sidebar still navigates to login if storage is unavailable.
+            }
+        });
+    }
 
     document.addEventListener("keydown", event => {
         if (event.key === "Escape") closeSidebar();

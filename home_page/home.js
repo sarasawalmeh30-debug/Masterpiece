@@ -36,25 +36,31 @@ function updateCarousel() {
         // تطبيق التنسيقات بناءً على موقع الكارد (المتوسط، اليمين، اليسار، والخلف)
         if (offset === 0) {
             // الكارد النشط في المنتصف
-            card.style.transform = 'translateX(0) scale(1) translateZ(0)';
+            card.style.width = '440px';
+            card.style.transform = 'translateX(0) scale(1.03) translateZ(0)';
             card.style.zIndex = '5';
             card.style.opacity = '1';
             card.style.filter = 'brightness(1)';
         } else if (offset === 1) {
             // الكارد على اليمين القريب
-            card.style.transform = 'translateX(130px) scale(0.85) translateZ(-100px)';
+            card.style.width = '400px';
+            card.style.transform = 'translateX(190px) scale(0.85) translateZ(-100px)';
             card.style.zIndex = '3';
             card.style.opacity = '0.7';
             card.style.filter = 'brightness(0.7)';
         } else if (offset === -1 || offset === totalCards - 1) {
             // الكارد على اليسار القريب
-            card.style.transform = 'translateX(-130px) scale(0.85) translateZ(-100px)';
+            card.style.width = '400px';
+            card.style.transform = 'translateX(-190px) scale(0.85) translateZ(-100px)';
             card.style.zIndex = '3';
             card.style.opacity = '0.7';
             card.style.filter = 'brightness(0.7)';
         } else {
             // الكاردات البعيدة جداً في الخلف
-            card.style.transform = `translateX(${offset * 180}px) scale(0.7) translateZ(-200px)`;
+            card.style.width = '400px';
+            const direction = Math.sign(offset);
+            const distance = 360 + (Math.abs(offset) - 2) * 220;
+            card.style.transform = `translateX(${direction * distance}px) scale(0.55) translateZ(-200px)`;
             card.style.zIndex = '1';
             card.style.opacity = '0.3';
             card.style.filter = 'brightness(0.4)';
@@ -88,3 +94,104 @@ prevBtn.addEventListener('click', () => {
 
 // التشغيل الأولي لتنظيم الكاردات
 updateCarousel();
+
+// Reveal the home page copy section by section as it enters the viewport.
+const homeMain = document.querySelector('main');
+const ctaSection = document.querySelector('.cta-section');
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const homeTextSelector = 'h1, h2, h3, p, .section-label, .hero-label, .card-btn, .step-number, .faq-item summary, .hero-actions .btn';
+
+if (homeMain && !reducedMotion && 'IntersectionObserver' in window) {
+    const homeText = Array.from(homeMain.querySelectorAll(homeTextSelector))
+        .filter((item) => !item.closest('.cta-section'));
+    const revealGroups = new Map();
+    homeText.forEach((item) => {
+        const group = item.closest('.hero-content, .header-content, .section-heading, .option-card, .carousel-card, .step-card, .benefit-card, .faq-item') || item.parentElement;
+        if (!revealGroups.has(group)) revealGroups.set(group, []);
+        revealGroups.get(group).push(item);
+        item.classList.add('scroll-reveal');
+    });
+    revealGroups.forEach((items) => {
+        items.forEach((item, index) => item.style.setProperty('--home-reveal-delay', `${Math.min(index, 3) * 110}ms`));
+    });
+    document.body.classList.add('js-home-scroll-motion');
+
+    const homeTextObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            entry.target.classList.toggle('is-revealed', entry.isIntersecting);
+        });
+    }, { threshold: 0.18, rootMargin: '0px 0px -6% 0px' });
+    homeText.forEach((item) => homeTextObserver.observe(item));
+}
+
+// Reveal the home page CTA in sequence as it enters view.
+const ctaButton = ctaSection && ctaSection.querySelector('.btn-cta');
+
+if (ctaSection && !reducedMotion && 'IntersectionObserver' in window) {
+    document.body.classList.add('js-cta-motion');
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => ctaSection.classList.toggle('is-visible', entry.isIntersecting));
+    }, { threshold: 0.18 });
+    sectionObserver.observe(ctaSection);
+
+    const revealItems = ctaSection.querySelectorAll('.cta-reveal');
+    const textObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            entry.target.classList.toggle('is-revealed', entry.isIntersecting);
+        });
+    }, { threshold: 0.35, rootMargin: '0px 0px -8% 0px' });
+    revealItems.forEach((item) => textObserver.observe(item));
+} else if (ctaSection) {
+    ctaSection.classList.add('is-visible');
+    ctaSection.querySelectorAll('.cta-reveal').forEach((item) => item.classList.add('is-revealed'));
+}
+
+if (ctaSection && ctaButton && !reducedMotion && window.matchMedia('(pointer: fine)').matches) {
+    let magnetFrame = 0;
+    ctaSection.addEventListener('pointermove', (event) => {
+        if (event.pointerType === 'touch' || magnetFrame) return;
+        magnetFrame = window.requestAnimationFrame(() => {
+            magnetFrame = 0;
+            const bounds = ctaButton.getBoundingClientRect();
+            const deltaX = event.clientX - (bounds.left + bounds.width / 2);
+            const deltaY = event.clientY - (bounds.top + bounds.height / 2);
+            const distance = Math.hypot(deltaX, deltaY);
+            if (distance < 300) {
+                const pull = (300 - distance) / 300 * 0.38;
+                ctaButton.style.setProperty('--mag-x', `${deltaX * pull}px`);
+                ctaButton.style.setProperty('--mag-y', `${deltaY * pull}px`);
+            } else {
+                ctaButton.style.setProperty('--mag-x', '0px');
+                ctaButton.style.setProperty('--mag-y', '0px');
+            }
+        });
+    });
+    ctaSection.addEventListener('pointerleave', () => {
+        if (magnetFrame) window.cancelAnimationFrame(magnetFrame);
+        magnetFrame = 0;
+        ctaButton.style.setProperty('--mag-x', '0px');
+        ctaButton.style.setProperty('--mag-y', '0px');
+    });
+}
+
+if (ctaButton && !reducedMotion) {
+    ctaButton.addEventListener('click', (event) => {
+        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        const colors = ['#A8C9A5', '#6F9B73', '#D7BC78', '#FFFFFF'];
+        for (let index = 0; index < 32; index += 1) {
+            const spark = document.createElement('span');
+            const isBubble = index < 24;
+            const angle = (Math.PI * 2 * index) / 32 + Math.random() * 0.3;
+            const distance = isBubble ? 36 + Math.random() * 54 : 24 + Math.random() * 32;
+            spark.className = isBubble ? 'cta-click-bubble' : 'cta-click-spark';
+            spark.style.setProperty('--spark-x', `${Math.cos(angle) * distance}px`);
+            spark.style.setProperty('--spark-y', `${Math.sin(angle) * distance}px`);
+            spark.style.setProperty('--spark-color', colors[index % colors.length]);
+            if (isBubble) spark.style.setProperty('--bubble-size', `${6 + Math.random() * 10}px`);
+            ctaButton.appendChild(spark);
+            spark.addEventListener('animationend', () => spark.remove(), { once: true });
+        }
+        window.setTimeout(() => { window.location.href = ctaButton.href; }, 380);
+    });
+}

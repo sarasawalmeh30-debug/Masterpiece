@@ -1,7 +1,5 @@
 
 const loginForm = document.getElementById("loginForm");
-const passwordInput = document.getElementById("password");
-const togglePassword = document.getElementById("togglePassword");
 const loginMessage = document.getElementById("loginMessage");
 
 const forgotPassword = document.getElementById("forgotPassword");
@@ -18,38 +16,49 @@ const resetExtraFields = document.getElementById("resetExtraFields");
 const resetSubmit = document.getElementById("resetSubmit");
 const resetMessage = document.getElementById("resetMessage");
 const resetProgress = document.getElementById("resetProgress");
-const login_button=document.getElementById("login-button");
-login_button.addEventListener("click",function(){
-window.location.href="../ai_chat/ai_chat.html";
-});
+const loginSection = document.querySelector(".login-section");
+const invitationSeal = document.getElementById("invitationSeal");
+let loginSuccessTimer = 0;
 let resetStep = 1;
 let resetEmail = "";
-// Show or hide password
-const eyeIcon = document.getElementById("eyeIcon");
 
-togglePassword.addEventListener("click", function () {
-const isHidden = passwordInput.type === "password";
+invitationSeal.addEventListener("click", function () {
+    loginSection.classList.add("invitation-open");
+    invitationSeal.setAttribute("aria-expanded", "true");
+    window.setTimeout(function () { document.getElementById("email").focus(); }, 680);
+});
 
-passwordInput.type = isHidden ? "text" : "password";
+function restoreLoginPage() {
+    if (loginSuccessTimer) window.clearTimeout(loginSuccessTimer);
+    loginSuccessTimer = 0;
+    loginSection.classList.remove("login-successful", "login-celebrating", "is-form-focused");
+    loginSection.classList.remove("invitation-open");
+    invitationSeal.setAttribute("aria-expanded", "false");
+    loginMessage.textContent = "";
+    loginMessage.className = "message";
+}
 
-eyeIcon.classList.toggle("fa-eye", isHidden);
-eyeIcon.classList.toggle("fa-eye-slash", !isHidden);
+window.addEventListener("pageshow", restoreLoginPage);
+window.addEventListener("pagehide", function () {
+    if (loginSuccessTimer) window.clearTimeout(loginSuccessTimer);
+    loginSuccessTimer = 0;
+});
 
-togglePassword.setAttribute(
-    "aria-label",
-    isHidden ? "Hide password" : "Show password"
-);
+loginForm.addEventListener("focusin", function (event) {
+    if (event.target.matches("input")) loginSection.classList.add("is-form-focused");
+});
 
-togglePassword.setAttribute(
-    "title",
-    isHidden ? "Hide password" : "Show password"
-);
-
+loginForm.addEventListener("focusout", function (event) {
+    if (!event.relatedTarget || !event.relatedTarget.matches("input")) {
+        loginSection.classList.remove("is-form-focused");
+    }
 });
 
 // Login form: frontend validation only
 loginForm.addEventListener("submit", function (event) {
 event.preventDefault();
+
+if (loginSection.classList.contains("login-celebrating") || loginSection.classList.contains("login-successful")) return;
 
 loginMessage.textContent = "";
 loginMessage.className = "message";
@@ -59,8 +68,26 @@ if (!loginForm.checkValidity()) {
     return;
 }
 
+try {
+    sessionStorage.setItem("teamlyLoggedIn", "true");
+} catch (error) {
+    // Keep the demo login flow usable if browser storage is unavailable.
+}
+
 // loginMessage.textContent 
 loginMessage.classList.add("success");
+loginSection.classList.add("login-celebrating");
+loginSuccessTimer = window.setTimeout(function () {
+    loginSection.classList.remove("login-celebrating");
+    loginSection.classList.add("login-successful");
+    loginSuccessTimer = window.setTimeout(function () {
+        loginSuccessTimer = 0;
+        const returnTo = new URLSearchParams(window.location.search).get("returnTo");
+        window.location.href = returnTo === "../select_provider/select_provider.html"
+            ? returnTo
+            : "../ai_chat/ai_chat.html";
+    }, 680);
+}, 720);
 
 });
 

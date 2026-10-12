@@ -8,6 +8,8 @@
 
     <!-- Shared styles -->
     <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../navbar/nav.css">
+    <link rel="stylesheet" href="../footer/footer.css">
 
     <!-- Font Awesome 4.7 -->
     <link rel="stylesheet"
@@ -19,6 +21,8 @@
 </head>
 
 <body>
+
+    <div id="navbar-container"></div>
 
     <div class="provider-layout">
 
@@ -69,11 +73,11 @@
                 </div>
 
                 <div class="required-services">
-                    <span class="required-number" id="required-count">2</span>
+                    <span class="required-number" id="required-count">4</span>
 
                     <div>
-                        <strong>Services Required</strong>
-                        <p>Based on your project</p>
+                        <strong>Services Available</strong>
+                        <p>Choose as many as you need</p>
                     </div>
                 </div>
 
@@ -214,7 +218,7 @@
 
                         <div class="team-progress-info">
                             <strong id="team-progress-text">
-                                0 of 2 services selected
+                                0 services selected
                             </strong>
 
                             <span id="team-progress-percent">0%</span>
@@ -225,7 +229,7 @@
                             role="progressbar"
                             aria-label="Selected services progress"
                             aria-valuemin="0"
-                            aria-valuemax="2"
+                            aria-valuemax="4"
                             aria-valuenow="0"
                             id="team-progress-bar">
 
@@ -249,7 +253,7 @@
                         </button>
 
                         <p class="request-note" id="request-note">
-                            Select a provider for each required service.
+                            Choose any providers you need to build your team.
                         </p>
 
                     </div>
@@ -280,8 +284,8 @@
                         </div>
 
                         <div class="detail-row">
-                            <span>Required services</span>
-                            <strong id="details-required">2</strong>
+                            <span>Available services</span>
+                            <strong id="details-required">4</strong>
                         </div>
 
                     </div>
@@ -291,6 +295,29 @@
             </div>
 
         </main>
+    </div>
+
+    <!-- Provider count selection for signed-in clients -->
+    <div
+        class="modal-overlay"
+        id="provider-count-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="provider-count-title"
+        hidden>
+        <div class="account-modal">
+            <div class="lock-icon"><i class="fa fa-users"></i></div>
+            <h2 id="provider-count-title">Build your team</h2>
+            <p>How many providers do you need? You’ll need to select exactly this number before sending your request.</p>
+            <label class="provider-count-label" for="provider-count-select">Number of providers</label>
+            <select id="provider-count-select" class="provider-count-select">
+                <option value="1">1 provider</option>
+                <option value="2">2 providers</option>
+                <option value="3">3 providers</option>
+                <option value="4">4 providers</option>
+            </select>
+            <button type="button" class="continue-btn" id="confirm-provider-count">Continue</button>
+        </div>
     </div>
 
     <!-- Account Required Modal -->
@@ -317,11 +344,10 @@
                 <i class="fa fa-lock"></i>
             </div>
 
-            <h2 id="account-modal-title">Create your free account</h2>
+            <h2 id="account-modal-title">Login required</h2>
 
             <p>
-                Create a free account to send your request and connect
-                with your team.
+                Please log in before sending your request. You can create a free account if you are new to TEAMLY.
             </p>
 
             <button
@@ -329,7 +355,7 @@
                 class="continue-btn"
                 id="continue-btn">
 
-                Continue
+                Create an account
                 <i class="fa fa-arrow-right"></i>
             </button>
 
@@ -375,7 +401,11 @@
         </div>
     </div>
 
+    <div id="footer-container"></div>
+
     <script src="select_provider.js"></script>
+    <script src="../navbar/nav.js"></script>
+    <script src="../footer/footer.js"></script>
     <script src="../sidebar_client/sidbar.js"></script>
 
 </body>
