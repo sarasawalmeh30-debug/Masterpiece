@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#EAF4E8">
+    <title>Provider Registration | TEAMLY</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="Provider_Register.css">
+    <script src="Provider_Register.js" defer></script>
+</head>
+<body>
+<main class="provider-register-page">
+    <aside class="brand-panel">
+        <a class="brand-logo" href="../home_page/home.html" aria-label="TEAMLY home">
+            <img src="../img/logo3.png" alt="TEAMLY">
+        </a>
+        <div class="brand-copy">
+            <span class="eyebrow">JOIN TEAMLY</span>
+            <h1>Create Your<br>Provider Profile</h1>
+            <p class="brand-intro">Showcase your work, connect with clients, and grow your business with TEAMLY.</p>
+            <ul class="benefits">
+                <li><span class="benefit-icon"><i class="fa fa-picture-o" aria-hidden="true"></i></span><span>Upload Your Work Portfolio</span></li>
+                <li><span class="benefit-icon"><i class="fa fa-inbox" aria-hidden="true"></i></span><span>Receive Project Requests</span></li>
+                <li><span class="benefit-icon"><i class="fa fa-users" aria-hidden="true"></i></span><span>Connect with New Clients</span></li>
+            </ul>
+        </div>
+        <div class="brand-note"><i class="fa fa-leaf" aria-hidden="true"></i><span>Good work deserves to be discovered.</span></div>
+        <span class="decor decor-one" aria-hidden="true"></span><span class="decor decor-two" aria-hidden="true"></span>
+    </aside>
+
+    <section class="form-panel" aria-labelledby="form-title">
+        <div class="form-shell">
+            <header class="form-heading">
+                <span class="form-eyebrow">PROVIDER REGISTRATION</span>
+                <h2 id="form-title">Create Provider Account</h2>
+                <p>Create your account and showcase your professional work.</p>
+            </header>
+
+            <form id="providerRegisterForm" novalidate>
+                <div class="field-grid">
+                    <div class="field">
+                        <label for="fullName">Full Name</label>
+                        <div class="input-wrap"><i class="fa fa-user-o" aria-hidden="true"></i><input id="fullName" name="fullName" type="text" autocomplete="name" placeholder="Your full name" required aria-describedby="fullNameError"></div>
+                        <small class="field-error" id="fullNameError"></small>
+                    </div>
+                    <div class="field">
+                        <label for="email">Email Address</label>
+                        <div class="input-wrap"><i class="fa fa-envelope-o" aria-hidden="true"></i><input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required aria-describedby="emailError"></div>
+                        <small class="field-error" id="emailError"></small>
+                    </div>
+                    <div class="field">
+                        <label for="password">Password</label>
+                        <div class="input-wrap"><i class="fa fa-lock" aria-hidden="true"></i><input id="password" name="password" type="password" autocomplete="new-password" placeholder="At least 8 characters" required aria-describedby="passwordError"><button type="button" class="password-toggle" data-target="password" aria-label="Show password"><i class="fa fa-eye-slash" aria-hidden="true"></i></button></div>
+                        <small class="field-error" id="passwordError"></small>
+                    </div>
+                    <div class="field">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <div class="input-wrap"><i class="fa fa-lock" aria-hidden="true"></i><input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" placeholder="Enter your password again" required aria-describedby="confirmPasswordError"><button type="button" class="password-toggle" data-target="confirmPassword" aria-label="Show password"><i class="fa fa-eye-slash" aria-hidden="true"></i></button></div>
+                        <small class="field-error" id="confirmPasswordError"></small>
+                    </div>
+                </div>
+
+                <div class="field service-field">
+                    <label for="service">Service Offered</label>
+                    <div class="input-wrap select-wrap"><i class="fa fa-briefcase" aria-hidden="true"></i><select id="service" name="service" required aria-describedby="serviceError"><option value="">Choose your service</option><option>Photography</option><option>Videography</option><option>Event Staff</option><option>Favors &amp; Gifts</option><option>Decoration</option><option>Catering</option><option>Music &amp; DJ</option><option>Video Editing</option><option>Venues &amp; Halls</option><option>Special Effects</option></select><i class="fa fa-angle-down select-caret" aria-hidden="true"></i></div>
+                    <small class="field-error" id="serviceError"></small>
+                </div>
+
+                <section class="portfolio-section" aria-labelledby="portfolio-title">
+                    <div class="section-title"><div><h3 id="portfolio-title">Your Profile</h3><p>Upload photos of your work and add a video link to showcase your portfolio.</p></div><span class="section-mark"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span></div>
+                    <div class="portfolio-grid">
+                        <div class="field photo-field">
+                            <label for="photos">Upload Photos of Your Work <span class="required-mark">*</span></label>
+                            <label class="upload-zone" for="photos" id="dropZone" tabindex="0">
+                                <span class="upload-icon"><i class="fa fa-cloud-upload" aria-hidden="true"></i></span>
+                                <span class="upload-title">Drop your photos here</span>
+                                <span class="upload-hint">or <span class="browse-link">browse files</span></span>
+                                <span class="upload-formats">JPG, JPEG, PNG or WEBP · Add multiple photos</span>
+                            </label>
+                            <input class="visually-hidden" id="photos" name="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple aria-describedby="photosError">
+                            <small class="field-error" id="photosError"></small>
+                            <div class="preview-grid" id="photoPreviews" aria-live="polite"></div>
+                        </div>
+                        <div class="field video-field">
+                            <label for="videoFile">Upload a Video <span class="optional">Optional</span></label>
+                            <input class="visually-hidden" id="videoFile" name="videoFile" type="file" accept="video/mp4,video/quicktime,video/webm" aria-describedby="videoFileError">
+                            <label class="upload-zone video-upload-zone" for="videoFile" id="videoDropZone" tabindex="0" role="button" aria-label="Drop your video here or browse files">
+                                <span class="upload-icon"><i class="fa fa-video-camera" aria-hidden="true"></i></span>
+                                <span class="upload-title">Drop your video here or <span class="browse-link">browse files</span></span>
+                                <span class="upload-formats">MP4, MOV, WEBM</span>
+                            </label>
+                            <div class="selected-video" id="selectedVideo" hidden>
+                                <span class="selected-video-name" id="selectedVideoName"></span>
+                                <button class="remove-video" id="removeVideo" type="button" aria-label="Remove selected video"><i class="fa fa-times" aria-hidden="true"></i></button>
+                            </div>
+                            <small class="field-error" id="videoFileError" aria-live="polite"></small>
+                        </div>
+                    </div>
+                </section>
+
+                <button class="submit-button" type="submit">Create Provider Account <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                <p class="terms-note">By creating an account, you agree to TEAMLY's Terms &amp; Conditions and Privacy Policy.</p>
+                <p class="form-message" id="formMessage" role="status" aria-live="polite"></p>
+            </form>
+            <p class="login-prompt">Already have an account? <a href="../login/login.html">Login</a></p>
+        </div>
+    </section>
+</main>
+</body>
+</html>
