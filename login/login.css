@@ -1161,3 +1161,32 @@ transition: none;
     .rain-icon,.rain-confetti,.event-light-string span { animation:none; }
     .rain-icon,.rain-confetti { display:none; }
 }
+
+.login-home-link {
+    position: absolute;
+    z-index: 30;
+    top: 24px;
+    left: 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: #355E3B;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color .2s ease;
+}
+
+.login-home-link:hover {
+    color: #243f29;
+    text-decoration: underline;
+}
+
+.login-home-link:focus-visible {
+    outline: 3px solid rgba(53, 94, 59, .28);
+    outline-offset: 3px;
+}
+
+@media (max-width: 720px) {
+    .login-home-link { top: 14px; left: 14px; font-size: 13px; }
+}
