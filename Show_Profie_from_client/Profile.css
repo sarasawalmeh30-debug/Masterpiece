@@ -416,7 +416,28 @@
     border-color: #efc7c7;
     color: var(--error);
     text-decoration: line-through;
-    cursor: not-allowed;
+    cursor: pointer;
+}
+
+.calendar-day.booked:hover,
+.calendar-day.booked:focus-visible {
+    outline: 2px solid var(--error);
+    outline-offset: 1px;
+}
+
+.calendar-day.partially-booked {
+    position: relative;
+}
+
+.calendar-day.partially-booked::after {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--error);
+    content: "";
 }
 
 .calendar-day.past {
@@ -478,6 +499,18 @@
     font-size: 13px;
     line-height: 1.6;
 }
+
+.availability-demo-note { margin-top: 7px !important; color: var(--text-light) !important; font-size: 11px !important; }
+.time-availability { margin-top: 12px; padding: 16px; border: 1px solid var(--border); border-radius: var(--radius-md); background: #fff; }
+.time-availability h3 { margin: 0 0 10px; color: var(--text); font-size: 15px; }
+.availability-note { margin: 0 0 12px; padding: 10px 11px; border: 1px solid #efc7c7; border-radius: 9px; background: var(--error-bg); color: var(--error); font-size: 12px; font-weight: 700; line-height: 1.5; }
+.time-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.time-slot { min-height: 38px; padding: 7px 5px; border: 1px solid var(--primary); border-radius: 8px; background: var(--success-bg); color: var(--primary-deep); font-size: 11px; font-weight: 650; cursor: pointer; }
+.time-slot:hover:not(:disabled), .time-slot:focus-visible { border-color: var(--primary-deep); outline: 2px solid rgba(53,94,59,.2); outline-offset: 1px; }
+.time-slot.selected { border-color: var(--primary-deep); background: var(--primary-deep); color: #fff; }
+.time-slot.booked { border-color: #efc7c7; background: var(--error-bg); color: var(--error); cursor: not-allowed; text-decoration: line-through; }
+.selected-time { min-height: 18px; margin: 11px 0 0; color: var(--primary-deep); font-size: 12px; font-weight: 650; }
+.detail-item strong.is-booked { color: var(--error); }
 
 
 /* Provider Details */
@@ -553,6 +586,8 @@
     font-size: 13px;
     line-height: 1.6;
 }
+
+.select-message.is-error { color: var(--error); }
 
 
 /* Footer */
@@ -633,6 +668,8 @@
     .calendar-legend {
         gap: 10px;
     }
+
+    .time-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
     .video-section {
         align-items: flex-start;

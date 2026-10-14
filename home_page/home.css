@@ -187,6 +187,11 @@
     backdrop-filter: blur(10px);
 }
 
+.carousel-card:focus-visible {
+    outline: 3px solid #A8C9A5;
+    outline-offset: 4px;
+}
+
 .card-content {
     position: relative;
     width: 100%;

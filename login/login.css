@@ -194,6 +194,21 @@ transition: border-color 0.2s ease;
 border-color: var(--primary-dark, #6F9B73);
 }
 
+.input-group input.input-invalid {
+border-color: #C34C4C;
+box-shadow: 0 0 0 3px rgba(195, 76, 76, .1);
+}
+
+.login-field-error {
+display: block;
+min-height: 0;
+margin-top: 5px;
+color: #C34C4C;
+font-size: 11px;
+}
+
+.login-field-error:empty { display: none; }
+
 .password-wrapper {
 position: relative;
 }

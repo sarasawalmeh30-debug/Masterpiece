@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7faf6">
+    <title>My Profile | TEAMLY</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="provider_sidebar.css">
+    <link rel="stylesheet" href="profile.css">
+    <script src="provider_sidebar.js" defer></script>
+    <script src="profile.js" defer></script>
+</head>
+<body>
+    <div class="provider-shell">
+        <div class="provider-sidebar-container" id="provider-sidebar-container"></div>
+        <div class="provider-main">
+            <main class="profile-page">
+                <header class="profile-page-heading">
+                    <div><span class="profile-eyebrow">PROVIDER WORKSPACE</span><h1>My Profile</h1><p>Manage how clients see your professional profile.</p></div>
+                    <button class="profile-button primary-button" id="editProfileButton" type="button"><i class="fa fa-pencil" aria-hidden="true"></i> Edit Profile</button>
+                </header>
+                <div class="profile-alert" id="profileAlert" role="status" aria-live="polite" hidden></div>
+                <div id="profileWorkspace" hidden>
+                    <section class="profile-hero profile-card" aria-labelledby="profileName">
+                        <div class="profile-avatar-wrap"><img id="profileAvatar" alt="Provider profile" hidden><span id="profileAvatarFallback" class="profile-avatar-fallback">P</span></div>
+                        <div class="profile-hero-copy"><div class="profile-identity"><h2 id="profileName"></h2><span class="account-type-badge" id="accountTypeBadge"></span></div><p class="profile-specialty" id="profileSpecialty"></p><p class="profile-tagline" id="profileTagline" hidden></p></div>
+                        <div class="profile-hero-meta"><span><i class="fa fa-map-marker" aria-hidden="true"></i><span id="profileLocation">Location not added</span></span><span><i class="fa fa-star" aria-hidden="true"></i><span id="profileRating">No reviews yet</span></span></div>
+                    </section>
+
+                    <form id="profileEditForm" hidden novalidate>
+                        <section class="profile-card edit-card" aria-labelledby="editDetailsHeading">
+                            <div class="section-heading"><div><span class="section-kicker">PROFILE DETAILS</span><h2 id="editDetailsHeading">Edit Profile</h2></div></div>
+                            <div class="profile-form-grid">
+                                <div class="profile-field profile-photo-field"><label for="profilePhotoInput">Profile Photo</label><input id="profilePhotoInput" type="file" accept="image/jpeg,image/png,image/webp"><small>JPG, PNG, or WEBP. Up to 2 MB.</small></div>
+                                <div class="profile-field"><label for="editDisplayName">Full Name or Company Name</label><input id="editDisplayName" type="text" maxlength="100" required></div>
+                                <div class="profile-field"><label for="editTagline">Professional Tagline</label><input id="editTagline" type="text" maxlength="120" placeholder="A short introduction"></div>
+                                <div class="profile-field"><label for="editLocation">Location</label><input id="editLocation" type="text" maxlength="100" placeholder="City, Country"></div>
+                                <div class="profile-field"><label for="editService">Main Service</label><select id="editService"><option value="">Choose a service</option><option>Photography</option><option>Videography</option><option>Event Staff</option><option>Event Planners</option><option>Favors &amp; Gifts</option><option>Decoration</option><option>Catering</option><option>Music &amp; DJ</option><option>Video Editing</option><option>Venues &amp; Halls</option><option>Special Effects</option></select></div>
+                                <div class="profile-field"><label for="editAdditionalServices">Additional Services</label><input id="editAdditionalServices" type="text" maxlength="250" placeholder="Separate services with commas"></div>
+                                <div class="profile-field full-width"><label for="editDescription">Professional Description</label><textarea id="editDescription" rows="5" maxlength="1500" placeholder="Describe your experience and the work you offer."></textarea></div>
+                                <div class="profile-field"><label for="editPrice">Starting Price</label><input id="editPrice" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Enter your starting price"><small>Currency is shown only when your profile provides it. Leave blank if no price is set.</small></div>
+                            </div>
+                        </section>
+
+                        <section class="profile-card edit-card" aria-labelledby="experienceHeading">
+                            <div class="section-heading"><div><span class="section-kicker">CAREER</span><h2 id="experienceHeading">Work Experience</h2></div><button class="profile-button secondary-button" id="addExperienceButton" type="button"><i class="fa fa-plus" aria-hidden="true"></i> Add Experience</button></div>
+                            <div class="experience-editor-list" id="experienceEditorList"></div>
+                            <p class="editor-empty-hint" id="experienceEditorEmpty">No experience entries yet. Add one if you would like to share your work history.</p>
+                        </section>
+
+                        <section class="profile-card edit-card" aria-labelledby="portfolioHeading">
+                            <div class="section-heading"><div><span class="section-kicker">SHOWCASE</span><h2 id="portfolioHeading">Portfolio</h2></div></div>
+                            <div class="portfolio-add-row"><div class="profile-field"><label for="portfolioFiles">Add images or video files</label><input id="portfolioFiles" type="file" accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm" multiple><small>Images up to 2 MB each; videos up to 8 MB each.</small></div><div class="profile-field"><label for="portfolioVideoUrl">Add a video link</label><input id="portfolioVideoUrl" type="url" placeholder="https://..."></div><button class="profile-button secondary-button" id="addVideoLinkButton" type="button">Add Link</button></div>
+                            <div class="portfolio-edit-list" id="portfolioEditList"></div>
+                        </section>
+                        <div class="edit-actions"><p class="save-disclaimer">Changes are stored in this browser only. TEAMLY account sync is not connected.</p><div><button class="profile-button secondary-button" id="cancelEditButton" type="button">Cancel</button><button class="profile-button primary-button" type="submit">Save Changes</button></div></div>
+                    </form>
+
+                    <div id="profileReadView">
+                        <section class="profile-card about-card" aria-labelledby="aboutHeading"><div class="section-heading"><div><span class="section-kicker">INTRODUCTION</span><h2 id="aboutHeading">About Me</h2></div></div><p class="about-description" id="aboutDescription"></p><dl class="about-facts"><div><dt>Location</dt><dd id="aboutLocation"></dd></div><div><dt>Main Service</dt><dd id="aboutService"></dd></div><div><dt>Additional Services</dt><dd id="aboutAdditionalServices"></dd></div></dl></section>
+                        <section class="profile-card" aria-labelledby="experienceReadHeading"><div class="section-heading"><div><span class="section-kicker">CAREER</span><h2 id="experienceReadHeading">Work Experience</h2></div></div><div class="experience-list" id="experienceList"></div><div class="empty-state" id="experienceEmpty" hidden><span class="profile-section-icon"><i class="fa fa-briefcase" aria-hidden="true"></i></span><p>No work experience added yet.</p></div></section>
+                        <section class="profile-card" aria-labelledby="portfolioReadHeading"><div class="section-heading"><div><span class="section-kicker">SHOWCASE</span><h2 id="portfolioReadHeading">Portfolio</h2></div></div><div class="portfolio-gallery" id="portfolioGallery"></div><div class="empty-state" id="portfolioEmpty" hidden><span class="profile-section-icon"><i class="fa fa-picture-o" aria-hidden="true"></i></span><p>No portfolio items added yet.</p></div></section>
+                        <div class="profile-bottom-grid">
+                            <section class="profile-card pricing-card" aria-labelledby="pricingHeading"><span class="profile-section-icon"><i class="fa fa-tag" aria-hidden="true"></i></span><div><span class="section-kicker">PRICING</span><h2 id="pricingHeading">Starting Price</h2><p class="starting-price" id="startingPrice">Not set</p></div></section>
+                            <section class="profile-card reviews-card" aria-labelledby="reviewsHeading"><div class="section-heading"><div><span class="section-kicker">CLIENT FEEDBACK</span><h2 id="reviewsHeading">Ratings &amp; Reviews</h2></div></div><div class="rating-summary" id="ratingSummary" hidden><span class="rating-stars" id="ratingStars" aria-label="Rating"></span><strong id="ratingAverage"></strong><span id="ratingCount"></span></div><div class="empty-state compact-empty" id="reviewsEmpty"><p>No reviews yet.</p></div><div class="review-list" id="reviewList"></div></section>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <dialog class="portfolio-lightbox" id="portfolioLightbox" aria-label="Portfolio preview"><button type="button" id="closeLightbox" aria-label="Close preview"><i class="fa fa-times" aria-hidden="true"></i></button><div id="lightboxContent"></div></dialog>
+</body>
+</html>

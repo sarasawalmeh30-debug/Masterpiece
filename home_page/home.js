@@ -76,8 +76,18 @@ function updateCarousel() {
 // الضغط على الكاردات نفسها ليتم جلبها للأمام
 cards.forEach((card, index) => {
     card.addEventListener('click', () => {
-        currentIndex = index;
-        updateCarousel();
+        const service = card.querySelector('h3')?.textContent.trim();
+        if (!service) return;
+        window.location.href = `../select_provider/select_provider.html?service=${encodeURIComponent(service)}`;
+    });
+    card.setAttribute('role', 'link');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', `Browse ${card.querySelector('h3')?.textContent.trim()} providers`);
+    card.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            card.click();
+        }
     });
 });
 

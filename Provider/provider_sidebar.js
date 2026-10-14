@@ -77,11 +77,15 @@
         });
 
         const provider = readProviderProfile();
-        const providerName = provider && (provider.fullName || provider.name || provider.displayName);
+        const providerName = provider && (provider.companyName || provider.fullName || provider.name || provider.displayName);
         if (typeof providerName === "string" && providerName.trim()) {
-            const firstName = providerName.trim().split(/\s+/)[0];
-            root.querySelector("#providerSidebarName").textContent = firstName;
-            root.querySelector("#providerSidebarAvatar").textContent = firstName.charAt(0).toUpperCase();
+            const displayName = providerName.trim();
+            root.querySelector("#providerSidebarName").textContent = displayName;
+            root.querySelector("#providerSidebarAvatar").textContent = displayName.charAt(0).toUpperCase();
+        }
+        const accountLabel = root.querySelector(".provider-profile-copy small");
+        if (provider && typeof provider.accountType === "string") {
+            accountLabel.textContent = provider.accountType.toLowerCase() === "company" ? "Company account" : "Provider account";
         }
 
         const logoutLink = root.querySelector("#providerLogout");

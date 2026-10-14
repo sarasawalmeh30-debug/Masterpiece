@@ -188,6 +188,7 @@
                         <p>
                             Check when this provider is available.
                         </p>
+                        <p class="availability-demo-note">Sample availability only; the live provider calendar is not connected.</p>
                     </div>
                 </div>
 
@@ -241,6 +242,13 @@
                 <p class="selected-date" id="selected-date" aria-live="polite">
                     Select an available date to check availability.
                 </p>
+
+                <section class="time-availability" id="time-availability" aria-labelledby="time-availability-title" hidden>
+                    <h3 id="time-availability-title">Choose a time</h3>
+                    <p class="availability-note" id="availability-note" role="status" aria-live="polite" hidden></p>
+                    <div class="time-options" id="time-options" role="group" aria-label="Available times"></div>
+                    <p class="selected-time" id="selected-time" aria-live="polite"></p>
+                </section>
 
             </div>
 

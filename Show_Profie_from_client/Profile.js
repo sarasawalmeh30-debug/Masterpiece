@@ -21,7 +21,13 @@ const provider = {
     bookedDays: (params.get("booked") || "8,16,24")
         .split(",")
         .map(Number)
-        .filter(Number.isFinite)
+        .filter(Number.isFinite),
+
+    // Demo only: sample booked times for partially booked dates each month.
+    bookedTimesByDay: {
+        20: ["10:00 AM", "2:00 PM"],
+        22: ["11:00 AM", "1:00 PM", "3:00 PM"]
+    }
 };
 
 
@@ -164,11 +170,82 @@ const calendarDays = document.getElementById("calendar-days");
 const calendarMonth = document.getElementById("calendar-month");
 const selectedDateMessage = document.getElementById("selected-date");
 const detailAvailability = document.getElementById("detail-availability");
+const timeAvailability = document.getElementById("time-availability");
+const availabilityNote = document.getElementById("availability-note");
+const timeOptions = document.getElementById("time-options");
+const selectedTimeMessage = document.getElementById("selected-time");
+const availabilityTimeSlots = [
+    "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
+    "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM",
+    "5:00 PM", "6:00 PM", "7:00 PM"
+];
 
 let displayedYear = new Date().getFullYear();
 let displayedMonth = new Date().getMonth();
 
 let selectedDate = null;
+let selectedTime = null;
+
+function selectCalendarDate(day) {
+    selectedDate = new Date(displayedYear, displayedMonth, day);
+    selectedTime = null;
+    renderCalendar();
+    selectedDateMessage.textContent =
+        `Selected date: ${selectedDate.toLocaleDateString("en-US", {
+            weekday: "long", month: "long", day: "numeric", year: "numeric"
+        })}. Choose a time below.`;
+    renderTimeAvailability(selectedDate);
+}
+
+function getBookedTimes(date) {
+    return provider.bookedTimesByDay[date.getDate()] || [];
+}
+
+function isFullyBooked(date, bookedTimes = getBookedTimes(date)) {
+    return provider.bookedDays.includes(date.getDate()) ||
+        availabilityTimeSlots.every(time => bookedTimes.includes(time));
+}
+
+function renderTimeAvailability(date) {
+    timeAvailability.hidden = false;
+    timeOptions.replaceChildren();
+    selectedTimeMessage.textContent = "";
+
+    const bookedTimes = getBookedTimes(date);
+    const fullDay = isFullyBooked(date, bookedTimes);
+    availabilityNote.hidden = !fullDay && bookedTimes.length === 0;
+    availabilityNote.textContent = fullDay
+        ? "This day is fully booked. Please choose another date."
+        : bookedTimes.length
+            ? `Booked hours for this day: ${bookedTimes.join(", ")}.`
+            : "";
+
+    if (fullDay) detailAvailability.textContent = "Fully booked";
+    else if (bookedTimes.length) detailAvailability.textContent = "Limited availability";
+    else detailAvailability.textContent = "Available";
+    detailAvailability.classList.toggle("is-booked", fullDay || bookedTimes.length > 0);
+
+    availabilityTimeSlots.forEach(time => {
+        const button = document.createElement("button");
+        const isBooked = fullDay || bookedTimes.includes(time);
+        button.type = "button";
+        button.className = isBooked ? "time-slot booked" : "time-slot";
+        button.textContent = time;
+        button.disabled = isBooked;
+        button.setAttribute("aria-label", isBooked ? `${time}, booked` : `Choose ${time}`);
+        if (!isBooked) {
+            button.addEventListener("click", () => {
+                selectedTime = time;
+                timeOptions.querySelectorAll(".time-slot.selected").forEach(slot => slot.classList.remove("selected"));
+                button.classList.add("selected");
+                selectedTimeMessage.textContent = `Selected time: ${time}`;
+                detailAvailability.textContent = `Available at ${time}`;
+                detailAvailability.classList.remove("is-booked");
+            });
+        }
+        timeOptions.append(button);
+    });
+}
 
 function renderCalendar() {
     calendarDays.innerHTML = "";
@@ -225,7 +302,10 @@ function renderCalendar() {
         );
 
         const isPast = date < today;
-        const isBooked = provider.bookedDays.includes(day);
+        const bookedTimes = provider.bookedTimesByDay[day] || [];
+        const isBooked = provider.bookedDays.includes(day) ||
+            availabilityTimeSlots.every(time => bookedTimes.includes(time));
+        const hasBookedTimes = bookedTimes.length > 0 && !isBooked;
         const isSelected =
             selectedDate &&
             selectedDate.getFullYear() === displayedYear &&
@@ -239,36 +319,17 @@ function renderCalendar() {
 
         } else if (isBooked) {
             button.classList.add("booked");
-            button.disabled = true;
             button.textContent = `${day} ×`;
-            button.title = "This date is booked.";
+            button.title = "This date is fully booked. Select it to view details.";
+            button.addEventListener("click", () => selectCalendarDate(day));
 
         } else {
             button.classList.add("available");
-            button.title = "Select this available date.";
-
-            button.addEventListener("click", () => {
-                selectedDate = new Date(
-                    displayedYear,
-                    displayedMonth,
-                    day
-                );
-
-                renderCalendar();
-
-                selectedDateMessage.textContent =
-                    `Selected date: ${selectedDate.toLocaleDateString(
-                        "en-US",
-                        {
-                            weekday: "long",
-                            month: "long",
-                            day: "numeric",
-                            year: "numeric"
-                        }
-                    )}. This date appears available in the demo calendar.`;
-
-                detailAvailability.textContent = "Available";
-            });
+            if (hasBookedTimes) button.classList.add("partially-booked");
+            button.title = hasBookedTimes
+                ? `Partially booked: ${bookedTimes.join(", ")}. Select to see times.`
+                : "Select this available date.";
+            button.addEventListener("click", () => selectCalendarDate(day));
         }
 
         if (isSelected) {
@@ -291,6 +352,9 @@ document.getElementById("previous-month").addEventListener("click", () => {
     }
 
     selectedDate = null;
+    selectedTime = null;
+    timeAvailability.hidden = true;
+    detailAvailability.classList.remove("is-booked");
 
     selectedDateMessage.textContent =
         "Select an available date to check availability.";
@@ -312,6 +376,9 @@ document.getElementById("next-month").addEventListener("click", () => {
     }
 
     selectedDate = null;
+    selectedTime = null;
+    timeAvailability.hidden = true;
+    detailAvailability.classList.remove("is-booked");
 
     selectedDateMessage.textContent =
         "Select an available date to check availability.";
@@ -328,10 +395,26 @@ document.getElementById("next-month").addEventListener("click", () => {
 
 document.getElementById("select-provider").addEventListener("click", () => {
     const message = document.getElementById("select-message");
+    message.classList.remove("is-error");
 
     if (!selectedDate) {
         message.textContent =
-            "Please select an available date before continuing.";
+            "Please select a date before continuing.";
+        message.classList.add("is-error");
+
+        return;
+    }
+
+    if (isFullyBooked(selectedDate)) {
+        message.textContent = "This day is fully booked. Please choose another date.";
+        message.classList.add("is-error");
+
+        return;
+    }
+
+    if (!selectedTime) {
+        message.textContent = "Please choose an available time before continuing.";
+        message.classList.add("is-error");
 
         return;
     }
@@ -339,7 +422,8 @@ document.getElementById("select-provider").addEventListener("click", () => {
     const selectedProvider = {
         name: provider.name,
         service: provider.service,
-        date: selectedDate.toISOString().slice(0, 10)
+        date: selectedDate.toISOString().slice(0, 10),
+        time: selectedTime
     };
 
     // Save for the current browser tab only.
@@ -361,7 +445,7 @@ document.getElementById("select-provider").addEventListener("click", () => {
                 day: "numeric",
                 year: "numeric"
             }
-        )}. This selection is saved in this browser tab only; no booking request was sent.`;
+        )} at ${selectedTime}. This selection is saved in this browser tab only; no booking request was sent.`;
 });
 
 

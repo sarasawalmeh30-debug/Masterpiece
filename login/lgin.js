@@ -54,6 +54,22 @@ loginForm.addEventListener("focusout", function (event) {
     }
 });
 
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const loginEmailError = document.getElementById("emailError");
+const loginPasswordError = document.getElementById("passwordError");
+
+function clearLoginFieldError(input, errorElement) {
+    input.classList.remove("input-invalid");
+    input.removeAttribute("aria-invalid");
+    errorElement.textContent = "";
+    loginMessage.textContent = "";
+    loginMessage.className = "message";
+}
+
+emailInput.addEventListener("input", function () { clearLoginFieldError(emailInput, loginEmailError); });
+passwordInput.addEventListener("input", function () { clearLoginFieldError(passwordInput, loginPasswordError); });
+
 // Login form: frontend validation only
 loginForm.addEventListener("submit", function (event) {
 event.preventDefault();
@@ -62,9 +78,32 @@ if (loginSection.classList.contains("login-celebrating") || loginSection.classLi
 
 loginMessage.textContent = "";
 loginMessage.className = "message";
+loginEmailError.textContent = "";
+loginPasswordError.textContent = "";
+emailInput.classList.remove("input-invalid");
+passwordInput.classList.remove("input-invalid");
+emailInput.removeAttribute("aria-invalid");
+passwordInput.removeAttribute("aria-invalid");
 
-if (!loginForm.checkValidity()) {
-    loginForm.reportValidity();
+const emailValue = emailInput.value.trim();
+let firstInvalid = null;
+if (!emailValue || !emailInput.validity.valid) {
+    loginEmailError.textContent = "Enter a valid email address.";
+    emailInput.classList.add("input-invalid");
+    emailInput.setAttribute("aria-invalid", "true");
+    firstInvalid = emailInput;
+}
+if (passwordInput.value.length < 8) {
+    loginPasswordError.textContent = passwordInput.value ? "Password must be at least 8 characters." : "Enter your password.";
+    passwordInput.classList.add("input-invalid");
+    passwordInput.setAttribute("aria-invalid", "true");
+    firstInvalid = firstInvalid || passwordInput;
+}
+
+if (firstInvalid) {
+    loginMessage.textContent = "Please correct the highlighted fields.";
+    loginMessage.classList.add("error");
+    firstInvalid.focus();
     return;
 }
 
@@ -74,7 +113,7 @@ try {
     // Keep the demo login flow usable if browser storage is unavailable.
 }
 
-// loginMessage.textContent 
+loginMessage.textContent = "Demo sign-in: the fields passed validation, but account credentials are not verified.";
 loginMessage.classList.add("success");
 loginSection.classList.add("login-celebrating");
 loginSuccessTimer = window.setTimeout(function () {

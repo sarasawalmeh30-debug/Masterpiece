@@ -990,6 +990,11 @@ document.getElementById("refresh-btn")
 function initializeProviderPage() {
     renderProjectInformation();
 
+    const requestedService = new URLSearchParams(window.location.search).get("service");
+    if (requestedService && [...serviceFilter.options].some(option => option.value === requestedService)) {
+        serviceFilter.value = requestedService;
+    }
+
     applyFilters();
 
     updateTeam();
