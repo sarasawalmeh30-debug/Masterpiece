@@ -122,7 +122,15 @@ loginSuccessTimer = window.setTimeout(function () {
     loginSuccessTimer = window.setTimeout(function () {
         loginSuccessTimer = 0;
         const returnTo = new URLSearchParams(window.location.search).get("returnTo");
-        window.location.href = returnTo === "../select_provider/select_provider.html"
+        window.location.href = [
+            "../select_provider/select_provider.html",
+            "../admain/Admin_dashboard.html",
+            "../admain/Clients.html",
+            "../admain/Providers.html",
+            "../admain/Projects.html",
+            "../admain/Financial.html",
+            "../admain/Notifications.html"
+        ].includes(returnTo)
             ? returnTo
             : "../ai_chat/ai_chat.html";
     }, 680);

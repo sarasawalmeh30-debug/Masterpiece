@@ -599,6 +599,12 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!savedProfile || savedProfile.email !== providerProfile.email) {
                 throw new Error("Provider profile could not be verified.");
             }
+            try {
+                const savedNotifications = JSON.parse(window.localStorage.getItem("teamlyAdminNotifications") || "[]");
+                const adminNotifications = Array.isArray(savedNotifications) ? savedNotifications : [];
+                adminNotifications.unshift({ id: `signup-provider-${Date.now()}`, kind: "registration", title: "Provider registered", actor: providerProfile.fullName, detail: `Provider account created for ${providerProfile.service}.`, timestamp: new Date().toISOString() });
+                window.localStorage.setItem("teamlyAdminNotifications", JSON.stringify(adminNotifications.slice(0, 500)));
+            } catch (notificationError) { /* provider signup still succeeds if activity logging fails */ }
             window.sessionStorage.setItem("teamlyLoggedIn", "true");
             window.sessionStorage.setItem("teamlyProviderOnboardingPending", "true");
         } catch (error) {

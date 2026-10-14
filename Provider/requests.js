@@ -265,6 +265,22 @@
             try {
                 window.localStorage.setItem(FEEDBACK_KEY, choice);
                 saved = window.localStorage.getItem(FEEDBACK_KEY) === choice;
+                if (saved) {
+                    try {
+                        const history = readJSON("teamlyAdminNotifications");
+                        const notifications = Array.isArray(history) ? history : [];
+                        const provider = readProviderProfile();
+                        notifications.unshift({
+                            id: `feedback-${Date.now()}`,
+                            kind: "feedback",
+                            title: "Provider gave feedback",
+                            actor: provider && (provider.fullName || provider.name) || "Provider",
+                            detail: choice === "going-well" ? "Everything is going well." : "The provider raised a concern.",
+                            timestamp: new Date().toISOString()
+                        });
+                        window.localStorage.setItem("teamlyAdminNotifications", JSON.stringify(notifications.slice(0, 500)));
+                    } catch (notificationError) { /* feedback can still be shown when activity logging fails */ }
+                }
             } catch (error) {
                 saved = false;
             }

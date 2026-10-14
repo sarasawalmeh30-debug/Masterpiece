@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial | TEAMLY Admin</title>
+    <link rel="icon" href="../img/logo2.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="admin-sidebar.css">
+    <link rel="stylesheet" href="financial.css">
+</head>
+<body>
+<div class="admin-layout">
+    <div id="admin-sidebar-container" class="admin-sidebar-container"></div>
+    <main class="admin-main financial-main">
+        <header class="financial-header">
+            <div><a class="back-link" href="Admin_dashboard.html"><i class="fa fa-angle-left" aria-hidden="true"></i> Dashboard</a><h1>Financial</h1><p>Payments, platform commissions, and provider subscriptions.</p></div>
+            <div class="financial-admin"><span class="avatar avatar-sm" id="financialAdminAvatar">A</span><span id="financialAdminName">Admin</span></div>
+        </header>
+        <section class="financial-overview" aria-label="Financial summary" id="financialStats"><p class="financial-loading">Loading financial records…</p></section>
+        <section class="financial-chart-card" aria-labelledby="revenueTitle"><div class="financial-card-heading"><div><h2 id="revenueTitle">Successful payment volume</h2><p>Monthly successful transaction amounts.</p></div><span class="chart-currency">JOD</span></div><div id="revenueChart" class="revenue-chart"><p class="financial-loading">Loading payment activity…</p></div></section>
+        <section class="financial-card" aria-labelledby="transactionsTitle">
+            <div class="financial-card-heading table-heading"><div><h2 id="transactionsTitle">Transactions</h2><p>Client payments and TEAMLY commission.</p></div><div class="financial-controls">
+                <label class="financial-search"><i class="fa fa-search" aria-hidden="true"></i><span class="sr-only">Search transactions</span><input id="transactionSearch" type="search" placeholder="Search transactions"></label>
+                <label><span class="sr-only">Filter transaction status</span><select id="transactionStatus" class="form-control"><option value="all">All statuses</option><option value="successful">Successful</option><option value="pending">Pending</option><option value="failed">Failed</option><option value="refunded">Refunded</option></select></label>
+            </div></div>
+            <div class="financial-table-wrap"><table class="financial-table"><thead><tr><th>Transaction</th><th>Client</th><th>Project</th><th>Amount</th><th>Commission</th><th>Method</th><th>Status</th><th>Date</th><th></th></tr></thead><tbody id="transactionsBody"><tr><td colspan="9"><div class="financial-empty">Loading transactions…</div></td></tr></tbody></table></div><p class="financial-count" id="transactionsCount" aria-live="polite"></p>
+        </section>
+        <section class="financial-card" aria-labelledby="subscriptionsTitle">
+            <div class="financial-card-heading"><div><h2 id="subscriptionsTitle">Provider subscriptions</h2><p>Plan fees and renewal dates.</p></div></div>
+            <div class="financial-table-wrap"><table class="financial-table"><thead><tr><th>Provider</th><th>Account type</th><th>Plan</th><th>Price</th><th>Status</th><th>Started</th><th>Renews</th></tr></thead><tbody id="subscriptionsBody"><tr><td colspan="7"><div class="financial-empty">Loading subscriptions…</div></td></tr></tbody></table></div>
+        </section>
+        <div class="financial-error" id="financialError" role="alert" hidden></div>
+    </main>
+</div>
+<div class="financial-modal" id="transactionModal" role="dialog" aria-modal="true" aria-labelledby="transactionModalTitle" hidden>
+    <div class="financial-modal-card"><div class="financial-modal-head"><div><p class="eyebrow">PAYMENT RECORD</p><h2 id="transactionModalTitle">Transaction details</h2></div><button id="transactionModalClose" class="modal-close" type="button" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button></div><dl class="financial-facts" id="transactionDetails"></dl></div>
+</div>
+<script src="Admin_data.js"></script>
+<script src="admin-sidebar.js"></script>
+<script src="financial.js"></script>
+</body>
+</html>

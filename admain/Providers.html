@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Providers | TEAMLY Admin</title>
+    <link rel="icon" href="../img/logo2.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="admin-sidebar.css">
+    <link rel="stylesheet" href="providers.css">
+</head>
+<body>
+<div class="admin-layout">
+    <div id="admin-sidebar-container" class="admin-sidebar-container"></div>
+    <main class="admin-main providers-main">
+        <header class="providers-header">
+            <div><a class="back-link" href="Admin_dashboard.html"><i class="fa fa-angle-left" aria-hidden="true"></i> Dashboard</a><h1>Providers</h1><p>All provider accounts, services, and TEAMLY activity.</p></div>
+            <div class="providers-admin"><span class="avatar avatar-sm" id="providersAdminAvatar">A</span><span id="providersAdminName">Admin</span></div>
+        </header>
+        <div class="providers-stats" id="providersStats"><p class="providers-loading">Loading provider records…</p></div>
+        <section class="providers-card" aria-labelledby="providersListTitle">
+            <div class="providers-card-head">
+                <div><h2 id="providersListTitle">All providers</h2><p>Browse every individual provider and company.</p></div>
+                <div class="providers-controls">
+                    <label class="provider-search"><i class="fa fa-search" aria-hidden="true"></i><span class="sr-only">Search providers</span><input id="providerSearch" type="search" placeholder="Search providers"></label>
+                    <label><span class="sr-only">Filter by type</span><select id="providerTypeFilter" class="form-control"><option value="all">All types</option><option value="individual">Individuals</option><option value="company">Companies</option></select></label>
+                    <label><span class="sr-only">Filter by status</span><select id="providerStatusFilter" class="form-control"><option value="all">All statuses</option><option value="active">Active</option><option value="inactive">Inactive</option><option value="pending">Pending</option></select></label>
+                </div>
+            </div>
+            <div class="provider-table-wrap"><table class="provider-table"><thead><tr><th>Provider</th><th>Type</th><th>Services</th><th>Projects</th><th>Starting price</th><th>Status</th><th>Manage</th></tr></thead><tbody id="providersTableBody"><tr><td colspan="7"><div class="providers-empty">Loading provider records…</div></td></tr></tbody></table></div>
+            <p class="providers-count" id="providersCount" aria-live="polite"></p>
+        </section>
+        <div class="providers-error" id="providersError" role="alert" hidden></div>
+    </main>
+</div>
+<div class="provider-modal" id="providerModal" role="dialog" aria-modal="true" aria-labelledby="providerModalTitle" hidden>
+    <div class="provider-modal-card"><div class="provider-modal-head"><div><p class="eyebrow">PROVIDER RECORD</p><h2 id="providerModalTitle">Provider details</h2></div><button id="providerModalClose" class="modal-close" type="button" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button></div><div id="providerModalBody"></div></div>
+</div>
+<script src="Admin_data.js"></script>
+<script src="admin-sidebar.js"></script>
+<script src="providers.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | TEAMLY Admin</title>
+    <link rel="icon" href="../img/logo2.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="admin-sidebar.css">
+    <link rel="stylesheet" href="projects.css">
+</head>
+<body>
+<div class="admin-layout">
+    <div id="admin-sidebar-container" class="admin-sidebar-container"></div>
+    <main class="admin-main projects-main">
+        <header class="projects-header">
+            <div><a class="back-link" href="Admin_dashboard.html"><i class="fa fa-angle-left" aria-hidden="true"></i> Dashboard</a><h1>Projects</h1><p>Track project activity, clients, providers, and payments.</p></div>
+            <div class="projects-admin"><span class="avatar avatar-sm" id="projectsAdminAvatar">A</span><span id="projectsAdminName">Admin</span></div>
+        </header>
+        <div class="projects-stats" id="projectsStats"><p class="projects-loading">Loading project records…</p></div>
+        <section class="projects-card" aria-labelledby="projectsListTitle">
+            <div class="projects-card-head"><div><h2 id="projectsListTitle">All projects</h2><p>Follow a project to keep it in your tracked list.</p></div>
+                <div class="projects-controls">
+                    <label class="project-search"><i class="fa fa-search" aria-hidden="true"></i><span class="sr-only">Search projects</span><input id="projectSearch" type="search" placeholder="Search projects"></label>
+                    <label><span class="sr-only">Filter by status</span><select id="projectStatusFilter" class="form-control"><option value="all">All statuses</option><option value="active">Active</option><option value="pending">Pending</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select></label>
+                    <label class="followed-filter"><input id="followedOnly" type="checkbox"><span>Followed only</span></label>
+                </div>
+            </div>
+            <div class="project-table-wrap"><table class="project-table"><thead><tr><th>Project</th><th>Client</th><th>Provider</th><th>Created</th><th>Budget</th><th>Status</th><th>Track</th></tr></thead><tbody id="projectsTableBody"><tr><td colspan="7"><div class="projects-empty">Loading project records…</div></td></tr></tbody></table></div>
+            <p class="projects-count" id="projectsCount" aria-live="polite"></p>
+        </section>
+        <div class="projects-error" id="projectsError" role="alert" hidden></div>
+    </main>
+</div>
+<div class="project-modal" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle" hidden>
+    <div class="project-modal-card"><div class="project-modal-head"><div><p class="eyebrow">PROJECT RECORD</p><h2 id="projectModalTitle">Project details</h2></div><button id="projectModalClose" class="modal-close" type="button" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button></div><div id="projectModalBody"></div></div>
+</div>
+<script src="Admin_data.js"></script>
+<script src="admin-sidebar.js"></script>
+<script src="projects.js"></script>
+</body>
+</html>

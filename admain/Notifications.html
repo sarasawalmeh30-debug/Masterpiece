@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications | TEAMLY Admin</title>
+    <link rel="icon" href="../img/logo2.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="admin-sidebar.css">
+    <link rel="stylesheet" href="notifications.css">
+</head>
+<body>
+<div class="admin-layout">
+    <div id="admin-sidebar-container" class="admin-sidebar-container"></div>
+    <main class="admin-main notifications-main">
+        <header class="notifications-header">
+            <div><a class="back-link" href="Admin_dashboard.html"><i class="fa fa-angle-left" aria-hidden="true"></i> Dashboard</a><h1>Notifications</h1><p>Registration, feedback, and meeting activity recorded on this device.</p></div>
+            <div class="notifications-admin"><span class="avatar avatar-sm" id="notificationsAdminAvatar">A</span><span id="notificationsAdminName">Admin</span></div>
+        </header>
+        <section class="notification-stats" id="notificationStats" aria-label="Notification summary"></section>
+        <section class="notifications-card" aria-labelledby="notificationListTitle">
+            <div class="notifications-card-head">
+                <div><h2 id="notificationListTitle">Activity feed</h2><p>New sign-ups, provider feedback, and Zoom meeting requests.</p></div>
+                <div class="notification-controls">
+                    <label class="notification-search"><i class="fa fa-search" aria-hidden="true"></i><span class="sr-only">Search notifications</span><input id="notificationSearch" type="search" placeholder="Search activity"></label>
+                    <label><span class="sr-only">Filter by activity</span><select id="notificationFilter" class="form-control"><option value="all">All activity</option><option value="registration">Registrations</option><option value="feedback">Feedback</option><option value="zoom">Zoom requests</option></select></label>
+                    <button id="markAllRead" class="mark-read-button" type="button"><i class="fa fa-check" aria-hidden="true"></i> Mark all read</button>
+                </div>
+            </div>
+            <div class="notification-list" id="notificationList" aria-live="polite"><p class="notification-loading">Loading notifications…</p></div>
+            <p class="notification-count" id="notificationCount"></p>
+        </section>
+        <p class="notification-storage-note"><i class="fa fa-info-circle" aria-hidden="true"></i> Activity is stored in this browser. It is not synced to a server or shared across devices.</p>
+        <div class="notifications-error" id="notificationsError" role="alert" hidden></div>
+    </main>
+</div>
+<script src="Admin_data.js"></script>
+<script src="admin-sidebar.js"></script>
+<script src="notifications.js"></script>
+</body>
+</html>

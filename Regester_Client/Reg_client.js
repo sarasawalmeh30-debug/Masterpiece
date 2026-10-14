@@ -247,9 +247,41 @@ form.addEventListener("submit", function (event) {
     }
 
 
-    // Frontend demonstration only
+    // This static project has no database. Save the account metadata in this browser only.
+    try {
+        const savedClients = JSON.parse(window.localStorage.getItem("teamlyRegisteredClients") || "[]");
+        const registeredClients = Array.isArray(savedClients) ? savedClients : [];
+        const normalizedEmail = email.value.trim().toLowerCase();
+        if (registeredClients.some(client => String(client.email || "").toLowerCase() === normalizedEmail)) {
+            showError(email, "emailError", "An account with this email already exists on this device.");
+            formMessage.textContent = "Please use a different email address.";
+            formMessage.classList.add("error");
+            email.focus();
+            return;
+        }
+        const registeredClient = {
+            id: "client-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8),
+            name: fullName.value.trim(),
+            email: normalizedEmail,
+            type: "client",
+            status: "active",
+            created: new Date().toISOString()
+        };
+        registeredClients.push(registeredClient);
+        window.localStorage.setItem("teamlyRegisteredClients", JSON.stringify(registeredClients));
+        try {
+            const savedNotifications = JSON.parse(window.localStorage.getItem("teamlyAdminNotifications") || "[]");
+            const notifications = Array.isArray(savedNotifications) ? savedNotifications : [];
+            notifications.unshift({ id: `signup-${registeredClient.id}`, kind: "registration", title: "Client registered", actor: registeredClient.name, detail: `New client account created (${registeredClient.email}).`, timestamp: registeredClient.created });
+            window.localStorage.setItem("teamlyAdminNotifications", JSON.stringify(notifications.slice(0, 500)));
+        } catch (notificationError) { /* signup still succeeds if the activity log cannot be written */ }
+    } catch (error) {
+        formMessage.textContent = "This browser could not save the account. Please check storage settings and try again.";
+        formMessage.classList.add("error");
+        return;
+    }
 
-   window.location.href="../ai_chat/ai_chat.html";
+    window.location.href="../ai_chat/ai_chat.html";
     formMessage.classList.add("success");
 
 });

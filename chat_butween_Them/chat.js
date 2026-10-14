@@ -231,6 +231,19 @@ unlockChatButton.addEventListener("click", goToPayment);
 
 document.getElementById("zoom-button")
     .addEventListener("click", function () {
+        try {
+            const notifications = JSON.parse(window.localStorage.getItem("teamlyAdminNotifications") || "[]");
+            const savedNotifications = Array.isArray(notifications) ? notifications : [];
+            savedNotifications.unshift({
+                id: `zoom-${Date.now()}`,
+                kind: "zoom",
+                title: "Zoom meeting requested",
+                actor: "Client",
+                detail: "A team member opened the project Zoom meeting.",
+                timestamp: new Date().toISOString()
+            });
+            window.localStorage.setItem("teamlyAdminNotifications", JSON.stringify(savedNotifications.slice(0, 500)));
+        } catch (error) { /* continue to meeting even if activity cannot be stored */ }
         window.location.href = "../Zoom/zoom.html";
     });
 

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | TEAMLY</title>
+    <link rel="icon" href="../img/logo2.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="admin-sidebar.css">
+    <link rel="stylesheet" href="Admin_dashboard.css">
+</head>
+<body>
+<div class="admin-layout">
+    <div id="admin-sidebar-container" class="admin-sidebar-container"></div>
+
+    <main class="admin-main" id="adminMain">
+        <div class="state-banner" id="errorBanner" role="alert" hidden>
+            <span id="errorText">Dashboard data could not be loaded.</span>
+            <button class="btn btn-outline" type="button" id="retryBtn">Try again</button>
+        </div>
+
+        <!-- Header -->
+        <header class="dash-header" id="overview">
+            <div>
+                <h1 id="greeting">Welcome back</h1>
+                <p>Monitor platform activity, accounts, projects, and financial performance.</p>
+            </div>
+            <div class="dash-tools">
+                <div class="menu-wrap">
+                    <button class="icon-btn" id="bellBtn" type="button" aria-label="Notifications" aria-expanded="false" aria-controls="bellMenu">
+                        <i class="fa fa-bell-o" aria-hidden="true"></i><span class="dot" id="bellDot" hidden></span>
+                    </button>
+                    <div class="menu" id="bellMenu" hidden></div>
+                </div>
+                <div class="menu-wrap">
+                    <button class="profile-btn" id="profileBtn" type="button" aria-expanded="false" aria-controls="profileMenu">
+                        <span class="avatar avatar-sm" id="profileAvatar">A</span>
+                        <span id="profileName">Admin</span>
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                    </button>
+                    <div class="menu" id="profileMenu" hidden>
+                        <p class="menu-note">Signed in as administrator</p>
+                        <a href="../login/login.html" id="menuLogout"><i class="fa fa-sign-out" aria-hidden="true"></i> Log out</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="report-filters" aria-label="Dashboard filters">
+            <label>Timeframe<select class="form-control range-select" id="rangeSelect">
+                <option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option><option value="0">All time</option>
+            </select></label>
+            <label>Provider type<select class="form-control" data-f="provType"><option value="all">All providers</option><option value="individual">Individuals</option><option value="company">Companies</option></select></label>
+            <label>Service<select class="form-control" data-f="provCat" id="provCatSelect"></select></label>
+        </section>
+
+        <section class="report-overview dash-section" aria-label="Key metrics and activity">
+            <div class="kpi-main" id="kpiMain"></div>
+            <article class="card report-activity-card">
+                <div class="report-card-heading"><div><h2>Activity</h2><p class="note">Accounts and projects over the selected timeframe</p></div><span class="sample-tag" id="activityDataTag">Sample data</span></div>
+                <div id="chActivity" class="activity-chart"></div>
+            </article>
+        </section>
+
+        <div class="reports-content-grid">
+            <section class="dash-section report-panel" id="services">
+                <div class="sec-head"><div><h2>Providers by service</h2><p class="note">Services offered across TEAMLY</p></div></div>
+                <div class="card service-overview-card"><div id="provCats"></div></div>
+            </section>
+
+            <section class="dash-section report-panel" id="signups">
+                <div class="sec-head"><div><h2>Recent sign-ups</h2><p class="note">New accounts in the selected period</p></div>
+                    <select class="form-control sec-select" data-f="signType" aria-label="Account type"><option value="all">All accounts</option><option value="client">Clients</option><option value="individual">Individual providers</option><option value="company">Companies</option></select>
+                    <input class="form-control sec-search" type="search" data-q="signups" placeholder="Search" aria-label="Search accounts">
+                </div>
+                <div id="tbl-signups"></div>
+            </section>
+
+            <section class="dash-section report-panel report-wide" id="providers">
+                <div class="sec-head"><div><h2>Provider overview</h2><p class="note">Provider accounts and approval status</p></div>
+                    <input class="form-control sec-search" type="search" data-q="providers" placeholder="Search providers" aria-label="Search providers">
+                </div>
+                <div class="status-grid" id="provStats"></div>
+                <div class="provider-filter-row"><label>Account status<select class="form-control" data-f="provStatus"><option value="all">All statuses</option><option value="active">Active</option><option value="inactive">Inactive</option><option value="pending">Awaiting approval</option></select></label></div>
+                <div id="tbl-providers"></div>
+            </section>
+
+            <section class="dash-section report-panel" id="projects">
+                <div class="sec-head"><div><h2>Projects</h2><p class="note">Recent platform projects</p></div>
+                    <input class="form-control sec-search" type="search" data-q="projects" placeholder="Search" aria-label="Search projects">
+                </div>
+                <div class="status-grid" id="projStats"></div><div id="tbl-projects"></div>
+            </section>
+
+            <section class="dash-section report-panel" id="payments">
+                <div class="sec-head"><div><h2>Payments &amp; revenue</h2><p class="note">Transaction activity</p></div>
+                    <select class="form-control sec-select" data-f="txStatus" aria-label="Transaction status"><option value="all">All statuses</option><option value="successful">Successful</option><option value="pending">Pending</option><option value="failed">Failed</option><option value="refunded">Refunded</option></select>
+                    <input class="form-control sec-search" type="search" data-q="transactions" placeholder="Search" aria-label="Search transactions">
+                </div>
+                <div class="status-grid" id="finStats"></div><p class="note" id="finNote"></p><div id="tbl-transactions"></div>
+            </section>
+
+            <section class="dash-section report-panel" id="requests">
+                <div class="sec-head"><div><h2>Service requests</h2><p class="note">Request status across the platform</p></div>
+                    <input class="form-control sec-search" type="search" data-q="requests" placeholder="Search requests" aria-label="Search requests">
+                </div>
+                <div class="status-grid" id="reqStatusGrid"></div><div id="tbl-requests"></div>
+            </section>
+
+            <section class="dash-section report-panel" id="activity">
+                <div class="sec-head"><div><h2>Notifications</h2><p class="note">Recent account, project, request and payment activity</p></div></div>
+                <div id="tbl-activity"></div>
+            </section>
+        </div>
+
+        <div class="admin-secondary-section" aria-hidden="true">
+            <section id="subscriptions"><div id="subStats"></div><div id="tbl-subscriptions"></div></section>
+            <section id="analytics"><div id="chRegs"></div><div id="chProjects"></div><div id="chMoney"></div><div id="chReqs"></div><div id="chType"></div><div id="chCats"></div></section>
+        </div>
+    </main>
+</div>
+
+<div class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="detailTitle" hidden>
+    <div class="modal-card card">
+        <div class="flex-between"><h3 id="detailTitle">Details</h3><button class="icon-btn" id="detailClose" type="button" aria-label="Close details"><i class="fa fa-times" aria-hidden="true"></i></button></div>
+        <dl id="detailBody"></dl>
+    </div>
+</div>
+
+<script src="Admin_data.js"></script>
+<script src="admin-sidebar.js"></script>
+<script src="Admin_dashboard.js"></script>
+</body>
+</html>
