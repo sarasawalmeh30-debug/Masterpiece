@@ -146,34 +146,6 @@ if (ctaSection && !reducedMotion && 'IntersectionObserver' in window) {
     ctaSection.querySelectorAll('.cta-reveal').forEach((item) => item.classList.add('is-revealed'));
 }
 
-if (ctaSection && ctaButton && !reducedMotion && window.matchMedia('(pointer: fine)').matches) {
-    let magnetFrame = 0;
-    ctaSection.addEventListener('pointermove', (event) => {
-        if (event.pointerType === 'touch' || magnetFrame) return;
-        magnetFrame = window.requestAnimationFrame(() => {
-            magnetFrame = 0;
-            const bounds = ctaButton.getBoundingClientRect();
-            const deltaX = event.clientX - (bounds.left + bounds.width / 2);
-            const deltaY = event.clientY - (bounds.top + bounds.height / 2);
-            const distance = Math.hypot(deltaX, deltaY);
-            if (distance < 300) {
-                const pull = (300 - distance) / 300 * 0.38;
-                ctaButton.style.setProperty('--mag-x', `${deltaX * pull}px`);
-                ctaButton.style.setProperty('--mag-y', `${deltaY * pull}px`);
-            } else {
-                ctaButton.style.setProperty('--mag-x', '0px');
-                ctaButton.style.setProperty('--mag-y', '0px');
-            }
-        });
-    });
-    ctaSection.addEventListener('pointerleave', () => {
-        if (magnetFrame) window.cancelAnimationFrame(magnetFrame);
-        magnetFrame = 0;
-        ctaButton.style.setProperty('--mag-x', '0px');
-        ctaButton.style.setProperty('--mag-y', '0px');
-    });
-}
-
 if (ctaButton && !reducedMotion) {
     ctaButton.addEventListener('click', (event) => {
         if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;

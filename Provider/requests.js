@@ -250,6 +250,11 @@
     document.querySelectorAll(".feedback-option").forEach(button => {
         button.addEventListener("click", () => {
             const choice = button.dataset.feedback;
+            if (choice === "help") {
+                window.location.href = "../needHelp/Help.html";
+                return;
+            }
+
             document.querySelectorAll(".feedback-option").forEach(option => {
                 const selected = option === button;
                 option.classList.toggle("is-selected", selected);

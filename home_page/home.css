@@ -922,9 +922,7 @@
     z-index: 0;
     isolation: isolate;
     overflow: visible;
-    translate: var(--mag-x, 0px) var(--mag-y, 0px);
-    transition: background-color .25s ease, box-shadow .25s ease, translate .2s cubic-bezier(.2,.75,.25,1);
-    will-change: translate;
+    transition: background-color .25s ease, box-shadow .25s ease;
 }
 
 .cta-section .btn-cta::before {
