@@ -1058,7 +1058,10 @@ body.provider-guest { padding-top: 125px; }
 body.provider-guest #navbar-container,
 body.provider-guest #footer-container { display: block; }
 body.provider-guest #sidebar-container { display: none; }
+body.provider-guest .project-summary { display: none; }
+body.provider-guest .project-summary[hidden] { display: none !important; }
 body.provider-guest .details-card { display: none; }
+body.provider-guest .details-card[hidden] { display: none !important; }
 body.provider-guest .provider-layout { display: block; min-height: 0; }
 body.provider-guest .provider-main {
     width: 100%;

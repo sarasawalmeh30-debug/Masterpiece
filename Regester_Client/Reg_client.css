@@ -333,29 +333,6 @@ box-shadow: 0 0 0 3px rgba(168, 201, 165, 0.2);
 border-color: var(--error, #D96C6C);
 }
 
-.password-toggle {
-position: absolute;
-right: 8px;
-top: 50%;
-transform: translateY(-50%);
-width: 35px;
-height: 35px;
-display: flex;
-align-items: center;
-justify-content: center;
-border: none;
-border-radius: 8px;
-background: transparent;
-color: var(--text-secondary, #6B756D);
-font-size: 15px;
-cursor: pointer;
-}
-
-.password-toggle:hover {
-color: var(--primary-deep, #355E3B);
-background: var(--primary-light, #EAF4E8);
-}
-
 .field-error {
 display: block;
 min-height: 0;

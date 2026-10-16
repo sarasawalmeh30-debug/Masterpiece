@@ -1,4 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
+const supportBack = document.getElementById("supportBack");
+if (supportBack) {
+    supportBack.addEventListener("click", event => {
+        if (window.history.length > 1) {
+            event.preventDefault();
+            window.history.back();
+        }
+    });
+}
+
 // Load the existing sidebar
 async function loadSidebar() {
 const container = document.getElementById("sidebar-container");

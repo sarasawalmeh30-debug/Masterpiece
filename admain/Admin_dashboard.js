@@ -136,6 +136,7 @@
         ], "provStatus");
         const cats = window.TEAMLY_ADMIN_DATA.services, counts = cats.map(c => P.filter(p => p.services.includes(c)).length), max = Math.max(1, ...counts);
         $("#provCats").innerHTML = cats.map((c, i) => `<button class="hbar ${state.f.provCat === c ? "is-on" : ""}" type="button" data-act="provCat:${esc(c)}"><span>${esc(c)}</span><em><i style="width:${counts[i] / max * 100}%"></i></em><b>${counts[i]}</b></button>`).join("");
+        renderServiceMix(cats, counts);
         const sel = $("#provCatSelect"); if (sel && !sel.options.length) sel.innerHTML = `<option value="all">All services</option>` + cats.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
         const f = state.f;
         const rows = P.filter(p => (f.provType === "all" || p.type === f.provType) && (f.provCat === "all" || p.services.includes(f.provCat)) && (f.provStatus === "all" || p.status === f.provStatus));
@@ -144,6 +145,30 @@
             { h: "Status", f: r => r.status === "pending" ? `<span class="badge badge-pending">Awaiting approval</span>` : badge(r.status) },
             { h: "Joined", f: r => when(r.created) }, { h: "", f: r => detailBtn("provider", r.id) }
         ], { text: r => [r.name, r.type, r.services.join(" "), r.status].join(" "), viewAll: "View all providers" });
+    }
+
+    function renderServiceMix(services, counts) {
+        const total = sum(counts, count => count);
+        const chart = $("#serviceMixChart"), legend = $("#serviceMixLegend");
+        if (!chart || !legend) return;
+        if (!total) {
+            chart.innerHTML = `<div class="empty">No provider service data.</div>`;
+            legend.innerHTML = "";
+            return;
+        }
+        const colors = ["#527f58", "#8eae83", "#d6ae62", "#7189a4", "#b78070", "#829a8a", "#b1a276"];
+        const radius = 48, circumference = 2 * Math.PI * radius;
+        let offset = 0;
+        const arcs = services.map((service, index) => {
+            const count = counts[index] || 0;
+            if (!count) return "";
+            const length = circumference * count / total;
+            const arc = `<circle r="${radius}" cx="60" cy="60" fill="none" stroke="${colors[index % colors.length]}" stroke-width="16" stroke-dasharray="${length} ${circumference - length}" stroke-dashoffset="${-offset}" transform="rotate(-90 60 60)"><title>${esc(service)}: ${count} providers</title></circle>`;
+            offset += length;
+            return arc;
+        }).join("");
+        chart.innerHTML = `<svg viewBox="0 0 120 120" role="img" aria-label="Donut chart of providers by service"><circle r="48" cx="60" cy="60" fill="none" stroke="#edf2ec" stroke-width="16"/>${arcs}<text x="60" y="57" text-anchor="middle" class="service-mix-total">${total}</text><text x="60" y="72" text-anchor="middle" class="service-mix-caption">listings</text></svg>`;
+        legend.innerHTML = services.map((service, index) => `<div class="service-mix-item"><i style="--mix-color:${colors[index % colors.length]}"></i><span>${esc(service)}</span><b>${counts[index] || 0}</b></div>`).join("");
     }
  
     function renderSignups(D) {
@@ -251,12 +276,6 @@
         g += `<text x="14" y="${(H - B) / 2}" transform="rotate(-90 14 ${(H - B) / 2})" font-size="11" text-anchor="middle" fill="var(--text-secondary)">Count</text><text x="${(L + W - 18) / 2}" y="${H - 4}" font-size="11" text-anchor="middle" fill="var(--text-secondary)">Date</text>`;
         $(el).innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Line chart showing counts by date">${g}</svg><div class="legend">${series.map(s => `<span><i style="background:${s.c}"></i>${esc(s.n)}</span>`).join("")}</div>`;
     }
-    function donut(el, items) {
-        const total = sum(items, i => i.v); if (!total) { $(el).innerHTML = `<div class="empty">No data in this period.</div>`; return; }
-        const R = 40, C = 2 * Math.PI * R; let off = 0, arcs = "";
-        items.filter(i => i.v).forEach(i => { const len = C * i.v / total; arcs += `<circle r="${R}" cx="60" cy="60" fill="none" stroke="${i.c}" stroke-width="20" stroke-dasharray="${len} ${C - len}" stroke-dashoffset="${-off}" transform="rotate(-90 60 60)"><title>${esc(i.l)}: ${i.v}</title></circle>`; off += len; });
-        $(el).innerHTML = `<div class="donut-wrap"><svg viewBox="0 0 120 120" role="img" aria-label="Donut chart">${arcs}<text x="60" y="65" font-size="16" font-weight="700" text-anchor="middle" fill="var(--text)">${total}</text></svg><div class="legend" style="flex-direction:column">${items.map(i => `<span><i style="background:${i.c}"></i>${esc(i.l)}: ${i.v}</span>`).join("")}</div></div>`;
-    }
     function renderCharts(D) {
         const d = state.data, regs = buckets(D, [...d.clients, ...d.providers]);
         const projectBuckets = buckets(D, d.projects);
@@ -267,13 +286,6 @@
         line("#chRegs", regs.labels, [
             { n: "New accounts", c: COL.a, v: regs.out },
             { n: "Projects created", c: COL.c, v: buckets(D, d.projects).out }
-        ]);
-        const rc = { new: COL.d, pending: COL.c, accepted: COL.a, rejected: COL.e, expired: "var(--text-light)" };
-        donut("#chReqs", Object.keys(rc).map(s => ({ l: cap(s), v: D.reqC.filter(r => r.status === s).length, c: rc[s] })));
-        donut("#chType", [
-            { l: "Clients", v: d.clients.length, c: COL.d },
-            { l: "Individual providers", v: D.inds.length, c: COL.a },
-            { l: "Companies", v: D.cos.length, c: COL.c }
         ]);
     }
  
@@ -342,14 +354,8 @@
     $("#menuLogout").addEventListener("click", () => { try { sessionStorage.removeItem("teamlyLoggedIn"); } catch (e) { /* continue */ } });
     $("#retryBtn").addEventListener("click", load);
  
-    /* scroll-spy keeps the sidebar highlight in sync */
-    if ("IntersectionObserver" in window) {
-        const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) document.dispatchEvent(new CustomEvent("admin-section-change", { detail: en.target.id })); }), { rootMargin: "-20% 0px -70% 0px" });
-        ["overview", "signups", "providers", "projects", "requests", "payments", "subscriptions", "analytics", "activity"].forEach(id => { const s = document.getElementById(id); if (s) io.observe(s); });
-    }
- 
     function setName() {
-        const n = (state.data && state.data.admin && state.data.admin.name) || "Admin";
+        const n = (state.data && state.data.admin && state.data.admin.name) || "Sara";
         window.TEAMLY_ADMIN_NAME = n;
         $("#greeting").textContent = "Welcome back, " + n; $("#profileName").textContent = n; $("#profileAvatar").textContent = n.charAt(0).toUpperCase();
         const sn = $("#adminSidebarName"), sa = $("#adminSidebarAvatar"); if (sn) sn.textContent = n; if (sa) sa.textContent = n.charAt(0).toUpperCase();

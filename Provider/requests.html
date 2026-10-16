@@ -75,16 +75,29 @@
 
             <section class="checkin-section" aria-labelledby="checkin-title">
                 <div class="checkin-heading">
-                    <span class="checkin-icon"><i class="fa fa-commenting-o" aria-hidden="true"></i></span>
+                    <span class="checkin-icon"><i class="fa fa-heart" aria-hidden="true"></i></span>
                     <div>
-                        <span class="eyebrow">PROJECT CHECK-IN</span>
-                        <h2 id="checkin-title">How is everything going so far?</h2>
+                        <h2 id="checkin-title">Project Check-In</h2>
+                        <p>We care about your experience. Let us know how things are going.</p>
                     </div>
                 </div>
+                <h3 class="checkin-question">How is everything going so far?</h3>
                 <div class="feedback-options" role="group" aria-label="Project feedback">
-                    <button class="feedback-option" type="button" data-feedback="going-well"><span aria-hidden="true">😊</span> Everything is going well!</button>
-                    <button class="feedback-option" type="button" data-feedback="concern"><span aria-hidden="true">🤔</span> I have a concern</button>
-                    <button class="feedback-option" type="button" data-feedback="help"><span aria-hidden="true">🛟</span> I need help</button>
+                    <button class="feedback-option" type="button" data-feedback="going-well" aria-pressed="false">
+                        <span class="feedback-emoji" aria-hidden="true">😊</span>
+                        <strong>Everything is going well</strong>
+                        <span class="feedback-option-description">My project is progressing smoothly.</span>
+                    </button>
+                    <button class="feedback-option" type="button" data-feedback="concern" aria-pressed="false">
+                        <span class="feedback-emoji" aria-hidden="true">🤔</span>
+                        <strong>I have a concern</strong>
+                        <span class="feedback-option-description">Something needs my attention.</span>
+                    </button>
+                    <button class="feedback-option" type="button" data-feedback="help" aria-pressed="false">
+                        <span class="feedback-emoji" aria-hidden="true">🆘</span>
+                        <strong>I need help</strong>
+                        <span class="feedback-option-description">I'd like assistance with my project.</span>
+                    </button>
                 </div>
                 <p class="feedback-message" id="feedback-message" role="status" aria-live="polite">Select one option.</p>
             </section>

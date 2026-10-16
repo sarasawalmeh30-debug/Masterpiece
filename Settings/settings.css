@@ -1,0 +1,59 @@
+.teamly-settings { min-height: 100vh; background: radial-gradient(ellipse at 12% 0%, rgba(168,201,165,.20), transparent 38%), var(--bg); }
+.settings-layout { min-height: 100vh; }
+.settings-back,.back-to-settings { display: inline-flex; align-items: center; gap: 9px; color: var(--primary-deep); font-weight: 700; }
+.settings-back { width: fit-content; margin-bottom: 27px; gap: 7px; color: #68766b; font-size: 13px; font-weight: 500; text-decoration: none; transition: color .18s ease, transform .18s ease; }
+.settings-back:hover { color: var(--primary-deep); transform: translateX(-2px); }
+.back-to-settings:hover { background: var(--primary-light); }
+.settings-back i { font-size: 14px; font-weight: 400; }
+.back-to-settings i { font-size: 20px; }
+.settings-content { width: calc(100% - 400px); max-width: none; margin: 0 auto; padding: clamp(36px, 6vw, 66px) 0 28px; }
+.settings-heading { margin: 0 0 26px; }
+.settings-eyebrow { display: block; margin-bottom: 8px; color: var(--primary-dark); font-size: 11px; font-weight: 800; letter-spacing: .16em; }
+.settings-heading h1 { margin: 0; font-size: clamp(32px, 4vw, 42px); letter-spacing: -.04em; }
+.settings-heading p,.detail-heading p { margin-top: 7px; color: var(--text-secondary); }
+.settings-view { overflow: hidden; border: 1px solid var(--border); border-radius: 18px; background: var(--white); box-shadow: var(--shadow-sm); }
+.settings-option { display: flex; align-items: center; gap: 17px; width: 100%; min-height: 104px; padding: 20px 24px; border: 0; border-bottom: 1px solid #edf1ec; background: #fff; color: var(--text); text-align: left; cursor: pointer; transition: background .18s ease; }
+.settings-option:last-child { border-bottom: 0; }
+.settings-option:hover { background: #fbfdfb; }
+.option-icon { display: inline-grid; width: 48px; height: 48px; flex: 0 0 auto; place-items: center; border: 1px solid rgba(111,155,115,.18); border-radius: 14px; background: linear-gradient(145deg,#f4faf2,#e8f2e6); color: var(--primary-deep); font-size: 19px; }
+.option-copy { display: grid; gap: 4px; flex: 1; }
+.option-copy strong { font-size: 16px; }
+.option-copy small { color: var(--text-secondary); font-size: 13px; }
+.option-arrow { color: #87958a; font-size: 21px; }
+.settings-option:focus-visible,.settings-back:focus-visible,.back-to-settings:focus-visible,.settings-button:focus-visible { outline: 3px solid rgba(111,155,115,.48); outline-offset: 3px; }
+.settings-detail { padding: clamp(22px, 4vw, 38px); }
+.back-to-settings { margin: 0 0 24px; padding: 5px 8px; border: 0; border-radius: 8px; background: transparent; font-size: 14px; cursor: pointer; }
+.detail-heading { display: flex; align-items: center; gap: 15px; margin-bottom: 23px; }
+.detail-heading h2,.policy-heading h2 { font-size: clamp(24px, 3vw, 30px); letter-spacing: -.025em; }
+.detail-heading p { margin-top: 3px; font-size: 14px; }
+.password-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 19px 20px; }
+.settings-field { display: grid; align-content: start; gap: 7px; }
+.settings-field:first-child { grid-column: 1 / -1; }
+.settings-field label { font-size: 13px; font-weight: 700; }
+.password-input { position: relative; }
+.password-input input { width: 100%; min-height: 48px; padding: 10px 48px 10px 13px; border: 1px solid #dce5da; border-radius: 10px; background: #fff; color: var(--text); outline: none; }
+.password-input input:focus { border-color: var(--primary-dark); box-shadow: 0 0 0 3px rgba(168,201,165,.2); }
+.password-input input[aria-invalid="true"] { border-color: var(--error); }
+.email-field .password-input input { padding-right: 13px; }
+.settings-field > small { color: var(--text-light); font-size: 12px; }
+.settings-field .field-error { color: #b54242; }
+.field-error:empty { display: none; }
+.settings-actions { display: flex; gap: 10px; margin-top: 25px; }
+.settings-button { min-height: 44px; padding: 10px 17px; border: 1px solid transparent; border-radius: 10px; font-size: 14px; font-weight: 700; transition: background .18s ease, transform .18s ease; }
+.settings-button:hover { transform: translateY(-1px); }
+.settings-button.primary { background: var(--primary-deep); color: #fff; }
+.settings-button.primary:hover { background: #294b2e; }
+.settings-button.secondary { border-color: var(--border); background: #fff; color: var(--text-secondary); }
+.settings-button.secondary:hover { background: var(--bg-secondary); }
+.policy-heading { padding-bottom: 22px; border-bottom: 1px solid #edf1ec; }
+.policy-heading .settings-eyebrow { margin-bottom: 5px; }
+.draft-badge { display: inline-flex; align-items: center; gap: 7px; margin-top: 12px; padding: 6px 10px; border-radius: 999px; background: #fff5d9; color: #735b22; font-size: 11px; font-weight: 700; }
+.policy-content { max-height: min(60vh, 650px); overflow: auto; padding: 22px 4px 0 0; color: #4d5950; font-size: 14px; line-height: 1.75; }
+.policy-content p { margin: 0 0 16px; }
+.policy-content h3 { margin: 23px 0 6px; color: var(--text); font-size: 16px; }
+.settings-alert { margin: 0 0 16px; padding: 12px 15px; border: 1px solid #e7d9ad; border-radius: 11px; background: #fffaf0; color: #67572e; font-size: 13px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+[hidden] { display: none !important; }
+@media (max-width: 900px) { .settings-content { width: calc(100% - 40px); } }
+@media (max-width: 620px) { .settings-content { padding-top: 35px; }.settings-option { min-height: 90px; gap: 12px; padding: 16px; }.option-icon { width: 42px; height: 42px; border-radius: 12px; }.option-copy strong { font-size: 14px; }.option-copy small { max-width: 220px; font-size: 12px; line-height: 1.45; }.settings-detail { padding: 20px 16px; }.detail-heading { align-items: flex-start; }.password-fields { grid-template-columns: 1fr; }.settings-field:first-child { grid-column: auto; }.settings-actions { flex-wrap: wrap; }.settings-button { flex: 1; } }
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }

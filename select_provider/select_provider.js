@@ -10,6 +10,10 @@ try {
     IS_LOGGED_IN = false;
 }
 document.body.classList.add(IS_LOGGED_IN ? "provider-authenticated" : "provider-guest");
+const projectSummaryCard = document.querySelector(".project-summary");
+if (projectSummaryCard) projectSummaryCard.hidden = !IS_LOGGED_IN;
+const projectDetailsCard = document.querySelector(".details-card");
+if (projectDetailsCard) projectDetailsCard.hidden = !IS_LOGGED_IN;
 
 
 /* ==================================

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7faf6">
+    <title>Settings | TEAMLY</title>
+    <link rel="icon" href="../img/logo2.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="settings.css">
+    <script src="settings.js" defer></script>
+</head>
+<body class="teamly-settings">
+    <main class="settings-layout">
+        <div class="settings-content">
+            <a class="settings-back" id="workspaceBack" href="../home_page/home.html"><i class="fa fa-arrow-left" aria-hidden="true"></i><span>Back</span></a>
+            <header class="settings-heading">
+                <span class="settings-eyebrow">ACCOUNT</span>
+                <h1>Settings</h1>
+                <p>Manage your account security and review TEAMLY policies.</p>
+            </header>
+
+            <div class="settings-alert" id="settingsAlert" role="status" aria-live="polite" tabindex="-1" hidden></div>
+
+            <section class="settings-view" id="settingsHome" aria-labelledby="settingsOptionsTitle">
+                <h2 class="sr-only" id="settingsOptionsTitle">Account settings</h2>
+                <button class="settings-option" type="button" data-open-view="password">
+                    <span class="option-icon"><i class="fa fa-lock" aria-hidden="true"></i></span>
+                    <span class="option-copy"><strong>Change Password</strong><small>Update your password to help keep your account secure.</small></span>
+                    <i class="fa fa-angle-right option-arrow" aria-hidden="true"></i>
+                </button>
+                <button class="settings-option" type="button" data-open-view="email">
+                    <span class="option-icon"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+                    <span class="option-copy"><strong>Change Email Address</strong><small>Update the email address saved for this browser account.</small></span>
+                    <i class="fa fa-angle-right option-arrow" aria-hidden="true"></i>
+                </button>
+                <button class="settings-option" type="button" data-open-view="terms">
+                    <span class="option-icon"><i class="fa fa-file-text-o" aria-hidden="true"></i></span>
+                    <span class="option-copy"><strong>Terms &amp; Conditions</strong><small>Read the terms for using TEAMLY.</small></span>
+                    <i class="fa fa-angle-right option-arrow" aria-hidden="true"></i>
+                </button>
+                <button class="settings-option" type="button" data-open-view="privacy">
+                    <span class="option-icon"><i class="fa fa-shield" aria-hidden="true"></i></span>
+                    <span class="option-copy"><strong>Privacy Policy</strong><small>Learn how this demo handles account information.</small></span>
+                    <i class="fa fa-angle-right option-arrow" aria-hidden="true"></i>
+                </button>
+            </section>
+
+            <section class="settings-view settings-detail" id="emailView" aria-labelledby="emailTitle" hidden>
+                <button class="back-to-settings" type="button" data-back><i class="fa fa-angle-left" aria-hidden="true"></i> Back to Settings</button>
+                <div class="detail-heading"><span class="option-icon"><i class="fa fa-envelope-o" aria-hidden="true"></i></span><div><h2 id="emailTitle">Change Email Address</h2><p>Save a new email address for your TEAMLY account on this browser.</p></div></div>
+                <form id="emailForm" novalidate>
+                    <div class="settings-field email-field"><label for="newEmail">Email Address</label><div class="password-input"><input id="newEmail" name="email" type="email" autocomplete="email" required aria-describedby="emailError"></div><small class="field-error" id="emailError"></small></div>
+                    <div class="settings-actions"><button class="settings-button primary" type="submit">Save Email</button><button class="settings-button secondary" id="cancelEmail" type="button">Cancel</button></div>
+                </form>
+            </section>
+
+            <section class="settings-view settings-detail" id="passwordView" aria-labelledby="passwordTitle" hidden>
+                <button class="back-to-settings" type="button" data-back><i class="fa fa-angle-left" aria-hidden="true"></i> Back to Settings</button>
+                <div class="detail-heading"><span class="option-icon"><i class="fa fa-lock" aria-hidden="true"></i></span><div><h2 id="passwordTitle">Change Password</h2><p>Keep your account secure by updating your password.</p></div></div>
+                <form id="passwordForm" novalidate>
+                    <div class="password-fields">
+                        <div class="settings-field"><label for="currentPassword">Current Password</label><div class="password-input"><input id="currentPassword" name="currentPassword" type="password" autocomplete="current-password" required aria-describedby="currentPasswordError"></div><small class="field-error" id="currentPasswordError"></small></div>
+                        <div class="settings-field"><label for="newPassword">New Password</label><div class="password-input"><input id="newPassword" name="newPassword" type="password" autocomplete="new-password" minlength="8" required aria-describedby="newPasswordHint newPasswordError"></div><small id="newPasswordHint">Use at least 8 characters.</small><small class="field-error" id="newPasswordError"></small></div>
+                        <div class="settings-field"><label for="confirmPassword">Confirm New Password</label><div class="password-input"><input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" required aria-describedby="confirmPasswordError"></div><small class="field-error" id="confirmPasswordError"></small></div>
+                    </div>
+                    <div class="settings-actions"><button class="settings-button primary" type="submit">Save Changes</button><button class="settings-button secondary" id="cancelPassword" type="button">Cancel</button></div>
+                </form>
+            </section>
+
+            <article class="settings-view settings-detail policy-view" id="termsView" aria-labelledby="termsTitle" hidden>
+                <button class="back-to-settings" type="button" data-back><i class="fa fa-angle-left" aria-hidden="true"></i> Back to Settings</button>
+                <header class="policy-heading"><span class="settings-eyebrow">TEAMLY POLICY</span><h2 id="termsTitle">Terms &amp; Conditions</h2><span class="draft-badge"><i class="fa fa-pencil" aria-hidden="true"></i> Draft — requires review; not published</span></header>
+                <div class="policy-content">
+                    <p>These draft Terms &amp; Conditions describe proposed rules for accessing and using the TEAMLY service marketplace. They require review and approval before they can be treated as official terms.</p>
+                    <h3>1. About TEAMLY</h3><p>TEAMLY is designed to help clients discover service providers, including individuals and companies, and to support service requests and project coordination. Features shown in this prototype may not be connected to live services.</p>
+                    <h3>2. User Accounts</h3><p>Users should provide accurate registration information and keep their sign-in details private. The current prototype uses browser-based demo state and does not provide server-side account authentication or password management.</p>
+                    <h3>3. Client Responsibilities</h3><p>Clients are responsible for providing accurate project details, reviewing provider information, and agreeing directly with a provider on the scope, schedule, price, and any cancellation conditions before proceeding.</p>
+                    <h3>4. Provider Responsibilities</h3><p>Individual providers and companies should provide accurate service, portfolio, pricing, and availability information, communicate clearly, and only accept work they reasonably expect to fulfill.</p>
+                    <h3>5. Service Requests and Agreements</h3><p>Submitting a request does not guarantee that a provider will accept it. The parties should confirm the scope, timing, price, and other conditions of their arrangement with each other.</p>
+                    <h3>6. Payments and Fees</h3><p>Payment screens or records in this prototype do not establish that live payment processing is available. No platform commission, refund, deposit, cancellation, or payment policy is stated by this draft; any such terms must be confirmed and published before use.</p>
+                    <h3>7. Prohibited Conduct</h3><p>Users should not misuse the service, impersonate others, engage in fraud or harassment, attempt unauthorized access, or use the platform for unlawful purposes.</p>
+                    <h3>8. Account Restrictions</h3><p>Any account restriction or termination process must be defined and implemented before this section is relied upon as an enforceable policy.</p>
+                    <h3>9. Changes to These Terms</h3><p>When approved terms are changed, TEAMLY should identify the effective date and communicate material changes through an appropriate channel.</p>
+                    <h3>10. Contact</h3><p>For assistance, use the existing Help &amp; Support page. This draft does not add a separate contact address.</p>
+                </div>
+            </article>
+
+            <article class="settings-view settings-detail policy-view" id="privacyView" aria-labelledby="privacyTitle" hidden>
+                <button class="back-to-settings" type="button" data-back><i class="fa fa-angle-left" aria-hidden="true"></i> Back to Settings</button>
+                <header class="policy-heading"><span class="settings-eyebrow">TEAMLY POLICY</span><h2 id="privacyTitle">Privacy Policy</h2><span class="draft-badge"><i class="fa fa-pencil" aria-hidden="true"></i> Draft — requires review; not published</span></header>
+                <div class="policy-content">
+                    <p>This draft describes data handling visible in the current TEAMLY prototype. It is not a complete or legally approved privacy notice. The production data flows, operators, retention periods, and user request process need to be confirmed before publication.</p>
+                    <h3>1. Information Used in This Prototype</h3><p>Registration and provider profile screens can collect information such as a name, email address, account type, service details, location, pricing, profile description, and portfolio material. The exact information depends on the screen and information a user chooses to enter.</p>
+                    <h3>2. Where Prototype Data Is Stored</h3><p>Some profile and demo records are saved in browser local storage, while a demo sign-in flag is kept in session storage. This is browser-side prototype storage, not a verified server account system. Data saved in a browser may remain on that device until cleared and may be accessible to someone with access to the browser profile.</p>
+                    <h3>3. How Information Is Used</h3><p>Within the prototype, entered information supports profile displays, service discovery, requests, messaging, and demo administrative views where those screens are implemented. This description does not verify a live service operation or a production data processing purpose.</p>
+                    <h3>4. Information Visibility</h3><p>Provider profile details and portfolio material may be displayed to users through profile and discovery screens. Project or request details may appear in the relevant prototype screens. Exact access controls and sharing behavior must be verified before launch.</p>
+                    <h3>5. Passwords and Security</h3><p>This prototype does not provide a backend password update or verified server-side authentication flow. Do not enter a password you use elsewhere. This page does not claim particular security safeguards or that information is completely secure.</p>
+                    <h3>6. Payments and Messages</h3><p>Payment-related and messaging screens are present in the project, but this review did not establish live payment processing or a complete production data flow. Do not treat this draft as a statement about a payment processor or third-party sharing.</p>
+                    <h3>7. Retention and Requests</h3><p>No production retention period or implemented account deletion process was verified. Users who need assistance can use the existing Help &amp; Support page; this prototype does not promise a particular deletion outcome or response time.</p>
+                    <h3>8. Cookies and Similar Technologies</h3><p>The reviewed prototype uses browser local storage and session storage for certain demo state. No analytics service or cookie policy was verified in this review.</p>
+                    <h3>9. Policy Updates</h3><p>Before publication, approved policy text should include its effective date and explain how material changes will be communicated.</p>
+                    <h3>10. Contact</h3><p>For assistance, use the existing Help &amp; Support page. A dedicated privacy contact and request process have not been verified.</p>
+                </div>
+            </article>
+        </div>
+    </main>
+</body>
+</html>

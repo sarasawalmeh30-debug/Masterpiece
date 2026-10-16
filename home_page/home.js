@@ -1,4 +1,14 @@
 
+const talkToAiLink = document.getElementById('talkToAiLink');
+if (talkToAiLink) {
+    try {
+        if (sessionStorage.getItem('teamlyLoggedIn') === 'true') {
+            talkToAiLink.href = '../ai_chat/ai_chat.html';
+        }
+    } catch (error) {
+        // Guests use the public AI information page first.
+    }
+}
 
 const cards = document.querySelectorAll('.carousel-card');
 const prevBtn = document.getElementById('prevBtn');

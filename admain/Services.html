@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7faf6">
+    <title>Services | TEAMLY Admin</title>
+    <link rel="icon" href="../img/logo2.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="admin-sidebar.css">
+    <link rel="stylesheet" href="services.css">
+</head>
+<body>
+<div class="admin-layout services-layout">
+    <div id="admin-sidebar-container" class="admin-sidebar-container"></div>
+    <main class="services-main">
+        <a class="services-back" href="Admin_dashboard.html"><i class="fa fa-angle-left" aria-hidden="true"></i> Dashboard</a>
+        <header class="services-header">
+            <div><span class="services-eyebrow">SERVICE DIRECTORY</span><h1>Services</h1><p>See what providers offer and how many providers are available for each service.</p></div>
+            <label class="services-search"><i class="fa fa-search" aria-hidden="true"></i><span class="sr-only">Search services or providers</span><input id="servicesSearch" type="search" placeholder="Search services or providers"></label>
+        </header>
+        <section class="services-stats" id="servicesStats" aria-label="Service summary"></section>
+        <section class="service-directory" aria-label="Services and providers">
+            <div class="directory-heading"><h2>Available services</h2><span id="directoryCount" aria-live="polite"></span></div>
+            <div class="service-cards" id="serviceCards"><p class="services-state">Loading services…</p></div>
+        </section>
+        <div class="services-error" id="servicesError" role="alert" hidden></div>
+    </main>
+</div>
+<script src="Admin_data.js"></script>
+<script src="admin-sidebar.js"></script>
+<script src="services.js"></script>
+</body>
+</html>

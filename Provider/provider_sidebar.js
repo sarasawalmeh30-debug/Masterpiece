@@ -84,9 +84,8 @@
             root.querySelector("#providerSidebarAvatar").textContent = displayName.charAt(0).toUpperCase();
         }
         const accountLabel = root.querySelector(".provider-profile-copy small");
-        if (provider && typeof provider.accountType === "string") {
-            accountLabel.textContent = provider.accountType.toLowerCase() === "company" ? "Company account" : "Provider account";
-        }
+        const providerType = provider && String(provider.accountType || provider.providerType || "").toLowerCase();
+        accountLabel.textContent = providerType === "company" ? "Company account" : "Provider account";
 
         const logoutLink = root.querySelector("#providerLogout");
         logoutLink.addEventListener("click", () => {

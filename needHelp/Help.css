@@ -21,6 +21,30 @@ gap: 20px;
 margin-bottom: 28px;
 }
 
+.support-back {
+display: flex;
+width: fit-content;
+align-items: center;
+gap: 8px;
+margin-bottom: 17px;
+padding: 0;
+border: 0;
+border-radius: 0;
+background: transparent;
+color: var(--primary-deep, #355E3B);
+font-size: 13px;
+font-weight: 600;
+text-decoration: none;
+transition: background .2s ease, border-color .2s ease, transform .2s ease;
+}
+
+.support-back:hover {
+transform: translateX(-2px);
+background: transparent;
+}
+
+.support-back:focus-visible { outline: 3px solid rgba(111, 155, 115, .32); outline-offset: 2px; }
+
 .page-label {
 color: var(--primary-dark, #6F9B73);
 font-size: 12px;

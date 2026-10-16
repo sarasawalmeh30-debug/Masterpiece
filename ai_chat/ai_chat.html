@@ -34,7 +34,7 @@
                 <div class="chat-welcome">
 
                     <h1>
-                        Welcome to <span id="welcomeName">TEAMLY</span><span class="wave">👋</span>
+                        <span id="welcomeGreeting">Welcome to</span> <span id="welcomeName">TEAMLY</span><span class="wave">👋</span>
                     </h1>
 
                     <p class="welcome-subtitle">
@@ -46,32 +46,47 @@
                         build your team.
                     </p>
 
+                    <div class="chat-history-actions">
+                        <button type="button" class="history-action" id="newChatButton">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            <span>New Chat</span>
+                        </button>
+                        <button type="button" class="history-action" id="toggleHistoryButton" aria-expanded="false" aria-controls="chatHistoryPanel">
+                            <i class="fa fa-history" aria-hidden="true"></i>
+                            <span>Previous Chats</span>
+                        </button>
+                    </div>
+
                 </div>
+
+                <section class="chat-history-panel" id="chatHistoryPanel" aria-label="Previous conversations" hidden>
+                    <div class="chat-history-header">
+                        <div>
+                            <h2>Previous Chats</h2>
+                            <p>Open a conversation to continue where you left off.</p>
+                        </div>
+                        <button type="button" class="history-close" id="closeHistoryButton" aria-label="Close previous chats">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="chat-history-list" id="chatHistoryList"></div>
+                    <p class="chat-history-empty" id="chatHistoryEmpty" hidden>No previous chats yet. Start a new conversation.</p>
+                </section>
+
+                <dialog class="delete-chat-dialog" id="deleteChatDialog" aria-labelledby="deleteChatTitle" aria-describedby="deleteChatDescription">
+                    <div class="delete-dialog-icon" aria-hidden="true"><i class="fa fa-trash-o"></i></div>
+                    <h2 id="deleteChatTitle">Delete this chat?</h2>
+                    <p id="deleteChatDescription">Are you sure you want to delete <strong id="deleteChatName">this chat</strong>? This conversation will be permanently removed.</p>
+                    <div class="delete-dialog-actions">
+                        <button type="button" class="delete-dialog-cancel" id="cancelDeleteChat">Cancel</button>
+                        <button type="button" class="delete-dialog-confirm" id="confirmDeleteChat">Delete chat</button>
+                    </div>
+                </dialog>
 
                 <!-- Conversation Messages -->
                 <div class="chat-messages"
                      id="chatMessages"
-                     aria-live="polite">
-
-                    <div class="message ai-message">
-
-                        <div class="message-avatar">
-                            <i class="fa fa-magic"
-                               aria-hidden="true"></i>
-                        </div>
-
-                        <div class="message-content">
-                            <p>
-                                Hi! I'm TEAMLY AI. Tell me about your
-                                project, and I'll help you identify the
-                                services you need, organize your plans,
-                                and build your team.
-                            </p>
-                        </div>
-
-                    </div>
-
-                </div>
+                     aria-live="polite"></div>
 
                 <!-- Chat Input -->
                 <div class="chat-bottom">
@@ -89,6 +104,13 @@
                             maxlength="2000"
                             required
                         ></textarea>
+
+                        <button
+                            type="button"
+                            class="cancel-edit-button"
+                            id="cancelEditButton"
+                            hidden
+                        >Cancel edit</button>
 
                         <button
                             type="submit"

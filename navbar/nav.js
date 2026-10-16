@@ -19,6 +19,39 @@ const navLinks = document.getElementById("navLinks");
 const navItems = document.querySelectorAll(".nav-link");
 if (!navbar || !menuToggle || !navLinks) return;
 
+// Keep both desktop and mobile account actions in sync with the demo session.
+const accountActions = navbar.querySelectorAll(".nav-login");
+const homeUrl = new URL("../home_page/home.html", window.location.href).href;
+function syncAccountActions() {
+    let isLoggedIn = false;
+    try {
+        isLoggedIn = sessionStorage.getItem("teamlyLoggedIn") === "true";
+    } catch (error) {
+        // If storage is unavailable, leave the login links usable.
+    }
+
+    accountActions.forEach((action) => {
+        action.textContent = isLoggedIn ? "Log Out" : "Log In";
+        action.href = isLoggedIn ? homeUrl : "../login/login.html";
+        action.setAttribute("aria-label", isLoggedIn ? "Log out" : "Log in");
+        action.dataset.sessionAction = isLoggedIn ? "logout" : "login";
+    });
+}
+
+syncAccountActions();
+accountActions.forEach((action) => {
+    action.addEventListener("click", (event) => {
+        if (action.dataset.sessionAction !== "logout") return;
+        event.preventDefault();
+        try {
+            sessionStorage.removeItem("teamlyLoggedIn");
+        } catch (error) {
+            // Continue to the home page even if storage is unavailable.
+        }
+        window.location.assign(homeUrl);
+    });
+});
+
 // Mark the section/page this shared navigation points to when the page opens.
 const currentUrl = new URL(window.location.href);
 const isHomePage = currentUrl.pathname.toLowerCase().endsWith("/home_page/home.html");

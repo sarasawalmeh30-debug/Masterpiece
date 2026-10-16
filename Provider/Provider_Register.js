@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const serviceCardField = document.getElementById("serviceOrbit");
     const serviceOrbitStage = document.getElementById("serviceOrbitStage");
     const serviceGlassCards = Array.from(document.querySelectorAll(".service-glass-card[data-service]"));
+    const defaultCenterCard = serviceGlassCards.find(function (card) { return card.classList.contains("is-featured"); });
     const serviceIconRain = document.getElementById("serviceIconRain");
     const companyServicesCard = document.getElementById("companyServicesCard");
     const companyServicesCardList = document.getElementById("companyServicesCardList");
@@ -31,20 +32,12 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!validServices.length) return;
         const isCompany = serviceOrbitStage.classList.contains("company-selection");
         const dropCount = isCompany ? validServices.length * 2 : 10;
-        const stageRect = serviceOrbitStage.getBoundingClientRect();
-        const companyChips = isCompany ? Array.from(companyServicesCardList.children) : [];
-
         for (let index = 0; index < dropCount; index += 1) {
-            const serviceIndex = isCompany ? Math.floor(index / 2) : 0;
+            const serviceIndex = isCompany ? Math.floor(Math.random() * validServices.length) : 0;
             const piece = document.createElement("span");
             piece.className = "fa " + serviceIcons[validServices[serviceIndex]] + " service-icon-drop";
-            if (isCompany && companyChips[serviceIndex]) {
-                const chipRect = companyChips[serviceIndex].getBoundingClientRect();
-                piece.style.setProperty("--icon-x", (chipRect.left - stageRect.left + chipRect.width / 2 - serviceOrbitStage.clientWidth / 2) + "px");
-                piece.style.setProperty("--icon-top", (chipRect.top - stageRect.top + chipRect.height / 2) + "px");
-            } else {
-                piece.style.setProperty("--icon-x", (Math.random() * serviceOrbitStage.clientWidth * 0.96 - serviceOrbitStage.clientWidth * 0.48) + "px");
-            }
+            piece.style.setProperty("--icon-x", (Math.random() * serviceOrbitStage.clientWidth * 0.96 - serviceOrbitStage.clientWidth * 0.48) + "px");
+            piece.style.setProperty("--icon-top", (isCompany ? -52 + Math.random() * 44 : -24) + "px");
             piece.style.setProperty("--icon-drift", (Math.random() * 16 - 8) + "px");
             piece.style.setProperty("--icon-rotate", (Math.random() * 16 - 8) + "deg");
             piece.style.setProperty("--icon-delay", index * 300 + Math.random() * 180 + "ms");
@@ -63,8 +56,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         serviceGlassCards.forEach(function (card) {
             card.classList.remove("is-winner");
+            card.classList.remove("is-swapped-out");
             card.style.removeProperty("--away-x");
             card.style.removeProperty("--away-y");
+            card.style.removeProperty("--swap-x");
+            card.style.removeProperty("--swap-y");
         });
         serviceOrbitStage.classList.remove("has-selection");
         serviceOrbitStage.classList.remove("company-selection");
@@ -74,18 +70,43 @@ document.addEventListener("DOMContentLoaded", function () {
         serviceIconRain.replaceChildren();
 
         if (!selectedCard) {
+            serviceGlassCards.forEach(function (card) {
+                card.classList.remove("is-featured");
+                card.style.removeProperty("--card-x");
+                card.style.removeProperty("--card-y");
+            });
+            if (defaultCenterCard) defaultCenterCard.classList.add("is-featured");
             return;
         }
 
         const stageCenterX = serviceOrbitStage.clientWidth / 2;
-        const stageCenterY = serviceOrbitStage.clientHeight / 2;
-        serviceGlassCards.forEach(function (card) {
-            if (card === selectedCard) return;
+        const stageCenterY = serviceOrbitStage.clientHeight * 0.45;
+        const selectedOriginalX = selectedCard.offsetLeft;
+        const selectedOriginalY = selectedCard.offsetTop;
+        const centerCard = serviceGlassCards.find(function (card) { return card.classList.contains("is-featured"); });
+        if (centerCard && centerCard !== selectedCard) {
+            centerCard.classList.remove("is-featured");
+            centerCard.classList.add("is-swapped-out");
+            centerCard.style.setProperty("--card-x", selectedOriginalX + "px");
+            centerCard.style.setProperty("--card-y", selectedOriginalY + "px");
+            selectedCard.classList.add("is-featured");
+        }
+        serviceGlassCards.forEach(function (card, index) {
+            if (card === selectedCard || card === centerCard || card.classList.contains("is-swapped-out")) return;
             const deltaX = card.offsetLeft + card.offsetWidth / 2 - stageCenterX;
             const deltaY = card.offsetTop + card.offsetHeight / 2 - stageCenterY;
-            const distance = Math.max(1, Math.hypot(deltaX, deltaY));
-            card.style.setProperty("--away-x", (deltaX / distance * 64) + "px");
-            card.style.setProperty("--away-y", "24px");
+            let distance = Math.hypot(deltaX, deltaY);
+            let directionX = deltaX;
+            let directionY = deltaY;
+            if (distance < 1) {
+                const angle = (index / serviceGlassCards.length) * Math.PI * 2;
+                directionX = Math.cos(angle);
+                directionY = Math.sin(angle);
+                distance = 1;
+            }
+            const clearance = Math.max(0, 172 - Math.hypot(deltaX, deltaY));
+            card.style.setProperty("--away-x", (directionX / distance * clearance) + "px");
+            card.style.setProperty("--away-y", (directionY / distance * clearance + 8) + "px");
         });
 
         serviceOrbitStage.classList.add("has-selection");
@@ -134,27 +155,59 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        serviceCardField.style.height = "450px";
         const stageWidth = serviceOrbitStage.clientWidth;
-        const serviceCardWidth = parseFloat(window.getComputedStyle(serviceGlassCards[0]).width);
-        const serviceCardHeight = parseFloat(window.getComputedStyle(serviceGlassCards[0]).height);
-        const columnGap = (stageWidth - serviceCardWidth * 3) / 4;
+        const stageHeight = serviceOrbitStage.clientHeight;
+        const referenceCard = surroundingCards[0] || serviceGlassCards.find(function (card) { return !card.classList.contains("is-featured"); });
+        const serviceCardStyle = window.getComputedStyle(referenceCard);
+        const serviceCardWidth = parseFloat(serviceCardStyle.width);
+        const serviceCardHeight = parseFloat(serviceCardStyle.height);
+        const boxWidth = companyServicesCard.offsetWidth;
         const boxHeight = companyServicesCard.offsetHeight;
-        const rows = Math.ceil(surroundingCards.length / 3);
-        surroundingCards.forEach(function (card, index) {
-            const row = Math.floor(index / 3);
-            const rowStart = row * 3;
-            const cardsInRow = Math.min(3, surroundingCards.length - rowStart);
-            const columnOffset = (3 - cardsInRow) / 2;
-            const column = index % 3;
-            const x = columnGap + (columnOffset + column) * (serviceCardWidth + columnGap);
-            const y = boxHeight + 18 + row * (serviceCardHeight + 14);
-            card.style.setProperty("--company-x", x + "px");
-            card.style.setProperty("--company-y", y + "px");
-        });
-        const cardsHeight = surroundingCards.length
-            ? 18 + rows * serviceCardHeight + (rows - 1) * 14
-            : 0;
-        serviceCardField.style.height = Math.max(276, boxHeight + cardsHeight + 12) + "px";
+        const narrowLayout = stageWidth < 390;
+        if (narrowLayout) {
+            const columns = Math.min(3, surroundingCards.length || 1);
+            const rows = Math.ceil(surroundingCards.length / columns);
+            const gap = 10;
+            const rowWidth = columns * serviceCardWidth + (columns - 1) * gap;
+            const startX = Math.max(0, (stageWidth - rowWidth) / 2);
+            const startY = 95 + boxHeight + 18;
+            serviceCardField.style.height = Math.max(450, startY + rows * (serviceCardHeight + gap) + 20) + "px";
+            surroundingCards.forEach(function (card, index) {
+                const row = Math.floor(index / columns);
+                const inRow = Math.min(columns, surroundingCards.length - row * columns);
+                const rowStart = row * columns;
+                const x = Math.max(0, (stageWidth - (inRow * serviceCardWidth + (inRow - 1) * gap)) / 2) + (index - rowStart) * (serviceCardWidth + gap);
+                card.style.setProperty("--company-x", x + "px");
+                card.style.setProperty("--company-y", (startY + row * (serviceCardHeight + gap)) + "px");
+            });
+        } else {
+            const centerX = (stageWidth - boxWidth) / 2;
+            const centerY = stageHeight * 0.44 - boxHeight / 2;
+            const candidates = [
+                [0, 8], [(stageWidth - serviceCardWidth) / 2, 8], [stageWidth - serviceCardWidth, 8],
+                [0, stageHeight * .29], [stageWidth - serviceCardWidth, stageHeight * .29],
+                [0, stageHeight * .55], [stageWidth - serviceCardWidth, stageHeight * .55],
+                [0, stageHeight - serviceCardHeight - 8], [(stageWidth - serviceCardWidth) / 2, stageHeight - serviceCardHeight - 8], [stageWidth - serviceCardWidth, stageHeight - serviceCardHeight - 8]
+            ];
+            const placed = [];
+            function intersects(first, second) {
+                return first.x < second.x + second.width && first.x + first.width > second.x
+                    && first.y < second.y + second.height && first.y + first.height > second.y;
+            }
+            surroundingCards.forEach(function (card, index) {
+                const blocked = { x: centerX, y: centerY, width: boxWidth, height: boxHeight };
+                const slot = candidates.find(function (candidate) {
+                    const rect = { x: candidate[0], y: candidate[1], width: serviceCardWidth, height: serviceCardHeight };
+                    return !intersects(rect, blocked) && placed.every(function (other) { return !intersects(rect, other); });
+                }) || [((index % 3) * (serviceCardWidth + 12)), stageHeight - serviceCardHeight - 8];
+                const rect = { x: slot[0], y: slot[1], width: serviceCardWidth, height: serviceCardHeight };
+                placed.push(rect);
+                card.style.setProperty("--company-x", slot[0] + "px");
+                card.style.setProperty("--company-y", slot[1] + "px");
+            });
+            serviceCardField.style.height = Math.max(450, stageHeight) + "px";
+        }
         if (!validServices.length || reducedMotion.matches) return;
         window.setTimeout(function () {
             if (currentVersion === selectionVersion) celebrateServiceCard(validServices);
@@ -189,6 +242,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const companyServiceTrigger = document.getElementById("companyServiceTrigger");
     const companyServiceMenu = document.getElementById("companyServiceMenu");
     const companyServiceSelection = document.getElementById("companyServiceSelection");
+    const companyServiceHint = document.getElementById("companyServiceHint");
     const companyServiceCheckboxes = companyServiceMenu.querySelectorAll("input[type='checkbox']");
 
     function closeCompanyServiceMenu() {
@@ -207,6 +261,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 .filter(function (item) { return item.checked; })
                 .map(function (item) { return item.value; });
             companyServiceSelection.textContent = selected.length ? selected.join(", ") : "Choose your services";
+            if (selected.length) {
+                companyServiceTrigger.classList.remove("input-invalid");
+                companyServiceTrigger.setAttribute("aria-invalid", "false");
+                companyServiceHint.classList.remove("field-error");
+                companyServiceHint.textContent = "Choose one or more services.";
+                companyFormMessage.textContent = "";
+            }
             highlightCompanyServices(selected);
         });
     });
@@ -221,6 +282,17 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     const form = document.getElementById("providerRegisterForm");
+    const companyForm = companyPanel;
+    const companyFormMessage = document.getElementById("companyFormMessage");
+    const companyFields = {
+        name: document.getElementById("companyName"),
+        representative: document.getElementById("companyRepresentative"),
+        email: document.getElementById("companyEmail"),
+        password: document.getElementById("companyPassword"),
+        confirmPassword: document.getElementById("companyConfirmPassword"),
+        startingPrice: document.getElementById("companyStartingPrice"),
+        location: document.getElementById("companyLocation")
+    };
     const fields = {
         fullName: document.getElementById("fullName"),
         email: document.getElementById("email"),
@@ -613,6 +685,108 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // Passwords and uploaded files are intentionally not persisted in this frontend-only flow.
+        window.location.href = "../Provider/subscription.html?onboarding=1";
+    });
+
+    Object.values(companyFields).forEach(function (field) {
+        ["input", "change"].forEach(function (eventName) {
+            field.addEventListener(eventName, function () {
+                field.classList.remove("input-invalid");
+                field.removeAttribute("aria-invalid");
+                const error = document.getElementById(field.id + "Error");
+                if (error) error.textContent = "";
+                companyFormMessage.textContent = "";
+            });
+        });
+    });
+
+    companyForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        companyFormMessage.textContent = "";
+        const invalidControls = [];
+
+        function validateCompanyField(field, isValid, message) {
+            field.classList.toggle("input-invalid", !isValid);
+            field.setAttribute("aria-invalid", String(!isValid));
+            const error = document.getElementById(field.id + "Error");
+            if (error) error.textContent = isValid ? "" : message;
+            if (!isValid) invalidControls.push({ control: field, message: message });
+        }
+
+        validateCompanyField(companyFields.name, companyFields.name.value.trim().length >= 2, "Enter your company name.");
+        validateCompanyField(companyFields.representative, companyFields.representative.value.trim().length >= 2, "Enter the authorized representative's name.");
+        validateCompanyField(companyFields.email, Boolean(companyFields.email.value.trim()) && companyFields.email.validity.valid, "Enter a valid business email address.");
+        validateCompanyField(companyFields.password, companyFields.password.value.length >= 8, "Use at least 8 characters for the password.");
+        validateCompanyField(companyFields.confirmPassword, Boolean(companyFields.confirmPassword.value) && companyFields.confirmPassword.value === companyFields.password.value, "Passwords do not match.");
+        validateCompanyField(companyFields.startingPrice, companyFields.startingPrice.value !== "" && companyFields.startingPrice.validity.valid && Number(companyFields.startingPrice.value) >= 0, "Enter a valid starting price of 0 JOD or more.");
+        validateCompanyField(companyFields.location, companyFields.location.value.trim().length >= 2, "Enter at least one service location.");
+
+        const selectedServices = Array.from(companyServiceCheckboxes)
+            .filter(function (checkbox) { return checkbox.checked; })
+            .map(function (checkbox) { return checkbox.value; });
+        companyServiceTrigger.classList.toggle("input-invalid", selectedServices.length === 0);
+        companyServiceTrigger.setAttribute("aria-invalid", String(selectedServices.length === 0));
+        if (!selectedServices.length) invalidControls.push({ control: companyServiceTrigger, message: "Choose at least one service." });
+
+        if (!companySelectedFiles.length) {
+            companyPhotosError.textContent = "Add at least one photo to your company portfolio.";
+            companyPhotosInput.setAttribute("aria-invalid", "true");
+            invalidControls.push({ control: companyPhotoDropZone, message: "Add at least one company portfolio photo." });
+        } else {
+            companyPhotosError.textContent = "";
+            companyPhotosInput.removeAttribute("aria-invalid");
+        }
+
+        if (invalidControls.length) {
+            companyServiceHint.classList.toggle("field-error", selectedServices.length === 0);
+            companyServiceHint.textContent = selectedServices.length ? "Choose one or more services." : "Choose at least one service.";
+            companyFormMessage.textContent = "Please review the highlighted company details.";
+            invalidControls[0].control.focus();
+            if (invalidControls[0].control === companyServiceTrigger) {
+                companyServiceMenu.hidden = false;
+                companyServiceTrigger.setAttribute("aria-expanded", "true");
+            }
+            return;
+        }
+        companyServiceHint.classList.remove("field-error");
+        companyServiceHint.textContent = "Choose one or more services.";
+
+        const companyProfile = {
+            providerType: "company",
+            companyName: companyFields.name.value.trim(),
+            fullName: companyFields.representative.value.trim(),
+            email: companyFields.email.value.trim().toLowerCase(),
+            services: selectedServices,
+            service: selectedServices[0],
+            startingPrice: Number(companyFields.startingPrice.value),
+            currency: "JOD",
+            location: companyFields.location.value.split(",").map(function (city) { return city.trim(); }).filter(Boolean).join(", "),
+            description: document.getElementById("companyDescription").value.trim(),
+            currentPlan: null,
+            registrationComplete: true
+        };
+
+        try {
+            window.localStorage.setItem("teamlyProviderProfile", JSON.stringify(companyProfile));
+            const savedProfile = JSON.parse(window.localStorage.getItem("teamlyProviderProfile") || "null");
+            if (!savedProfile || savedProfile.email !== companyProfile.email || savedProfile.providerType !== "company") {
+                throw new Error("Company profile could not be verified.");
+            }
+            try {
+                const savedNotifications = JSON.parse(window.localStorage.getItem("teamlyAdminNotifications") || "[]");
+                const adminNotifications = Array.isArray(savedNotifications) ? savedNotifications : [];
+                adminNotifications.unshift({ id: "signup-company-" + Date.now(), kind: "registration", title: "Company provider registered", actor: companyProfile.companyName, detail: "Company account created for " + selectedServices.join(", ") + ".", timestamp: new Date().toISOString() });
+                window.localStorage.setItem("teamlyAdminNotifications", JSON.stringify(adminNotifications.slice(0, 500)));
+            } catch (notificationError) { /* registration succeeds if activity logging is unavailable */ }
+            window.sessionStorage.setItem("teamlyLoggedIn", "true");
+            window.sessionStorage.setItem("teamlyUserName", companyProfile.companyName);
+            window.sessionStorage.setItem("teamlyUserEmail", companyProfile.email);
+            window.sessionStorage.setItem("teamlyProviderOnboardingPending", "true");
+        } catch (error) {
+            companyFormMessage.textContent = "Your company account preview could not be saved. Please check browser storage and try again.";
+            return;
+        }
+
         window.location.href = "../Provider/subscription.html?onboarding=1";
     });
 });

@@ -86,6 +86,8 @@ emailInput.removeAttribute("aria-invalid");
 passwordInput.removeAttribute("aria-invalid");
 
 const emailValue = emailInput.value.trim();
+const normalizedEmail = emailValue.toLowerCase();
+const isAdminLogin = normalizedEmail === "sarawaleed@gmail.com" && passwordInput.value === "20002003Sara";
 let firstInvalid = null;
 if (!emailValue || !emailInput.validity.valid) {
     loginEmailError.textContent = "Enter a valid email address.";
@@ -109,11 +111,31 @@ if (firstInvalid) {
 
 try {
     sessionStorage.setItem("teamlyLoggedIn", "true");
+    let displayName = isAdminLogin ? "Sara Waleed" : emailValue.split("@")[0]
+        .replace(/[._+-]+/g, " ")
+        .replace(/\b\w/g, character => character.toUpperCase())
+        .trim();
+    sessionStorage.setItem("teamlyUserEmail", normalizedEmail);
+    sessionStorage.setItem("teamlyUserRole", isAdminLogin ? "admin" : "client");
+    if (!isAdminLogin) {
+        try {
+            const savedClients = JSON.parse(localStorage.getItem("teamlyRegisteredClients") || "[]");
+            if (Array.isArray(savedClients)) {
+                const matchingClient = savedClients.find(client => String(client.email || "").trim().toLowerCase() === normalizedEmail);
+                if (matchingClient && matchingClient.name) displayName = String(matchingClient.name).trim();
+            }
+        } catch (storageError) {
+            // The email-based display name remains available if client records cannot be read.
+        }
+    }
+    if (displayName) sessionStorage.setItem("teamlyUserName", displayName);
 } catch (error) {
     // Keep the demo login flow usable if browser storage is unavailable.
 }
 
-loginMessage.textContent = "Demo sign-in: the fields passed validation, but account credentials are not verified.";
+loginMessage.textContent = isAdminLogin
+    ? "Admin sign-in successful. Opening the admin dashboard..."
+    : "Demo sign-in: the fields passed validation, but account credentials are not verified.";
 loginMessage.classList.add("success");
 loginSection.classList.add("login-celebrating");
 loginSuccessTimer = window.setTimeout(function () {
@@ -121,15 +143,21 @@ loginSuccessTimer = window.setTimeout(function () {
     loginSection.classList.add("login-successful");
     loginSuccessTimer = window.setTimeout(function () {
         loginSuccessTimer = 0;
+        if (isAdminLogin) {
+            window.location.href = "../admain/Admin_dashboard.html";
+            return;
+        }
         const returnTo = new URLSearchParams(window.location.search).get("returnTo");
         window.location.href = [
             "../select_provider/select_provider.html",
             "../admain/Admin_dashboard.html",
             "../admain/Clients.html",
             "../admain/Providers.html",
+            "../admain/Requests.html",
             "../admain/Projects.html",
             "../admain/Financial.html",
-            "../admain/Notifications.html"
+            "../admain/Notifications.html",
+            "../admain/Services.html"
         ].includes(returnTo)
             ? returnTo
             : "../ai_chat/ai_chat.html";

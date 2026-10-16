@@ -13,26 +13,22 @@
 <body>
 <main class="provider-register-page">
     <aside class="brand-panel">
-        <a class="brand-logo" href="../home_page/home.html" aria-label="TEAMLY home">
-            <img src="../img/logo3.png" alt="TEAMLY">
-        </a>
         <div class="brand-copy">
-            <span class="eyebrow">JOIN TEAMLY</span>
-            <h1>Bring Your<br>Events to Life</h1>
-            <p class="brand-intro">Share your services and connect with clients.</p>
+            <span class="eyebrow">JOIN OUR COMMUNITY</span>
+            <h1>Share Your Talent<br>with the Right People</h1>
             <div class="service-card-field" id="serviceOrbit" aria-hidden="true">
                 <div class="service-orbit-stage" id="serviceOrbitStage">
-                    <div class="service-glass-card" data-service="Photography">Photography</div>
-                    <div class="service-glass-card" data-service="Videography">Videography</div>
-                    <div class="service-glass-card" data-service="Event Staff">Event Staff</div>
-                    <div class="service-glass-card" data-service="Event Planners">Event Planners</div>
-                    <div class="service-glass-card" data-service="Favors &amp; Gifts">Favors &amp; Gifts</div>
-                    <div class="service-glass-card" data-service="Decoration">Decoration</div>
-                    <div class="service-glass-card" data-service="Catering">Catering</div>
-                    <div class="service-glass-card" data-service="Music &amp; DJ">Music &amp; DJ</div>
-                    <div class="service-glass-card" data-service="Video Editing">Video Editing</div>
-                    <div class="service-glass-card" data-service="Venues &amp; Halls">Venues &amp; Halls</div>
-                    <div class="service-glass-card" data-service="Special Effects">Special Effects</div>
+                    <div class="service-glass-card is-featured" data-service="Photography"><i class="fa fa-camera" aria-hidden="true"></i><span>Photography</span></div>
+                    <div class="service-glass-card" data-service="Videography"><i class="fa fa-video-camera" aria-hidden="true"></i><span>Videography</span></div>
+                    <div class="service-glass-card" data-service="Event Staff"><i class="fa fa-users" aria-hidden="true"></i><span>Event Staff</span></div>
+                    <div class="service-glass-card" data-service="Event Planners"><i class="fa fa-calendar-check-o" aria-hidden="true"></i><span>Event Planners</span></div>
+                    <div class="service-glass-card" data-service="Favors &amp; Gifts"><i class="fa fa-gift" aria-hidden="true"></i><span>Favors &amp; Gifts</span></div>
+                    <div class="service-glass-card" data-service="Decoration"><i class="fa fa-pagelines" aria-hidden="true"></i><span>Decoration</span></div>
+                    <div class="service-glass-card" data-service="Catering"><i class="fa fa-birthday-cake" aria-hidden="true"></i><span>Catering</span></div>
+                    <div class="service-glass-card" data-service="Music &amp; DJ"><i class="fa fa-music" aria-hidden="true"></i><span>Music &amp; DJ</span></div>
+                    <div class="service-glass-card" data-service="Video Editing"><i class="fa fa-film" aria-hidden="true"></i><span>Video Editing</span></div>
+                    <div class="service-glass-card" data-service="Venues &amp; Halls"><i class="fa fa-university" aria-hidden="true"></i><span>Venues &amp; Halls</span></div>
+                    <div class="service-glass-card" data-service="Special Effects"><i class="fa fa-magic" aria-hidden="true"></i><span>Special Effects</span></div>
                     <div class="service-glass-card company-services-card" id="companyServicesCard" hidden>
                         <span class="company-services-list" id="companyServicesCardList"></span>
                     </div>
@@ -135,24 +131,24 @@
                 </section>
 
                 <button class="submit-button" type="submit">Create Provider Account <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
-                <p class="terms-note">By creating an account, you agree to TEAMLY's Terms &amp; Conditions and Privacy Policy.</p>
+                <p class="terms-note">By creating an account, you agree to TEAMLY's <a href="../Settings/Settings.html?role=provider&amp;view=terms&amp;from=provider-register">Terms &amp; Conditions</a> and <a href="../Settings/Settings.html?role=provider&amp;view=privacy&amp;from=provider-register">Privacy Policy</a>.</p>
                 <p class="form-message" id="formMessage" role="status" aria-live="polite"></p>
             </form>
             </div>
 
-            <section id="companyRegistration" class="registration-panel company-registration" aria-labelledby="company-form-title" hidden>
+            <form id="companyRegistration" class="registration-panel company-registration" aria-labelledby="company-form-title" novalidate hidden>
                 <header class="company-heading">
                     <h3 id="company-form-title">Company Profile</h3>
                     <p>Introduce your company, services, and portfolio.</p>
                 </header>
                 <div class="field-grid">
-                    <div class="field"><label for="companyName">Company Name</label><div class="input-wrap"><i class="fa fa-building-o" aria-hidden="true"></i><input id="companyName" type="text" autocomplete="organization" placeholder="Your company name"></div></div>
-                    <div class="field"><label for="companyRepresentative">Authorized Representative</label><div class="input-wrap"><i class="fa fa-user-o" aria-hidden="true"></i><input id="companyRepresentative" type="text" autocomplete="name" placeholder="Representative's full name"></div></div>
-                    <div class="field"><label for="companyEmail">Business Email Address</label><div class="input-wrap"><i class="fa fa-envelope-o" aria-hidden="true"></i><input id="companyEmail" type="email" autocomplete="email" placeholder="you@company.com"></div></div>
-                    <div class="field"><label for="companyPassword">Password</label><div class="input-wrap"><i class="fa fa-lock" aria-hidden="true"></i><input id="companyPassword" type="password" autocomplete="new-password" placeholder="At least 8 characters"></div></div>
-                    <div class="field"><label for="companyConfirmPassword">Confirm Password</label><div class="input-wrap"><i class="fa fa-lock" aria-hidden="true"></i><input id="companyConfirmPassword" type="password" autocomplete="new-password" placeholder="Enter your password again"></div></div>
-                    <div class="field"><label for="companyStartingPrice">Starting Price (JOD)</label><div class="input-wrap"><i class="fa fa-money" aria-hidden="true"></i><input id="companyStartingPrice" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Price your services start from"></div></div>
-                    <div class="field"><label for="companyLocation">Service Location(s)</label><div class="input-wrap"><i class="fa fa-map-marker" aria-hidden="true"></i><input id="companyLocation" name="companyLocation" type="text" autocomplete="address-level2" placeholder="Type your service location(s)" required aria-describedby="companyLocationHint"></div><small class="location-hint" id="companyLocationHint">Enter one or more cities, separated by commas.</small></div>
+                    <div class="field"><label for="companyName">Company Name</label><div class="input-wrap"><i class="fa fa-building-o" aria-hidden="true"></i><input id="companyName" type="text" autocomplete="organization" placeholder="Your company name" aria-describedby="companyNameError"></div><small class="field-error" id="companyNameError"></small></div>
+                    <div class="field"><label for="companyRepresentative">Authorized Representative</label><div class="input-wrap"><i class="fa fa-user-o" aria-hidden="true"></i><input id="companyRepresentative" type="text" autocomplete="name" placeholder="Representative's full name" aria-describedby="companyRepresentativeError"></div><small class="field-error" id="companyRepresentativeError"></small></div>
+                    <div class="field"><label for="companyEmail">Business Email Address</label><div class="input-wrap"><i class="fa fa-envelope-o" aria-hidden="true"></i><input id="companyEmail" type="email" autocomplete="email" placeholder="you@company.com" aria-describedby="companyEmailError"></div><small class="field-error" id="companyEmailError"></small></div>
+                    <div class="field"><label for="companyPassword">Password</label><div class="input-wrap"><i class="fa fa-lock" aria-hidden="true"></i><input id="companyPassword" type="password" autocomplete="new-password" placeholder="At least 8 characters" aria-describedby="companyPasswordError"></div><small class="field-error" id="companyPasswordError"></small></div>
+                    <div class="field"><label for="companyConfirmPassword">Confirm Password</label><div class="input-wrap"><i class="fa fa-lock" aria-hidden="true"></i><input id="companyConfirmPassword" type="password" autocomplete="new-password" placeholder="Enter your password again" aria-describedby="companyConfirmPasswordError"></div><small class="field-error" id="companyConfirmPasswordError"></small></div>
+                    <div class="field"><label for="companyStartingPrice">Starting Price (JOD)</label><div class="input-wrap"><i class="fa fa-money" aria-hidden="true"></i><input id="companyStartingPrice" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Price your services start from" aria-describedby="companyStartingPriceError"></div><small class="field-error" id="companyStartingPriceError"></small></div>
+                    <div class="field"><label for="companyLocation">Service Location(s)</label><div class="input-wrap"><i class="fa fa-map-marker" aria-hidden="true"></i><input id="companyLocation" name="companyLocation" type="text" autocomplete="address-level2" placeholder="Type your service location(s)" required aria-describedby="companyLocationHint companyLocationError"></div><small class="location-hint" id="companyLocationHint">Enter one or more cities, separated by commas.</small><small class="field-error" id="companyLocationError"></small></div>
                 </div>
                 <div class="field company-services">
                     <label>Main Service Offered</label>
@@ -186,7 +182,7 @@
                     <div class="section-title"><div><h3 id="company-portfolio-title">Company Portfolio</h3><p>Share photos and videos that showcase your company's work.</p></div><span class="section-mark"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span></div>
                     <div class="company-portfolio-grid">
                         <div class="field company-portfolio-field">
-                            <label for="companyPortfolioPhotos">Upload Portfolio Photos</label>
+                            <label for="companyPortfolioPhotos">Upload Portfolio Photos <span class="required-mark">*</span></label>
                             <div class="media-upload-frame">
                                 <label class="upload-zone" for="companyPortfolioPhotos" id="companyPhotoDropZone" tabindex="0">
                                     <span class="upload-icon"><i class="fa fa-picture-o" aria-hidden="true"></i></span>
@@ -217,8 +213,10 @@
                         </div>
                     </div>
                 </section>
-                <div class="company-note"><i class="fa fa-info-circle" aria-hidden="true"></i><span>Company registration setup is coming soon. Your current individual registration remains available.</span></div>
-            </section>
+                <button class="submit-button" type="submit">Create Company Account <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                <p class="terms-note">By creating an account, you agree to TEAMLY's <a href="../Settings/Settings.html?role=provider&amp;view=terms&amp;from=provider-register">Terms &amp; Conditions</a> and <a href="../Settings/Settings.html?role=provider&amp;view=privacy&amp;from=provider-register">Privacy Policy</a>.</p>
+                <p class="form-message" id="companyFormMessage" role="status" aria-live="polite"></p>
+            </form>
             <p class="login-prompt">Already have an account? <a href="../login/login.html">Login</a></p>
         </div>
     </section>

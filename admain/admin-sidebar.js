@@ -38,11 +38,10 @@
         });
         const normalizeKey = key => key === "signups" ? "clients" : key;
         const currentPath = location.pathname;
-        const pageKey = /\/clients\.html$/i.test(currentPath) ? "clients" : /\/providers\.html$/i.test(currentPath) ? "providers" : /\/projects\.html$/i.test(currentPath) ? "projects" : /\/financial\.html$/i.test(currentPath) ? "payments" : /\/notifications\.html$/i.test(currentPath) ? "activity" : null;
+        const pageKey = /\/clients\.html$/i.test(currentPath) ? "clients" : /\/providers\.html$/i.test(currentPath) ? "providers" : /\/requests\.html$/i.test(currentPath) ? "requests" : /\/projects\.html$/i.test(currentPath) ? "projects" : /\/financial\.html$/i.test(currentPath) ? "payments" : /\/notifications\.html$/i.test(currentPath) ? "activity" : /\/services\.html$/i.test(currentPath) ? "services" : /\/settings\.html$/i.test(currentPath) ? "settings" : null;
         const fromHash = () => setActive(pageKey || normalizeKey((location.hash || "#overview").slice(1)));
         links.forEach(a => a.addEventListener("click", () => { close(); setActive(a.dataset.adminNav); }));
         window.addEventListener("hashchange", fromHash);
-        document.addEventListener("admin-section-change", e => setActive(normalizeKey(e.detail)));
         fromHash();
  
         const name = (window.TEAMLY_ADMIN_NAME || "").trim();

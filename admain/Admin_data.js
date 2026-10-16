@@ -67,7 +67,7 @@
             }));
             return Promise.resolve({
                 isDemo: true,
-                admin: { name: "Admin" },
+                admin: { name: "Sara" },
                 clients: allClients.map(function (client) { return Object.assign({}, client, clientEdits[client.id] || {}); }), providers: providers, projects: projects,
                 requests: requests, transactions: transactions, subscriptions: subscriptions
             });

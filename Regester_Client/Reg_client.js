@@ -13,39 +13,6 @@ const formMessage = document.getElementById("formMessage");
 const submitButton = form.querySelector(".create-account-btn");
 
 
-// Show or hide password
-
-document.querySelectorAll(".password-toggle").forEach(function (button) {
-
-    button.addEventListener("click", function () {
-
-        const input = document.getElementById(
-            button.getAttribute("data-target")
-        );
-
-        const icon = button.querySelector("i");
-        const isHidden = input.type === "password";
-
-        input.type = isHidden ? "text" : "password";
-
-        icon.classList.toggle("fa-eye", isHidden);
-        icon.classList.toggle("fa-eye-slash", !isHidden);
-
-        button.setAttribute(
-            "aria-label",
-            isHidden ? "Hide password" : "Show password"
-        );
-
-        button.setAttribute(
-            "title",
-            isHidden ? "Hide password" : "Show password"
-        );
-
-    });
-
-});
-
-
 // Display field error
 
 function showError(field, errorId, message) {
@@ -214,7 +181,7 @@ form.addEventListener("submit", function (event) {
     if (!terms.checked) {
 
         termsError.textContent =
-            "Please agree to the Terms of Service and Privacy Policy.";
+            "Please agree to the Terms & Conditions and Privacy Policy.";
 
         isValid = false;
 
@@ -281,8 +248,15 @@ form.addEventListener("submit", function (event) {
         return;
     }
 
+    try {
+        window.sessionStorage.setItem("teamlyLoggedIn", "true");
+        window.sessionStorage.setItem("teamlyUserName", fullName.value.trim());
+        window.sessionStorage.setItem("teamlyUserEmail", email.value.trim().toLowerCase());
+    } catch (error) {
+        // The demo can still continue to AI Chat if session storage is unavailable.
+    }
+
     window.location.href="../ai_chat/ai_chat.html";
-    formMessage.classList.add("success");
 
 });
 

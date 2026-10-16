@@ -81,11 +81,13 @@
 .servies{
    background-color: #ffffff !important;
   margin: 20px;
+  box-sizing: border-box;
   border-radius: 80px;
   padding: 50px 0 40px 0;
   text-align: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: transparent;
+  overflow: visible;
 }
 .team-About-section .option-card:hover {
   transform: translateY(-5px);
@@ -160,6 +162,7 @@
     justify-content: center;
     align-items: center;
     margin: 5px auto 70px auto;
+    overflow: visible;
    
 }
 
@@ -1202,6 +1205,9 @@ main .faq-item {
 }
 
 @media (max-width: 480px) {
+    .servies { width: calc(100% - 28px); margin-inline: auto; }
+    .carousel-container { width: 100%; }
+
     .hero-content h1 {
         font-size: 36px;
     }
@@ -1237,3 +1243,6 @@ main .faq-item {
         gap: var(--space-2);
     }
 }
+
+/* Let the neighboring service cards peek in without expanding the document width. */
+body { overflow-x: clip; }

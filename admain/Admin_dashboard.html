@@ -69,12 +69,22 @@
                 <div class="card service-overview-card"><div id="provCats"></div></div>
             </section>
 
+            <section class="dash-section report-panel provider-service-stats" aria-labelledby="providerServiceStatsTitle">
+                <div class="sec-head"><div><h2 id="providerServiceStatsTitle">Service distribution</h2><p class="note">Provider listings across services</p></div></div>
+                <div class="service-donut-layout"><div id="serviceMixChart" class="service-mix-chart"></div><div id="serviceMixLegend" class="service-mix-legend"></div></div>
+            </section>
+
             <section class="dash-section report-panel" id="signups">
                 <div class="sec-head"><div><h2>Recent sign-ups</h2><p class="note">New accounts in the selected period</p></div>
                     <select class="form-control sec-select" data-f="signType" aria-label="Account type"><option value="all">All accounts</option><option value="client">Clients</option><option value="individual">Individual providers</option><option value="company">Companies</option></select>
                     <input class="form-control sec-search" type="search" data-q="signups" placeholder="Search" aria-label="Search accounts">
                 </div>
                 <div id="tbl-signups"></div>
+            </section>
+
+            <section class="dash-section report-panel" id="activity">
+                <div class="sec-head"><div><h2>Notifications</h2><p class="note">Recent account, project, request and payment activity</p></div></div>
+                <div id="tbl-activity"></div>
             </section>
 
             <section class="dash-section report-panel report-wide" id="providers">
@@ -93,6 +103,13 @@
                 <div class="status-grid" id="projStats"></div><div id="tbl-projects"></div>
             </section>
 
+            <section class="dash-section report-panel" id="requests">
+                <div class="sec-head"><div><h2>Service requests</h2><p class="note">Request status across the platform</p></div>
+                    <input class="form-control sec-search" type="search" data-q="requests" placeholder="Search requests" aria-label="Search requests">
+                </div>
+                <div class="status-grid" id="reqStatusGrid"></div><div id="tbl-requests"></div>
+            </section>
+
             <section class="dash-section report-panel" id="payments">
                 <div class="sec-head"><div><h2>Payments &amp; revenue</h2><p class="note">Transaction activity</p></div>
                     <select class="form-control sec-select" data-f="txStatus" aria-label="Transaction status"><option value="all">All statuses</option><option value="successful">Successful</option><option value="pending">Pending</option><option value="failed">Failed</option><option value="refunded">Refunded</option></select>
@@ -101,22 +118,11 @@
                 <div class="status-grid" id="finStats"></div><p class="note" id="finNote"></p><div id="tbl-transactions"></div>
             </section>
 
-            <section class="dash-section report-panel" id="requests">
-                <div class="sec-head"><div><h2>Service requests</h2><p class="note">Request status across the platform</p></div>
-                    <input class="form-control sec-search" type="search" data-q="requests" placeholder="Search requests" aria-label="Search requests">
-                </div>
-                <div class="status-grid" id="reqStatusGrid"></div><div id="tbl-requests"></div>
-            </section>
-
-            <section class="dash-section report-panel" id="activity">
-                <div class="sec-head"><div><h2>Notifications</h2><p class="note">Recent account, project, request and payment activity</p></div></div>
-                <div id="tbl-activity"></div>
-            </section>
         </div>
 
         <div class="admin-secondary-section" aria-hidden="true">
             <section id="subscriptions"><div id="subStats"></div><div id="tbl-subscriptions"></div></section>
-            <section id="analytics"><div id="chRegs"></div><div id="chProjects"></div><div id="chMoney"></div><div id="chReqs"></div><div id="chType"></div><div id="chCats"></div></section>
+            <section id="analytics"><div id="chRegs"></div><div id="chProjects"></div><div id="chMoney"></div><div id="chCats"></div></section>
         </div>
     </main>
 </div>

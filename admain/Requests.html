@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7faf6">
+    <title>Requests | TEAMLY Admin</title>
+    <link rel="icon" href="../img/logo2.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="admin-sidebar.css">
+    <link rel="stylesheet" href="requests.css">
+</head>
+<body>
+<div class="admin-layout requests-layout">
+    <div id="admin-sidebar-container" class="admin-sidebar-container"></div>
+    <main class="requests-main">
+        <a class="requests-back" href="Admin_dashboard.html"><i class="fa fa-angle-left" aria-hidden="true"></i> Dashboard</a>
+        <header class="requests-header">
+            <div><span class="requests-eyebrow">PROJECT ACTIVITY</span><h1>Service Requests</h1><p>Review service requests and see which clients and providers they connect.</p></div>
+            <label class="requests-search"><i class="fa fa-search" aria-hidden="true"></i><span class="sr-only">Search requests</span><input id="requestSearch" type="search" placeholder="Search requests, clients, providers…"></label>
+        </header>
+        <section class="request-stats" id="requestStats" aria-label="Request summary"></section>
+        <section class="requests-panel" aria-labelledby="requestsListHeading">
+            <div class="requests-panel-head"><div><h2 id="requestsListHeading">All requests</h2><p id="requestResultCount" aria-live="polite"></p></div>
+                <label class="request-filter"><span>Status</span><select id="requestStatus"><option value="all">All statuses</option><option value="new">New</option><option value="pending">Pending</option><option value="accepted">Accepted</option><option value="rejected">Rejected</option><option value="expired">Expired</option></select></label>
+            </div>
+            <div class="requests-table-wrap"><table class="requests-table"><thead><tr><th>Request</th><th>Client</th><th>Provider</th><th>Service</th><th>Status</th><th>Date</th></tr></thead><tbody id="requestsBody"><tr><td colspan="6" class="requests-empty">Loading requests…</td></tr></tbody></table></div>
+        </section>
+        <div class="requests-error" id="requestsError" role="alert" hidden></div>
+    </main>
+</div>
+<script src="Admin_data.js"></script>
+<script src="admin-sidebar.js"></script>
+<script src="requests.js"></script>
+</body>
+</html>
