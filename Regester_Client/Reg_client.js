@@ -12,7 +12,6 @@ const terms = document.getElementById("terms");
 const formMessage = document.getElementById("formMessage");
 const submitButton = form.querySelector(".create-account-btn");
 
-
 // Display field error
 
 function showError(field, errorId, message) {

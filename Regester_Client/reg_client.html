@@ -8,6 +8,7 @@
 
 <!-- Client Registration CSS -->
 <link rel="stylesheet" href="Reg_client.css">
+<link rel="stylesheet" href="gift.css">
 
 <!-- Font Awesome 4.7 -->
 <link rel="stylesheet"
@@ -20,65 +21,103 @@
     <!-- LEFT SIDE -->
     <section class="register-welcome">
 
-        <a href="../home_page/home.html" class="register-logo">
-            <img src="../img/logo3.png" alt="TEAMLY Logo" width="190px">
-        </a>
-
         <div class="welcome-content">
             <span class="welcome-label">WELCOME TO TEAMLY</span>
 
             <h1>Build Your<br>Perfect Team.</h1>
 
-            <p>
-                Bring your ideas to life by connecting with the right
-                professionals for your project. Your perfect team starts here.
-            </p>
-
-            <div class="computer-illustration" aria-hidden="true">
-                <div class="computer-screen">
-                    <div class="screen-top">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-
-                    <div class="screen-content">
-                        <div class="screen-sidebar">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-
-                        <div class="screen-main">
-                            <div class="screen-heading"></div>
-
-                            <div class="screen-cards">
-                                <div>
-                                    <i class="fa fa-users"></i>
-                                    <span></span>
-                                </div>
-
-                                <div>
-                                    <i class="fa fa-lightbulb-o"></i>
-                                    <span></span>
-                                </div>
-                            </div>
-
-                            <div class="screen-line"></div>
-                            <div class="screen-line short"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="computer-stand"></div>
-                <div class="computer-base"></div>
-
-                <div class="floating-icon floating-team">
-                    <i class="fa fa-users"></i>
-                </div>
-
-                <div class="floating-icon floating-check">
-                    <i class="fa fa-check"></i>
+            <div class="gift-scene" id="giftScene" data-stage="idle" data-triggered="false" aria-hidden="true">
+                <div class="gift-scene-glow"></div>
+                <div class="gift-magic-light"></div>
+                <svg class="gift-vector-defs" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <radialGradient id="petalVelvet" cx="32%" cy="24%" r="82%"><stop stop-color="#FFF8EE"/><stop offset=".38" stop-color="#F0B6B6"/><stop offset=".78" stop-color="#CE7887"/><stop offset="1" stop-color="#9D4D66"/></radialGradient>
+                        <radialGradient id="roseVelvet" cx="36%" cy="25%" r="78%"><stop stop-color="#FFE4DF"/><stop offset=".42" stop-color="#E98D98"/><stop offset=".78" stop-color="#B95068"/><stop offset="1" stop-color="#78384D"/></radialGradient>
+                        <linearGradient id="leafSatin" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#DCE9BD"/><stop offset=".38" stop-color="#7EAA70"/><stop offset="1" stop-color="#315D3B"/></linearGradient>
+                        <linearGradient id="ribbonSatin" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#F5F0D8"/><stop offset=".28" stop-color="#A7BF8D"/><stop offset=".52" stop-color="#F8F2D7"/><stop offset=".8" stop-color="#6F8F65"/><stop offset="1" stop-color="#D8DDB7"/></linearGradient>
+                        <linearGradient id="cakeSponge" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#F7DDAF"/><stop offset=".55" stop-color="#D8A96D"/><stop offset="1" stop-color="#A97549"/></linearGradient>
+                        <linearGradient id="cakeCream" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFFDF3"/><stop offset=".65" stop-color="#F2E5D2"/><stop offset="1" stop-color="#D8C3AA"/></linearGradient>
+                        <symbol id="giftBloom" viewBox="0 0 80 80">
+                            <g fill="url(#petalVelvet)" stroke="#FFF4E8" stroke-opacity=".52" stroke-width="1.2">
+                                <ellipse cx="40" cy="20" rx="11" ry="19"/><ellipse cx="40" cy="20" rx="11" ry="19" transform="rotate(60 40 40)"/><ellipse cx="40" cy="20" rx="11" ry="19" transform="rotate(120 40 40)"/><ellipse cx="40" cy="20" rx="11" ry="19" transform="rotate(180 40 40)"/><ellipse cx="40" cy="20" rx="11" ry="19" transform="rotate(240 40 40)"/><ellipse cx="40" cy="20" rx="11" ry="19" transform="rotate(300 40 40)"/>
+                            </g><circle cx="40" cy="40" r="9" fill="#E8C778"/><circle cx="37" cy="37" r="2" fill="#FFF7DD" opacity=".9"/>
+                        </symbol>
+                        <symbol id="giftRose" viewBox="0 0 80 96">
+                            <path d="M39 45C39 60 34 73 30 87M41 59c9-8 17-8 22-4-3 9-11 13-23 12M36 68c-9-8-17-8-22-4 3 9 11 13 23 12" fill="none" stroke="#557D4E" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M16 65c9-8 16-7 21 1-6 7-13 9-21-1Zm29 1c9-8 16-7 21 1-6 7-13 9-21-1Z" fill="url(#leafSatin)" stroke="#E4EDCF" stroke-width="1"/>
+                            <path d="M40 17c-7-9-19-3-16 6-10 0-12 12-3 16-5 9 4 17 13 12 5 9 17 7 18-3 10-2 11-14 2-18 2-10-8-15-14-9Z" fill="url(#roseVelvet)" stroke="#FFE9DE" stroke-opacity=".72" stroke-width="1.5"/>
+                            <path d="M31 28c3-7 13-8 17-2 5 6 0 14-7 16-5 1-11-3-9-8 1-3 5-5 8-3 2 1 2 4 0 5" fill="none" stroke="#8E4055" stroke-width="2.4" stroke-linecap="round"/><path d="M35 22c3-3 8-3 11-1" fill="none" stroke="#FFF3E7" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+                        </symbol>
+                        <symbol id="giftLeaf" viewBox="0 0 80 100">
+                            <path d="M40 92C38 64 39 36 43 9" fill="none" stroke="#527647" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M41 72C20 75 9 62 12 45c18-3 30 6 29 27Zm1-25C22 46 17 31 25 17c16 3 23 15 17 30Zm1 34c18 0 27-12 23-28-16-1-27 8-23 28Z" fill="url(#leafSatin)" stroke="#E5ECCC" stroke-opacity=".72" stroke-width="1.2"/>
+                            <path d="m17 48 22 21m-12-45 15 22m20 9L43 77" fill="none" stroke="#E9F0D8" stroke-opacity=".7" stroke-width="1.2"/>
+                        </symbol>
+                        <symbol id="giftRibbon" viewBox="0 0 100 78">
+                            <path d="M48 38C17 42 5 19 15 10c12-10 31 12 35 25m3 2c33 3 45-19 34-27C75 1 57 22 52 36" fill="none" stroke="url(#ribbonSatin)" stroke-width="13" stroke-linecap="round"/>
+                            <path d="M46 43 25 70l-2-25 20-9m14 7 19 27 3-25-20-10" fill="url(#ribbonSatin)" stroke="#F7F1D8" stroke-width="1.2"/>
+                            <ellipse cx="51" cy="38" rx="9" ry="8" fill="#3E6138" stroke="#EDE7C8" stroke-width="2"/><path d="M14 12c8-5 18 3 23 9M88 10c-8-5-19 3-24 9" fill="none" stroke="#FFF9E6" stroke-opacity=".85" stroke-width="2" stroke-linecap="round"/>
+                        </symbol>
+                        <symbol id="giftCake" viewBox="0 0 100 92">
+                            <ellipse cx="51" cy="79" rx="39" ry="8" fill="#D9E0D0" stroke="#FFFDF5" stroke-width="2"/>
+                            <path d="M24 43h51l-5 31H29Z" fill="url(#cakeSponge)" stroke="#FFF3D9" stroke-width="1.4"/>
+                            <path d="M25 53h48M27 64h45" fill="none" stroke="#FFF0D1" stroke-width="5" opacity=".9"/>
+                            <path d="M21 42c7-9 12-4 18-7 6-4 10 2 15-2 6-5 10 2 16-1 7-4 11 1 10 9-7 5-13 0-20 4-7 4-12-2-19 2-7 3-13-2-20-5Z" fill="url(#cakeCream)" stroke="#FFFDF6" stroke-width="1.4"/>
+                            <path d="M43 32c-3-8 2-13 7-15 7 4 8 10 3 17" fill="#C94552" stroke="#FFE6D7" stroke-width="1.2"/><path d="M49 19c1-4 4-6 8-6" fill="none" stroke="#5F894E" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="33" cy="43" r="2" fill="#D79B61"/><circle cx="63" cy="43" r="2" fill="#D79B61"/>
+                        </symbol>
+                        <symbol id="giftPetal" viewBox="0 0 60 88"><path d="M30 4C53 20 55 52 30 82 5 53 7 21 30 4Z" fill="url(#petalVelvet)" stroke="#FFF5EA" stroke-opacity=".75" stroke-width="1.5"/><path d="M30 16c-1 19-1 37 0 56" fill="none" stroke="#FFF5EA" stroke-opacity=".6" stroke-width="1.2"/></symbol>
+                        <symbol id="giftMusic" viewBox="0 0 80 100"><path d="M45 18v49a12 12 0 1 1-7-11V28l31-8v38a12 12 0 1 1-7-11V14Z" fill="url(#leafSatin)" stroke="#F4F1D7" stroke-width="2"/><path d="M45 28 69 22" stroke="#F7F1D7" stroke-width="3" opacity=".8"/></symbol>
+                        <symbol id="giftPhoto" viewBox="0 0 100 80"><rect x="10" y="8" width="80" height="62" rx="8" fill="#E8F0E5" stroke="#FFFFFF" stroke-width="3"/><circle cx="69" cy="26" r="7" fill="#E8C778"/><path d="m16 62 22-25 13 14 10-11 23 22Z" fill="url(#leafSatin)" stroke="#A4C1A5" stroke-width="2"/><path d="M10 65h80" stroke="#315D3B" stroke-opacity=".25" stroke-width="3"/></symbol>
+                        <symbol id="giftMic" viewBox="0 0 80 100"><rect x="29" y="10" width="22" height="49" rx="11" fill="url(#ribbonSatin)" stroke="#FFFDF1" stroke-width="2"/><path d="M23 43v8a17 17 0 0 0 34 0v-8M40 68v16m-12 0h24" fill="none" stroke="#315D3B" stroke-width="5" stroke-linecap="round"/><path d="M32 22h16m-16 7h16m-16 7h16" stroke="#718A68" stroke-width="2" opacity=".8"/></symbol>
+                        <symbol id="giftPaper" viewBox="0 0 100 80"><path d="m17 16 19 8-10 34-18-9Zm34-8 18 5-8 42-19-6Zm30 25 12-5 7 35-14 5Z" fill="url(#ribbonSatin)" stroke="#FFFDF1" stroke-width="2"/><path d="m20 22 9 4m24-10 9 2m30 22 4-1" stroke="#FFFFFF" stroke-opacity=".8" stroke-width="2"/></symbol>
+                    </defs>
+                </svg>
+                                <div class="gift-stage-floor"></div>
+                <div class="gift-shock"></div>
+                <div class="gift-box">
+                  <svg class="gift-box-art" viewBox="0 0 360 260" role="presentation" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="bxFront" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#8FB7A0"/><stop offset=".5" stop-color="#CFE5D6"/><stop offset="1" stop-color="#9CC0AA"/></linearGradient>
+                      <linearGradient id="bxSide" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#86AD97"/><stop offset="1" stop-color="#5F8570"/></linearGradient>
+                      <linearGradient id="bxShade" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#0A3020" stop-opacity="0"/><stop offset="1" stop-color="#0A3020" stop-opacity=".2"/></linearGradient>
+                      <linearGradient id="bxCast" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#0A3020" stop-opacity=".35"/><stop offset="1" stop-color="#0A3020" stop-opacity="0"/></linearGradient>
+                      <linearGradient id="bxLidFront" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#A8CDB5"/><stop offset=".35" stop-color="#E0F0E4"/><stop offset="1" stop-color="#9CC1AA"/></linearGradient>
+                      <linearGradient id="bxLidTop" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#E6F2E8"/><stop offset=".55" stop-color="#C4DDCD"/><stop offset="1" stop-color="#A9C9B5"/></linearGradient>
+                      <linearGradient id="bxRib" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#062719"/><stop offset=".3" stop-color="#10432D"/><stop offset=".5" stop-color="#2B6B4A"/><stop offset=".7" stop-color="#10432D"/><stop offset="1" stop-color="#062719"/></linearGradient>
+                      <linearGradient id="bxBow" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#568366"/><stop offset=".32" stop-color="#174B33"/><stop offset=".72" stop-color="#082D20"/><stop offset="1" stop-color="#689675"/></linearGradient>
+                      <linearGradient id="bxInner" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#06180F"/><stop offset="1" stop-color="#14442D"/></linearGradient>
+                      <radialGradient id="bxGlow"><stop stop-color="#FFF3B0"/><stop offset=".55" stop-color="#FFD76A" stop-opacity=".6"/><stop offset="1" stop-color="#FFD76A" stop-opacity="0"/></radialGradient>
+                      <linearGradient id="bxBeam" x1="0" y1="1" x2="0" y2="0"><stop stop-color="#FFE9A0" stop-opacity=".7"/><stop offset="1" stop-color="#FFE9A0" stop-opacity="0"/></linearGradient>
+                    </defs>
+                    <ellipse cx="190" cy="241" rx="140" ry="12" fill="#264D38" opacity=".18"/>
+                    <path d="M270 130 310 110V215L270 235Z" fill="url(#bxSide)"/>
+                    <path d="M60 130H270V235H60Z" fill="url(#bxFront)"/>
+                    <path d="M60 130H270V235H60Z" fill="url(#bxShade)"/>
+                    <path d="M145 130H185V235H145Z" fill="url(#bxRib)"/>
+                    <path d="M145 134H147V235H145Z" fill="#DBECDD" opacity=".3"/>
+                    <path d="M60 130V235M270 130V235" stroke="#4F7660" stroke-opacity=".35"/>
+                    <path d="M60 130 100 110H310L270 130Z" fill="url(#bxInner)"/>
+                    <ellipse class="gift-inner-glow" cx="185" cy="120" rx="95" ry="9" fill="url(#bxGlow)"/>
+                    <path class="gift-beam" d="M95 118 140 -90H230L275 118Z" fill="url(#bxBeam)"/>
+                    <circle id="giftMouth" cx="185" cy="118" r="1" fill="none"/>
+                    <path class="gift-cast" d="M60 130H270V148H60Z" fill="url(#bxCast)"/>
+                    <g class="gift-lid">
+                      <path d="M48 96 88 76H322L282 96Z" fill="url(#bxLidTop)"/>
+                      <path d="M48 96H282V136H48Z" fill="url(#bxLidFront)"/>
+                      <path d="M282 96 322 76V116L282 136Z" fill="url(#bxSide)"/>
+                      <path d="M145 96H185V136H145Z" fill="url(#bxRib)"/>
+                      <path d="M145 96H185L225 76H185Z" fill="url(#bxRib)"/>
+                      <path d="M48 96H282" stroke="#fff" stroke-opacity=".7" stroke-width="1.5"/>
+                      <path d="M48 134H282" stroke="#4F7660" stroke-opacity=".3"/>
+                      <path d="M178 90 158 122 172 118 178 132 190 92Z" fill="url(#bxBow)" stroke="#9BB99E" stroke-width="1"/>
+                      <path d="M192 90 214 120 200 118 198 134 186 92Z" fill="url(#bxBow)" stroke="#9BB99E" stroke-width="1"/>
+                      <path d="M185 84C150 40 105 52 118 76 128 94 165 92 185 84Z" fill="url(#bxBow)" stroke="#9BB99E" stroke-width="1.2"/>
+                      <path d="M185 84C220 40 265 52 252 76 242 94 205 92 185 84Z" fill="url(#bxBow)" stroke="#9BB99E" stroke-width="1.2"/>
+                      <path d="M176 80C155 62 132 64 134 74M194 80C215 62 238 64 236 74" fill="none" stroke="#D6E8D2" stroke-opacity=".6" stroke-width="2" stroke-linecap="round"/>
+                      <ellipse cx="185" cy="84" rx="11" ry="9" fill="url(#bxBow)" stroke="#9BB99E" stroke-width="1.3"/>
+                    </g>
+                  </svg>
                 </div>
             </div>
 
@@ -262,6 +301,7 @@
 
 </main>
 
+<script src="gift.js"></script>
 <script src="Reg_client.js"></script>
 
 </body>

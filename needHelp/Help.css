@@ -3,7 +3,7 @@
 margin-left: 0;
 padding: 32px max(50px, calc((100vw - 1990px) / 2));
 min-height: 100vh;
-background: var(--bg, #FAFCF9);
+background: radial-gradient(ellipse at 12% 0%, rgba(168, 201, 165, .28), transparent 42%), linear-gradient(145deg, #F3F8F1, #EAF4E8 62%, #F8FBF7);
 color: var(--text, #26332A);
 font-family: var(--font-family, Arial, sans-serif);
 box-sizing: border-box;
@@ -11,6 +11,16 @@ box-sizing: border-box;
 
 .support-page * {
 box-sizing: border-box;
+}
+
+.support-page + #footer-container .teamly-footer {
+margin-top: 0;
+background: radial-gradient(ellipse at 12% 0%, rgba(168, 201, 165, .28), transparent 42%), linear-gradient(145deg, #F3F8F1, #EAF4E8 62%, #F8FBF7);
+}
+
+.support-page + #footer-container .teamly-footer::before {
+border-top: 0;
+background: none;
 }
 
 .support-header {
@@ -123,31 +133,46 @@ font-size: 8px;
 display: grid;
 grid-template-columns: minmax(0, 1.65fr) minmax(270px, 0.9fr);
 align-items: start;
-gap: 24px;
+gap: 20px;
 }
 
 .support-main,
 .support-sidebar {
 display: flex;
 flex-direction: column;
-gap: 24px;
+gap: 20px;
 min-width: 0;
 }
 
 .support-card {
-background: var(--white, #FFFFFF);
-border: 1px solid var(--border, #DCE8DB);
-border-radius: var(--radius-lg, 20px);
-padding: 25px;
-box-shadow: var(--shadow-sm, 0 2px 8px rgba(38, 51, 42, 0.05));
+position: relative;
+background: linear-gradient(145deg, rgba(255, 255, 255, .78), rgba(255, 255, 255, .57));
+border: 1px solid rgba(255, 255, 255, .9);
+border-radius: 20px;
+padding: 22px;
+box-shadow: 0 16px 40px rgba(38, 51, 42, .075), inset 0 1px rgba(255, 255, 255, .95);
+-webkit-backdrop-filter: blur(18px) saturate(135%);
+backdrop-filter: blur(18px) saturate(135%);
 min-width: 0;
+}
+
+.assigned-team-card,
+.next-steps-card {
+transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.assigned-team-card:hover,
+.next-steps-card:hover {
+transform: translateY(-3px);
+border-color: rgba(111, 155, 115, .38);
+box-shadow: 0 22px 46px rgba(38, 51, 42, .11), inset 0 1px rgba(255, 255, 255, .98);
 }
 
 .section-heading {
 display: flex;
 align-items: flex-start;
 gap: 14px;
-margin-bottom: 28px;
+margin-bottom: 24px;
 }
 
 .heading-icon {
@@ -157,10 +182,12 @@ flex-shrink: 0;
 display: flex;
 justify-content: center;
 align-items: center;
-border-radius: 12px;
-background: var(--primary-light, #EAF4E8);
+border: 1px solid rgba(111, 155, 115, .17);
+border-radius: 14px;
+background: linear-gradient(145deg, rgba(255,255,255,.92), rgba(222,237,218,.78));
 color: var(--primary-deep, #355E3B);
 font-size: 19px;
+box-shadow: 0 6px 15px rgba(53,94,59,.07), inset 0 1px #FFFFFF;
 }
 
 .section-heading h2 {
@@ -176,7 +203,7 @@ color: var(--text-secondary, #6B756D);
 }
 
 .form-group {
-margin-bottom: 22px;
+margin-bottom: 19px;
 }
 
 .form-group label {
@@ -199,7 +226,7 @@ min-width: 0;
 padding: 13px 14px;
 border: 1px solid var(--border, #DCE8DB);
 border-radius: var(--radius-md, 12px);
-background: #FFFFFF;
+ background: rgba(255, 255, 255, .72);
 color: var(--text, #26332A);
 font: inherit;
 font-size: 14px;
@@ -259,7 +286,8 @@ align-items: flex-start;
 gap: 9px;
 padding: 13px;
 margin-bottom: 22px;
-background: var(--bg-secondary, #F3F7F2);
+border: 1px solid rgba(255, 255, 255, .8);
+background: rgba(255, 255, 255, .48);
 border-radius: 10px;
 color: var(--text-secondary, #6B756D);
 font-size: 12px;
@@ -332,8 +360,10 @@ align-items: center;
 gap: 14px;
 margin-bottom: 20px;
 padding: 16px;
-border: 1px solid var(--border, #DCE8DB);
+border: 1px solid rgba(255, 255, 255, .82);
 border-radius: 14px;
+background: rgba(255, 255, 255, .46);
+box-shadow: inset 0 1px rgba(255,255,255,.82);
 }
 
 .specialist-avatar,
@@ -505,11 +535,13 @@ justify-content: center;
 flex-shrink: 0;
 width: 30px;
 height: 30px;
+border: 1px solid rgba(111,155,115,.2);
 border-radius: 50%;
-background: var(--primary-light, #EAF4E8);
+background: linear-gradient(145deg, rgba(255,255,255,.9), rgba(220,237,216,.78));
 color: var(--primary-deep, #355E3B);
 font-size: 12px;
 font-weight: 700;
+box-shadow: 0 4px 12px rgba(53,94,59,.08), inset 0 1px #FFFFFF;
 }
 
 .timeline-step h4 {

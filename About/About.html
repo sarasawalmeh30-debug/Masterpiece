@@ -24,11 +24,19 @@
                     <div class="about-actions">
                         <a class="about-button about-button-primary" href="../select_provider/select_provider.html">Explore TEAMLY <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                     </div>
-                    <a class="hero-story-link" href="#our-story"><i class="fa fa-long-arrow-down" aria-hidden="true"></i> Our Story</a>
+                    <a class="hero-story-link" href="#our-story">
+                        <span class="scroll-worm" aria-hidden="true">
+                            <svg viewBox="0 0 26 100" preserveAspectRatio="none" focusable="false">
+                                <path d="M13 3 C20 14, 6 19, 13 31 C20 43, 7 51, 13 63 C19 74, 9 81, 13 88" />
+                                <path d="M6 80 L13 90 L20 80" />
+                            </svg>
+                        </span>
+                        <span>Our Story</span>
+                    </a>
                 </div>
 
                 <div class="hero-art">
-                    <svg class="hero-hub-svg" viewBox="0 0 600 520" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-labelledby="hero-hub-title hero-hub-description">
+                    <svg class="hero-hub-svg" viewBox="0 0 700 680" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-labelledby="hero-hub-title hero-hub-description">
                         <title id="hero-hub-title">TEAMLY connects people, projects, and ideas</title>
                         <desc id="hero-hub-description">A central TEAMLY digital hub with people, project boards, and ideas orbiting along smooth paths.</desc>
                         <defs>
@@ -36,25 +44,44 @@
                             <linearGradient id="hubBlue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8198AC"/><stop offset="1" stop-color="#536B82"/></linearGradient>
                             <linearGradient id="hubOrange" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FFB15F"/><stop offset="1" stop-color="#F17B35"/></linearGradient>
                             <linearGradient id="hubBulbYellow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FFF48A"/><stop offset="1" stop-color="#F5C928"/></linearGradient>
+                            <radialGradient id="hubPlanetSurface" cx="30%" cy="24%" r="82%"><stop stop-color="#FFFFFF"/><stop offset=".38" stop-color="#E6F0DE"/><stop offset=".72" stop-color="#C9DCC0"/><stop offset="1" stop-color="#8FAB8A"/></radialGradient>
+                            <radialGradient id="hubPlanetShade" cx="35%" cy="28%" r="76%"><stop offset=".48" stop-color="#244B33" stop-opacity="0"/><stop offset=".82" stop-color="#244B33" stop-opacity=".08"/><stop offset="1" stop-color="#244B33" stop-opacity=".43"/></radialGradient>
                             <filter id="hubShadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="13" stdDeviation="12" flood-color="#435B70" flood-opacity=".17"/></filter>
+                            <filter id="planetShadow" x="-45%" y="-45%" width="190%" height="200%"><feDropShadow dx="0" dy="9" stdDeviation="10" flood-color="#355E3B" flood-opacity=".28"/></filter>
                             <filter id="bulbGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-                            <path id="hubOrbitPath" d="M300 55 A226 205 0 0 1 300 465 A226 205 0 0 1 300 55" fill="none"/>
+                            <clipPath id="hubPlanetClip"><circle cx="300" cy="260" r="67"/></clipPath>
+                            <clipPath id="hubOrbitFrontClip"><rect x="0" y="260" width="700" height="340"/></clipPath>
+                            <path id="hubOrbitIconPath" d="M523.7 262.7 A190 105 -24 0 1 176.3 417.3 A190 105 -24 0 1 523.7 262.7" fill="none"/>
                         </defs>
-                        <ellipse class="hub-orbit-line orbit-line-outer" cx="300" cy="260" rx="226" ry="205"/>
-                        <ellipse class="hub-orbit-line orbit-line-inner" cx="300" cy="260" rx="178" ry="160"/>
-                        <path class="hub-path-dash" d="M86 260h112m202 0h112M300 48v92m0 240v92"/>
-                        <image class="hub-center-logo" href="../img/logo3.png" x="220" y="205" width="160" height="110" preserveAspectRatio="xMidYMid meet"/>
+                        <ellipse class="hub-orbit-line orbit-line-outer" cx="350" cy="340" rx="175" ry="62" transform="rotate(28 350 340)"/>
+                        <ellipse class="hub-orbit-line orbit-line-mid" cx="350" cy="340" rx="190" ry="105" transform="rotate(-24 350 340)"/>
+                        <g transform="translate(50 80)">
+                        <circle class="hub-planet" cx="300" cy="260" r="67" fill="url(#hubPlanetSurface)" filter="url(#planetShadow)"/>
+                        <g class="hub-planet-surface" clip-path="url(#hubPlanetClip)">
+                            <path d="M263 224c9-12 20-11 27-4l-3 9 8 8-8 8-1 12-11 5-7-10-10-4 5-8-6-8Z" fill="#668F69" opacity=".18"/>
+                            <path d="M315 218c13 2 21 10 19 19l-9 5-3 11-13 3-4-9-10-5 3-12 9-3Z" fill="#6F996F" opacity=".15"/>
+                            <path d="M317 273c12-6 23-2 27 7l-8 8-2 12-12 4-8-9-10-3 2-12Z" fill="#547F5A" opacity=".18"/>
+                            <ellipse cx="300" cy="260" rx="43" ry="18" fill="none" stroke="#FFFFFF" stroke-opacity=".32" stroke-width="1.2"/>
+                            <ellipse cx="300" cy="260" rx="23" ry="56" fill="none" stroke="#FFFFFF" stroke-opacity=".26" stroke-width="1.2"/>
+                            <path d="M244 260h112" stroke="#FFFFFF" stroke-opacity=".2" stroke-width="1"/>
+                        </g>
+                        <circle class="hub-planet-shade" cx="300" cy="260" r="67" fill="url(#hubPlanetShade)" pointer-events="none"/>
+                        <circle class="hub-planet-atmosphere" cx="300" cy="260" r="69" fill="none" pointer-events="none"/>
+                        <ellipse class="hub-orbit-front" cx="300" cy="260" rx="175" ry="62" transform="rotate(28 300 260)" clip-path="url(#hubOrbitFrontClip)"/>
+                        <ellipse class="hub-orbit-front orbit-line-mid-front" cx="300" cy="260" rx="190" ry="105" transform="rotate(-24 300 260)" clip-path="url(#hubOrbitFrontClip)"/>
+                        <image class="hub-center-logo" href="../img/logo3.png" x="242" y="226" width="116" height="68" preserveAspectRatio="xMidYMid meet"/>
+                        </g>
                         <g class="hub-orbiting people-orbit">
-                            <animateMotion dur="38s" begin="-5s" repeatCount="indefinite" calcMode="paced" rotate="0"><mpath href="#hubOrbitPath" xlink:href="#hubOrbitPath"/></animateMotion>
-                            <g>
+                            <animateMotion dur="54s" begin="0s" repeatCount="indefinite" calcMode="paced" rotate="0"><mpath href="#hubOrbitIconPath" xlink:href="#hubOrbitIconPath"/></animateMotion>
+                            <g class="hub-orbit-item">
                                 <circle cx="-25" cy="-18" r="11" fill="#AEB4B9"/><path d="M-45 18c2-15 10-22 20-22s18 7 20 22" fill="#858D94"/>
                                 <circle cx="24" cy="-18" r="11" fill="#C7CCD0"/><path d="M4 18c2-15 10-22 20-22s18 7 20 22" fill="#9BA2A8"/>
                                 <text x="0" y="44" text-anchor="middle" class="hub-card-label">PEOPLE</text>
                             </g>
                         </g>
                         <g class="hub-orbiting projects-orbit">
-                            <animateMotion dur="38s" begin="-17s" repeatCount="indefinite" calcMode="paced" rotate="0"><mpath href="#hubOrbitPath" xlink:href="#hubOrbitPath"/></animateMotion>
-                            <g>
+                            <animateMotion dur="54s" begin="-18s" repeatCount="indefinite" calcMode="paced" rotate="0"><mpath href="#hubOrbitIconPath" xlink:href="#hubOrbitIconPath"/></animateMotion>
+                            <g class="hub-orbit-item">
                                 <rect x="-42" y="-37" width="46" height="45" rx="7" fill="#F1F5F1" stroke="#355E3B"/>
                                 <path d="M-32-23l4 4 7-8m-11 17 4 4 7-8m4-8h14m-14 16h14" fill="none" stroke="#355E3B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 <text x="23" y="-18" class="hub-project-mini">PLAN</text><rect x="19" y="-10" width="25" height="5" rx="2.5" fill="#355E3B"/><rect x="19" y="0" width="18" height="5" rx="2.5" fill="#829C86"/>
@@ -62,8 +89,8 @@
                             </g>
                         </g>
                         <g class="hub-orbiting ideas-orbit">
-                            <animateMotion dur="38s" begin="-29s" repeatCount="indefinite" calcMode="paced" rotate="0"><mpath href="#hubOrbitPath" xlink:href="#hubOrbitPath"/></animateMotion>
-                            <g>
+                            <animateMotion dur="54s" begin="-36s" repeatCount="indefinite" calcMode="paced" rotate="0"><mpath href="#hubOrbitIconPath" xlink:href="#hubOrbitIconPath"/></animateMotion>
+                            <g class="hub-orbit-item">
                                 <circle class="idea-glow" cx="0" cy="-15" r="23" fill="#FFF3A6" opacity=".8"/>
                                 <path d="M0-37c-12 0-20 9-20 20 0 8 4 12 9 17 2 2 3 4 3 7H8c0-3 1-5 3-7 5-5 9-9 9-17 0-11-8-20-20-20Z" fill="url(#hubBulbYellow)" stroke="#D9B128" stroke-width="1.5" filter="url(#bulbGlow)"/>
                                 <path d="M-6 10H6m-10 5h8" stroke="#71889D" stroke-width="3" stroke-linecap="round"/>

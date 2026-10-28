@@ -3,7 +3,7 @@
    TEAMLY GLASS NAVBAR
 ============================== */
 body{
-   padding-top: 125px;
+   padding-top: 108px;
 }
 .navbar {
     position: fixed;
@@ -92,12 +92,95 @@ body{
 ============================== */
 
 .nav-logo {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 11px;
 
     text-decoration: none;
     flex-shrink: 0;
+}
+
+.nav-logo img {
+    width: auto;
+    height: 70px;
+    object-fit: contain;
+    transform-origin: center;
+    transition: transform 0.38s cubic-bezier(0.2, 0.8, 0.25, 1.2), filter 0.38s ease;
+}
+
+.nav-logo:hover img,
+.nav-logo:focus-visible img {
+    transform: scale(1.09) rotate(-3deg);
+    filter: drop-shadow(0 7px 10px rgba(53, 94, 59, 0.28));
+}
+
+.nav-logo:active img {
+    transform: scale(1.04) rotate(0deg);
+}
+
+.logo-confetti {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 8px;
+    border-radius: 1px;
+    background: var(--confetti-color);
+    box-shadow: 0 2px 5px rgba(53, 94, 59, 0.2);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.2);
+}
+
+.logo-confetti-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+}
+
+.nav-logo.is-confettiing .logo-confetti {
+    animation: logo-confetti-burst 2.6s linear var(--confetti-delay, 0ms) both;
+}
+
+@keyframes logo-confetti-burst {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.25) rotate(0deg) scaleX(0.3);
+    }
+    8% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotate(35deg) scaleX(1);
+        animation-timing-function: cubic-bezier(0.12, 0.68, 0.24, 1);
+    }
+    30% {
+        opacity: 1;
+        transform: translate(calc(-50% + var(--confetti-burst-x)), calc(-50% + var(--confetti-burst-y))) rotate(130deg) scaleX(0.55);
+        animation-timing-function: linear;
+    }
+    62% {
+        opacity: 1;
+        transform: translate(calc(-50% + var(--confetti-fall-x)), calc(-50% + var(--confetti-fall-y))) rotate(245deg) scaleX(1);
+        animation-timing-function: linear;
+    }
+    90% {
+        opacity: 0.9;
+        transform: translate(calc(-50% + var(--confetti-x)), calc(-50% + var(--confetti-y) - 12px)) rotate(325deg) scaleX(0.62);
+        animation-timing-function: linear;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--confetti-x)), calc(-50% + var(--confetti-y))) rotate(var(--confetti-rotate)) scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nav-logo img { transition: none; }
+    .nav-logo:hover img,
+    .nav-logo:focus-visible img,
+    .nav-logo:active img { transform: none; }
+    .logo-confetti { animation: none !important; opacity: 0; }
 }
 
 /* Logo icon */
@@ -450,13 +533,17 @@ body{
     .navbar {
         top: 14px;
         width: calc(100% - 28px);
-        padding: 6px 15px;
+        padding: 7px 15px;
 
         border-radius: 20px;
     }
 
     .nav-container {
         gap: 12px;
+    }
+
+    .nav-logo img {
+        height: 60px;
     }
 
     .logo-icon {

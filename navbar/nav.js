@@ -19,6 +19,19 @@ const navLinks = document.getElementById("navLinks");
 const navItems = document.querySelectorAll(".nav-link");
 if (!navbar || !menuToggle || !navLinks) return;
 
+const navLogo = navbar.querySelector(".nav-logo");
+if (navLogo) {
+    const replayLogoConfetti = () => {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        navLogo.classList.remove("is-confettiing");
+        void navLogo.offsetWidth;
+        navLogo.classList.add("is-confettiing");
+    };
+
+    navLogo.addEventListener("pointerenter", replayLogoConfetti);
+    navLogo.addEventListener("focus", replayLogoConfetti);
+}
+
 // Keep both desktop and mobile account actions in sync with the demo session.
 const accountActions = navbar.querySelectorAll(".nav-login");
 const homeUrl = new URL("../home_page/home.html", window.location.href).href;

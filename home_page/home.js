@@ -33,6 +33,7 @@ const dots = document.querySelectorAll('.dot');
 
 function updateCarousel() {
     const totalCards = cards.length;
+    const sideDistance = Math.min(235, window.innerWidth * 0.31);
     
     cards.forEach((card, index) => {
         // حساب المسافة النسبية لكل كارد مقارنة بالكارد الحالي
@@ -46,34 +47,34 @@ function updateCarousel() {
         // تطبيق التنسيقات بناءً على موقع الكارد (المتوسط، اليمين، اليسار، والخلف)
         if (offset === 0) {
             // الكارد النشط في المنتصف
-            card.style.width = '440px';
-            card.style.transform = 'translateX(0) scale(1.03) translateZ(0)';
-            card.style.zIndex = '5';
+            card.style.transform = 'translateX(0) translateY(0) scale(1.02) rotateY(0deg) translateZ(80px)';
+            card.style.zIndex = '10';
             card.style.opacity = '1';
             card.style.filter = 'brightness(1)';
+            card.style.pointerEvents = 'auto';
         } else if (offset === 1) {
             // الكارد على اليمين القريب
-            card.style.width = '400px';
-            card.style.transform = 'translateX(190px) scale(0.85) translateZ(-100px)';
-            card.style.zIndex = '3';
-            card.style.opacity = '0.7';
-            card.style.filter = 'brightness(0.7)';
+            card.style.transform = `translateX(${sideDistance}px) translateY(14px) scale(0.82) rotateY(-12deg) translateZ(-60px)`;
+            card.style.zIndex = '6';
+            card.style.opacity = '0.88';
+            card.style.filter = 'brightness(0.82)';
+            card.style.pointerEvents = 'auto';
         } else if (offset === -1 || offset === totalCards - 1) {
             // الكارد على اليسار القريب
-            card.style.width = '400px';
-            card.style.transform = 'translateX(-190px) scale(0.85) translateZ(-100px)';
-            card.style.zIndex = '3';
-            card.style.opacity = '0.7';
-            card.style.filter = 'brightness(0.7)';
+            card.style.transform = `translateX(${-sideDistance}px) translateY(14px) scale(0.82) rotateY(12deg) translateZ(-60px)`;
+            card.style.zIndex = '6';
+            card.style.opacity = '0.88';
+            card.style.filter = 'brightness(0.82)';
+            card.style.pointerEvents = 'auto';
         } else {
-            // الكاردات البعيدة جداً في الخلف
-            card.style.width = '400px';
             const direction = Math.sign(offset);
-            const distance = 360 + (Math.abs(offset) - 2) * 220;
-            card.style.transform = `translateX(${direction * distance}px) scale(0.55) translateZ(-200px)`;
-            card.style.zIndex = '1';
-            card.style.opacity = '0.3';
-            card.style.filter = 'brightness(0.4)';
+            const distance = 350 + (Math.abs(offset) - 2) * 170;
+            const visibleLayer = Math.abs(offset) === 2;
+            card.style.transform = `translateX(${direction * distance}px) translateY(28px) scale(${visibleLayer ? 0.7 : 0.54}) rotateY(${direction * -17}deg) translateZ(-180px)`;
+            card.style.zIndex = visibleLayer ? '3' : '1';
+            card.style.opacity = visibleLayer ? '0.7' : '0';
+            card.style.filter = 'brightness(0.65)';
+            card.style.pointerEvents = visibleLayer ? 'auto' : 'none';
         }
     });
 
@@ -86,6 +87,12 @@ function updateCarousel() {
 // الضغط على الكاردات نفسها ليتم جلبها للأمام
 cards.forEach((card, index) => {
     card.addEventListener('click', () => {
+        if (index !== currentIndex) {
+            currentIndex = index;
+            updateCarousel();
+            return;
+        }
+
         const service = card.querySelector('h3')?.textContent.trim();
         if (!service) return;
         window.location.href = `../select_provider/select_provider.html?service=${encodeURIComponent(service)}`;
@@ -96,10 +103,17 @@ cards.forEach((card, index) => {
     card.addEventListener('keydown', event => {
         if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
-            card.click();
+            if (index !== currentIndex) {
+                currentIndex = index;
+                updateCarousel();
+            } else {
+                card.click();
+            }
         }
     });
 });
+
+window.addEventListener('resize', updateCarousel);
 
 // أزرار التالي والسابق
 nextBtn.addEventListener('click', () => {
