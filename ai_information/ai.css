@@ -170,8 +170,8 @@ line-height: 1.4;
     aspect-ratio: 1;
     border: 2px solid rgba(168,201,165,.75);
     border-radius: 50%;
-    background: repeating-radial-gradient(circle at center, #173d2b 0 7px, #1b4933 8px 10px, #143824 11px 15px);
-    box-shadow: 0 18px 38px rgba(16,52,34,.28), inset 0 0 0 8px rgba(6,31,20,.48), inset 0 0 28px rgba(0,0,0,.35);
+    background: repeating-radial-gradient(circle at center, #111312 0 7px, #202321 8px 10px, #090b0a 11px 15px);
+    box-shadow: 0 18px 38px rgba(16,28,21,.32), inset 0 0 0 8px rgba(0,0,0,.58), inset 0 0 28px rgba(0,0,0,.52);
     animation: ai-record-spin 22s linear infinite;
 }
 
@@ -227,7 +227,9 @@ line-height: 1.4;
 
 .ai-service-detail {
     position: relative;
+    left: -40px;
     min-height: 190px;
+    margin-left: -72px;
     display: flex;
     align-items: center;
     padding: 28px;
@@ -236,6 +238,8 @@ line-height: 1.4;
     background: linear-gradient(145deg, rgba(255,255,255,.88), rgba(230,242,226,.68));
     box-shadow: 0 18px 42px rgba(38,51,42,.1), inset 0 1px #fff;
 }
+.ai-service-detail[hidden] { display: none; }
+.ai-service-detail.is-visible { animation: ai-detail-appear .36s cubic-bezier(.2,.72,.25,1) both; }
 .ai-detail-empty, .ai-detail-content { display: flex; align-items: center; gap: 17px; }
 .ai-detail-content[hidden] { display: none; }
 .ai-detail-icon {
@@ -257,6 +261,10 @@ line-height: 1.4;
 
 @keyframes ai-record-spin { to { transform: rotate(360deg); } }
 @keyframes ai-orbit-spin { to { transform: rotate(-360deg); } }
+@keyframes ai-detail-appear {
+    from { opacity: 0; transform: translateY(8px) scale(.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
 
 /* AI Features Box */
 
@@ -455,6 +463,8 @@ text-underline-offset: 4px;
 
 .ai-service-detail {
     min-height: 150px;
+    margin-left: 0;
+    left: 0;
 }
 
 .ai-features {
@@ -483,7 +493,7 @@ text-underline-offset: 4px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .ai-record, .ai-orbit-ring--inner { animation: none; }
+    .ai-record, .ai-orbit-ring--inner, .ai-service-detail.is-visible { animation: none; }
 }
 
 @media (max-width: 380px) {

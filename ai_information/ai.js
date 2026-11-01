@@ -24,19 +24,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const orbitIcons = document.querySelectorAll(".ai-orbit-icon");
     const detailPanel = document.querySelector(".ai-service-detail");
-    const emptyDetail = detailPanel?.querySelector(".ai-detail-empty");
     const activeDetail = detailPanel?.querySelector(".ai-detail-content");
+    let activeIndex = 0;
+    let autoCycle;
+
+    const showService = (button) => {
+        orbitIcons.forEach((iconButton) => iconButton.setAttribute("aria-pressed", String(iconButton === button)));
+
+        const detailIcon = activeDetail.querySelector(".ai-detail-icon i");
+        detailIcon.className = `fa ${button.dataset.icon}`;
+        activeDetail.querySelector("h3").textContent = button.dataset.title;
+        activeDetail.querySelector("p").textContent = button.dataset.description;
+        activeDetail.hidden = false;
+        detailPanel.hidden = false;
+        detailPanel.classList.remove("is-visible");
+        void detailPanel.offsetWidth;
+        detailPanel.classList.add("is-visible");
+        activeIndex = Array.from(orbitIcons).indexOf(button);
+    };
 
     orbitIcons.forEach((button) => {
         button.addEventListener("click", () => {
-            orbitIcons.forEach((iconButton) => iconButton.setAttribute("aria-pressed", String(iconButton === button)));
-
-            const detailIcon = activeDetail.querySelector(".ai-detail-icon i");
-            detailIcon.className = `fa ${button.dataset.icon}`;
-            activeDetail.querySelector("h3").textContent = button.dataset.title;
-            activeDetail.querySelector("p").textContent = button.dataset.description;
-            emptyDetail.hidden = true;
-            activeDetail.hidden = false;
+            window.clearInterval(autoCycle);
+            showService(button);
         });
     });
+
+    if (orbitIcons.length && detailPanel && activeDetail) {
+        showService(orbitIcons[0]);
+        autoCycle = window.setInterval(() => {
+            activeIndex = (activeIndex + 1) % orbitIcons.length;
+            showService(orbitIcons[activeIndex]);
+        }, 8000);
+    }
 });
