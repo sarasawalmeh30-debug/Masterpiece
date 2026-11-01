@@ -22,21 +22,21 @@ document.addEventListener("DOMContentLoaded", () => {
         title.replaceChildren(fragment);
     }
 
-    const serviceCards = document.querySelectorAll(".ai-service-card[role='button']");
+    const orbitIcons = document.querySelectorAll(".ai-orbit-icon");
+    const detailPanel = document.querySelector(".ai-service-detail");
+    const emptyDetail = detailPanel?.querySelector(".ai-detail-empty");
+    const activeDetail = detailPanel?.querySelector(".ai-detail-content");
 
-    serviceCards.forEach((card) => {
-        const toggleSelected = () => {
-            const selected = card.getAttribute("aria-pressed") !== "true";
-            card.setAttribute("aria-pressed", String(selected));
-            card.classList.toggle("is-selected", selected);
-        };
+    orbitIcons.forEach((button) => {
+        button.addEventListener("click", () => {
+            orbitIcons.forEach((iconButton) => iconButton.setAttribute("aria-pressed", String(iconButton === button)));
 
-        card.addEventListener("click", toggleSelected);
-        card.addEventListener("keydown", (event) => {
-            if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                toggleSelected();
-            }
+            const detailIcon = activeDetail.querySelector(".ai-detail-icon i");
+            detailIcon.className = `fa ${button.dataset.icon}`;
+            activeDetail.querySelector("h3").textContent = button.dataset.title;
+            activeDetail.querySelector("p").textContent = button.dataset.description;
+            emptyDetail.hidden = true;
+            activeDetail.hidden = false;
         });
     });
 });

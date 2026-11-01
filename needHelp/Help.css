@@ -1,9 +1,19 @@
 @import url(../style.css);
+body.support-site {
+background-color: #F7FAF6;
+background-image:
+    radial-gradient(ellipse at 82% 8%, rgba(217, 164, 65, .10), transparent 32%),
+    radial-gradient(ellipse at 8% 22%, rgba(168, 201, 165, .24), transparent 38%),
+    radial-gradient(ellipse at 72% 88%, rgba(168, 201, 165, .16), transparent 35%),
+    linear-gradient(135deg, #F8FBF7 0%, #EFF6ED 48%, #F9FBF8 100%);
+background-attachment: fixed;
+}
+
 .support-page {
 margin-left: 0;
 padding: 32px max(50px, calc((100vw - 1990px) / 2));
 min-height: 100vh;
-background: radial-gradient(ellipse at 12% 0%, rgba(168, 201, 165, .28), transparent 42%), linear-gradient(145deg, #F3F8F1, #EAF4E8 62%, #F8FBF7);
+background: transparent;
 color: var(--text, #26332A);
 font-family: var(--font-family, Arial, sans-serif);
 box-sizing: border-box;
@@ -15,7 +25,7 @@ box-sizing: border-box;
 
 .support-page + #footer-container .teamly-footer {
 margin-top: 0;
-background: radial-gradient(ellipse at 12% 0%, rgba(168, 201, 165, .28), transparent 42%), linear-gradient(145deg, #F3F8F1, #EAF4E8 62%, #F8FBF7);
+background: transparent;
 }
 
 .support-page + #footer-container .teamly-footer::before {
@@ -64,8 +74,9 @@ letter-spacing: 1.5px;
 
 .support-header h1 {
 margin: 8px 0;
-font-size: 32px;
-color: var(--text, #26332A);
+font-size: 42px;
+color: var(--primary-deep, #355E3B);
+font-family: 'Caveat', 'Segoe Print', cursive;
 }
 
 .support-header p {
@@ -409,6 +420,55 @@ margin: 12px 0 0;
 color: var(--text-secondary, #6B756D);
 font-size: 12px;
 line-height: 1.6;
+}
+
+/* Compact support contact card below the next-steps panel. */
+.support-sidebar .assigned-team-card {
+    padding: 17px;
+}
+
+.support-sidebar .assigned-team-card .section-heading {
+    gap: 10px;
+    margin-bottom: 13px;
+}
+
+.support-sidebar .assigned-team-card .heading-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    font-size: 16px;
+}
+
+.support-sidebar .assigned-team-card .section-heading h2 {
+    margin: 0 0 4px;
+    font-size: 16px;
+}
+
+.support-sidebar .assigned-team-card .section-heading p {
+    font-size: 11px;
+}
+
+.support-sidebar .assigned-team-card .specialist-info {
+    gap: 10px;
+    margin-bottom: 13px;
+    padding: 11px;
+}
+
+.support-sidebar .assigned-team-card .specialist-avatar {
+    width: 38px;
+    height: 38px;
+    font-size: 17px;
+}
+
+.support-sidebar .assigned-team-card .chat-note {
+    margin-top: 9px;
+    font-size: 11px;
+}
+
+.support-sidebar .assigned-team-card .support-chat-btn {
+    min-height: 42px;
+    padding: 10px 12px;
+    font-size: 12px;
 }
 
 .side-card-heading {

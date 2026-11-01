@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap');
+
 /* =====================================
    TEAMLY - GLOBAL STYLES
    Shared across all pages
@@ -173,7 +175,21 @@ h1 {
 }
 
 h2 {
-    font-size: var(--font-xl);
+    color: var(--primary-deep) !important;
+    font-family: 'Caveat', 'Segoe Print', cursive !important;
+    font-size: clamp(2.8rem, 5vw, 3.8rem);
+    font-weight: 700;
+    letter-spacing: .005em;
+    line-height: 1.12;
+}
+
+.heading-h2 {
+    color: var(--primary-deep) !important;
+    font-family: 'Caveat', 'Segoe Print', cursive !important;
+    font-size: clamp(2.8rem, 5vw, 3.8rem);
+    font-weight: 700;
+    letter-spacing: .005em;
+    line-height: 1.12;
 }
 
 h3 {
