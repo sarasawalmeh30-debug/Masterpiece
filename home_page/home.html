@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>TEAMLY | Find Your Perfect Team</title>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="./home.css">
     <link rel="stylesheet" href="../navbar/nav.css">
@@ -76,27 +79,27 @@
       <h2>Everything You Need, One Team.</h2>
       <p>Whether you need one service or a complete team, TEAMLY helps you find the right provider.</p>
     </div>
-<div  >
-    <!-- بطاقات الخيارات الثنائية -->
     <div class="options-grid">
-      <!-- البطاقة الأولى -->
-      <div class="option-card">
-        <div class="icon-text"><i class="fa-solid fa-magnifying-glass"></i></div>
-        <h3>Know what you need?</h3>
-        <p>Choose the service you're looking for and find the right provider for your project.</p>
+      <article class="option-card option-card--browse">
+        <span class="option-card__spark" aria-hidden="true">✦</span>
+        <div class="option-card__topline"><span class="option-card__step"></span><span class="option-card__tag">I KNOW WHAT I NEED</span></div>
+        <div class="icon-text" aria-hidden="true"><i class="fa-solid fa-magnifying-glass"></i></div>
+        <h3>Find your perfect fit.</h3>
+        <p>Explore services, compare your options, and meet the right provider for your project.</p>
+        <a class="card-btn" href="../select_provider/select_provider.html">Explore services <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        <span class="option-card__note"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Your project, your choice</span>
+      </article>
 
-        <a class="card-btn" href="../select_provider/select_provider.html">Choose a Service</a>
-      </div>
-
-      <!-- البطاقة الثانية -->
-      <div class="option-card">
-        <div class="icon-text"><i class="fa-regular fa-comment"></i></div>
-        <h3>Not sure what you need?</h3>
-        <p>Tell our AI about your project and get personalized service recommendations.</p>
-                        <a class="card-btn" id="talkToAiLink" href="../ai_information/ai.html">Talk to AI</a>
-      </div>
+      <article class="option-card option-card--ai">
+        <span class="option-card__spark" aria-hidden="true">✦</span>
+        <div class="option-card__topline"><span class="option-card__step"></span><span class="option-card__tag">HELP ME FIGURE IT OUT</span></div>
+        <div class="icon-text" aria-hidden="true"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <h3>Start with an idea.</h3>
+        <p>Tell our AI what you’re planning and get thoughtful service recommendations made for you.</p>
+        <a class="card-btn" id="talkToAiLink" href="../ai_information/ai.html">Get recommendations <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        <span class="option-card__note"><i class="fa-solid fa-sparkles" aria-hidden="true"></i> A little help goes a long way</span>
+      </article>
     </div>
-  </div>
 </section>
 
 <!-- قسم استعراض الخدمات -->

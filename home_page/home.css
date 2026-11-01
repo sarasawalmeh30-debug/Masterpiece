@@ -1478,3 +1478,132 @@ main .carousel-container .carousel-card {
 
 /* Keep the carousel's side cards visible while preventing page overflow. */
 body { overflow-x: clip; }
+
+/* Homepage choice cards */
+.team-About-section {
+    position: relative;
+    height: auto;
+    min-height: 0;
+    padding: clamp(64px, 8vw, 104px) 0 clamp(76px, 9vw, 112px);
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse at 12% 18%, rgba(168, 201, 165, .2), transparent 32%),
+        radial-gradient(ellipse at 88% 78%, rgba(208, 185, 111, .12), transparent 30%),
+        #f5f8f3 !important;
+}
+
+.team-About-section .container { max-width: 1000px; }
+.team-About-section .header-content { max-width: 720px; margin: 0 auto 42px; }
+.team-About-section .header-content h2 {
+    margin-bottom: 12px;
+    color: #263f31;
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: -.045em;
+}
+.team-About-section .header-content p { color: #69766d; font-size: 1.05rem; }
+.team-About-section .options-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+.team-About-section .option-card {
+    min-height: 380px;
+    margin: 0;
+    padding: 28px 34px 26px;
+    align-items: flex-start;
+    text-align: left;
+    border: 1px solid rgba(53, 94, 59, .12);
+    border-radius: 28px;
+    background: rgba(255, 255, 255, .88);
+    box-shadow: 0 18px 45px rgba(38, 51, 42, .08), inset 0 1px 0 #fff;
+}
+.team-About-section .option-card::after {
+    position: absolute;
+    z-index: -1;
+    right: -52px;
+    bottom: -78px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: rgba(168, 201, 165, .16);
+    content: "";
+    transition: transform .45s ease;
+}
+.team-About-section .option-card--ai::after { background: rgba(208, 185, 111, .16); }
+.team-About-section .option-card:hover::after { transform: scale(1.25); }
+.option-card__topline { display:flex; width:100%; align-items:center; justify-content:space-between; margin-bottom:28px; }
+.option-card__step { color:#8ba18c; font-size:.84rem; font-weight:800; letter-spacing:.12em; }
+.option-card__tag { color:#718176; font-size:.66rem; font-weight:800; letter-spacing:.13em; }
+.option-card__spark { position:absolute; top:72px; right:36px; color:#a8c9a5; font-size:1.2rem; }
+.option-card--ai .option-card__spark { color:#c4a94e; }
+.team-About-section .icon-text {
+    width:62px; height:62px; margin-bottom:22px; border-radius:20px;
+    background:linear-gradient(145deg,#7fa782,#355e3b); font-size:1.35rem;
+}
+.option-card--ai .icon-text { background:linear-gradient(145deg,#d7c47c,#a17a35); }
+.team-About-section .option-card h3 { margin:0 0 12px; color:#263f31; font-size:clamp(1.45rem,2.5vw,1.8rem); font-weight:750; letter-spacing:-.035em; }
+.team-About-section .option-card p { max-width:390px; margin:0 0 24px; color:#68746b; font-size:.98rem; line-height:1.75; }
+.team-About-section .card-btn {
+    display:inline-flex; align-items:center; justify-content:center; gap:12px;
+    margin-top:auto; padding:13px 19px; border-radius:12px;
+    background:#2d4a3e; box-shadow:0 8px 18px rgba(45,74,62,.16);
+    font-weight:700; transition:gap .2s ease, background .2s ease, box-shadow .2s ease;
+}
+.team-About-section .card-btn:hover { gap:17px; background:#3b5f51; box-shadow:0 11px 22px rgba(45,74,62,.22); }
+.option-card--ai .card-btn { background:#9a7838; box-shadow:0 8px 18px rgba(154,120,56,.18); }
+.option-card--ai .card-btn:hover { background:#80612d; }
+.team-About-section .card-btn:focus-visible { outline:3px solid #a8c9a5; outline-offset:4px; }
+.option-card__note { display:flex; align-items:center; gap:8px; margin-top:20px; color:#78847b; font-size:.78rem; }
+.option-card__note i { color:#6f9b73; }
+.option-card--ai .option-card__note i { color:#b2934c; }
+
+@media (max-width: 700px) {
+    .team-About-section .header-content { margin-bottom:30px; }
+    .team-About-section .options-grid { grid-template-columns:1fr; gap:16px; }
+    .team-About-section .option-card { min-height:350px; padding:24px; }
+    .option-card__topline { margin-bottom:24px; }
+    .option-card__spark { top:66px; right:28px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .team-About-section .option-card::after,
+    .team-About-section .card-btn { transition:none; }
+}
+
+@font-face {
+    font-family: 'Feelfree';
+    src: url('./fonts/Feelfree.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
+main h2 {
+    font-family: 'Caveat', 'Segoe Print', cursive;
+    font-weight: 700;
+    letter-spacing: .005em;
+    font-size: clamp(2.8rem, 5vw, 3.8rem);
+    line-height: 1.12;
+    animation: h2-soft-arrive .65s ease-out both;
+}
+
+@keyframes h2-soft-arrive {
+    from { opacity: .65; transform: translateY(7px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    main h2 { animation: none; }
+}
+
+main .cta-title {
+    font-size: clamp(2.8rem, 5vw, 3.8rem);
+}
+
+main .team-About-section .header-content h2 {
+    font-size: clamp(2.8rem, 5vw, 3.8rem);
+}
+
+@media (max-width: 600px) {
+    main .cta-title { font-size: clamp(2.8rem, 5vw, 3.8rem); }
+}
+
