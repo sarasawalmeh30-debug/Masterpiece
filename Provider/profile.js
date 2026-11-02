@@ -12,7 +12,6 @@
     let profile = null;
     let editing = false;
     let dirty = false;
-    let stagedPhoto = null;
     let editingPortfolio = [];
     let messageTimer = null;
 
@@ -212,7 +211,6 @@
     }
 
     function beginEdit() {
-        stagedPhoto = null;
         editingPortfolio = [];
         dirty = false;
         const name = profile.companyName || profile.fullName || profile.name || profile.displayName || "";
@@ -225,7 +223,6 @@
         document.getElementById("editDescription").value = profile.description || profile.companyDescription || profile.bio || "";
         const price = profile.startingPrice ?? profile.price;
         document.getElementById("editPrice").value = price == null ? "" : price;
-        document.getElementById("profilePhotoInput").value = "";
         document.getElementById("portfolioFiles").value = "";
         document.getElementById("portfolioVideoUrl").value = "";
         editingPortfolio = portfolioItems().map(item => ({ ...item }));
@@ -325,7 +322,6 @@
         else { delete updated.startingPrice; delete updated.price; }
         updated.experience = collectExperience();
         updated.portfolio = editingPortfolio;
-        if (stagedPhoto) updated.profilePhoto = stagedPhoto;
 
         try {
             window.localStorage.setItem(PROFILE_KEY, JSON.stringify(updated));
@@ -344,7 +340,7 @@
 
     function cancelEdit() {
         if (dirty && !window.confirm("Discard your unsaved profile changes?")) return;
-        editing = false; dirty = false; stagedPhoto = null; editingPortfolio = [];
+        editing = false; dirty = false; editingPortfolio = [];
         editForm.hidden = true; readView.hidden = false;
         document.getElementById("editProfileButton").hidden = false;
         profile = readProfile() || profile;
@@ -357,13 +353,6 @@
     editForm.addEventListener("input", markDirty);
     editForm.addEventListener("change", markDirty);
     editForm.addEventListener("submit", saveProfile);
-    document.getElementById("profilePhotoInput").addEventListener("change", async event => {
-        const file = event.target.files && event.target.files[0];
-        if (!file) return;
-        if (!validImage(file)) { setMessage("Choose a JPG, PNG, or WEBP profile photo up to 2 MB.", true); event.target.value = ""; return; }
-        try { stagedPhoto = await readFile(file); markDirty(); setMessage("Profile photo ready to save."); }
-        catch (error) { setMessage(error.message, true); }
-    });
     document.getElementById("portfolioFiles").addEventListener("change", async event => {
         const files = Array.from(event.target.files || []);
         if (!files.length) return;

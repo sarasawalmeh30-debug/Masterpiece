@@ -422,7 +422,11 @@ document.getElementById("select-provider").addEventListener("click", () => {
     const selectedProvider = {
         name: provider.name,
         service: provider.service,
-        date: selectedDate.toISOString().slice(0, 10),
+        date: [
+            selectedDate.getFullYear(),
+            String(selectedDate.getMonth() + 1).padStart(2, "0"),
+            String(selectedDate.getDate()).padStart(2, "0")
+        ].join("-"),
         time: selectedTime
     };
 
@@ -435,17 +439,17 @@ document.getElementById("select-provider").addEventListener("click", () => {
         );
     } catch (error) {
         console.error("Could not save provider selection:", error);
+        message.textContent = "Could not save your selection. Please try again.";
+        message.classList.add("is-error");
+        return;
     }
 
-    message.textContent =
-        `${provider.name} selected for ${selectedDate.toLocaleDateString(
-            "en-US",
-            {
-                month: "long",
-                day: "numeric",
-                year: "numeric"
-            }
-        )} at ${selectedTime}. This selection is saved in this browser tab only; no booking request was sent.`;
+    // Return to the provider list so the client sees the updated selection.
+    const returnParams = new URLSearchParams({
+        profileSelected: provider.name,
+        selectedService: provider.service
+    });
+    window.location.href = `../select_provider/select_provider.html?${returnParams.toString()}`;
 });
 
 

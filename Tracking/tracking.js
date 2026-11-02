@@ -273,6 +273,7 @@ function updateRemainingTime() {
 
 function renderTeamProcess() {
     const provider = getCurrentProvider();
+    const processLine = getElement("processLine");
 
     const waitingStep = getElement("waitingStep");
     const confirmedStep = getElement("confirmedStep");
@@ -282,11 +283,13 @@ function renderTeamProcess() {
 
     waitingStep.classList.remove("active");
     confirmedStep.classList.remove("confirmed");
+    processLine.classList.toggle("is-confirmed", provider?.status === "Accepted");
 
     waitingCircle.innerHTML = "2";
     confirmedCircle.innerHTML = '<i class="fa fa-check"></i>';
 
     if (!provider) {
+        processLine.classList.remove("is-confirmed");
         getElement("projectStatus").textContent = "No Provider";
         getElement("waitingText").textContent = "No request";
         getElement("confirmedText").textContent = "Not confirmed";

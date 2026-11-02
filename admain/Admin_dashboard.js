@@ -156,14 +156,17 @@
             legend.innerHTML = "";
             return;
         }
-        const colors = ["#527f58", "#8eae83", "#d6ae62", "#7189a4", "#b78070", "#829a8a", "#b1a276"];
+        const colors = ["#2dc76a", "#a4df45", "#ffc247", "#5799ff", "#ff806b", "#2bd2b5", "#ad7bff"];
+        const colorShades = ["#128746", "#62aa27", "#e39112", "#315fc8", "#d64f45", "#0b9581", "#7545d0"];
         const radius = 48, circumference = 2 * Math.PI * radius;
         let offset = 0;
         const arcs = services.map((service, index) => {
             const count = counts[index] || 0;
             if (!count) return "";
             const length = circumference * count / total;
-            const arc = `<circle r="${radius}" cx="60" cy="60" fill="none" stroke="${colors[index % colors.length]}" stroke-width="16" stroke-dasharray="${length} ${circumference - length}" stroke-dashoffset="${-offset}" transform="rotate(-90 60 60)"><title>${esc(service)}: ${count} providers</title></circle>`;
+            const colorIndex = index % colors.length;
+            const gradient = `<linearGradient id="serviceMixGradient${index}" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${colors[colorIndex]}"/><stop offset="100%" stop-color="${colorShades[colorIndex]}"/></linearGradient>`;
+            const arc = `<defs>${gradient}</defs><circle r="${radius}" cx="60" cy="60" fill="none" stroke="url(#serviceMixGradient${index})" stroke-width="16" stroke-dasharray="${length} ${circumference - length}" stroke-dashoffset="${-offset}" transform="rotate(-90 60 60)"><title>${esc(service)}: ${count} providers</title></circle>`;
             offset += length;
             return arc;
         }).join("");
@@ -244,9 +247,14 @@
     function bars(el, labels, series) {
         const W = 360, H = 200, L = 34, B = 24, max = Math.max(3, ...series.flatMap(s => s.v)), n = labels.length, gw = (W - L) / n, bw = Math.min(22, gw / series.length - 3);
         if (!series.some(s => s.v.some(Boolean))) { $(el).innerHTML = `<div class="empty">No data in this period.</div>`; return; }
-        let g = "";
+        let g = series.map((s, index) => {
+            const isProjects = s.n === "Projects";
+            const topColor = isProjects ? "#8ab2ff" : "#61d984";
+            const bottomColor = isProjects ? "#416fe0" : "#168244";
+            return `<defs><linearGradient id="activityBarGradient${index}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${topColor}"/><stop offset="100%" stop-color="${bottomColor}"/></linearGradient></defs>`;
+        }).join("");
         for (let i = 0; i <= 3; i++) { const y = 8 + (H - B - 8) * i / 3; g += `<line x1="${L}" x2="${W}" y1="${y}" y2="${y}" stroke="var(--border)"/><text x="${L - 5}" y="${y + 4}" font-size="10" text-anchor="end" fill="var(--text-light)">${num(Math.round(max * (1 - i / 3)))}</text>`; }
-        series.forEach((s, si) => s.v.forEach((v, i) => { const h = (H - B - 8) * v / max, x = L + i * gw + gw / 2 - series.length * (bw + 3) / 2 + si * (bw + 3); g += `<rect x="${x}" y="${H - B - h}" width="${bw}" height="${h}" rx="3" fill="${s.c}"><title>${esc(s.n)}: ${num(v)}</title></rect>`; }));
+        series.forEach((s, si) => s.v.forEach((v, i) => { const h = (H - B - 8) * v / max, x = L + i * gw + gw / 2 - series.length * (bw + 3) / 2 + si * (bw + 3); g += `<rect x="${x}" y="${H - B - h}" width="${bw}" height="${h}" rx="3" fill="url(#activityBarGradient${si})"><title>${esc(s.n)}: ${num(v)}</title></rect>`; }));
         labels.forEach((l, i) => { if (i % 2 === 0 || n < 6) g += `<text x="${L + i * gw + gw / 2}" y="${H - 6}" font-size="10" text-anchor="middle" fill="var(--text-light)">${esc(l)}</text>`; });
         $(el).innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Bar chart">${g}</svg>` + (series.length > 1 ? `<div class="legend">${series.map(s => `<span><i style="background:${s.c}"></i>${esc(s.n)}</span>`).join("")}</div>` : "");
     }
@@ -280,8 +288,8 @@
         const d = state.data, regs = buckets(D, [...d.clients, ...d.providers]);
         const projectBuckets = buckets(D, d.projects);
         bars("#chActivity", regs.labels, [
-            { n: "New accounts", c: "#5b9362", v: regs.out },
-            { n: "Projects", c: "#91a9df", v: projectBuckets.out }
+            { n: "New accounts", c: "#28a957", v: regs.out },
+            { n: "Projects", c: "#5484f0", v: projectBuckets.out }
         ]);
         line("#chRegs", regs.labels, [
             { n: "New accounts", c: COL.a, v: regs.out },

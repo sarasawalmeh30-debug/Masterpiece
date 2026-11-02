@@ -1,0 +1,224 @@
+/* Shared KPI styling for TEAMLY admin sub-pages. */
+.client-stat,
+.provider-stat,
+.project-stat,
+.financial-stat,
+.notification-stat,
+.request-stat,
+.service-stat {
+    --stat-accent: #2ca85b;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--stat-accent) 20%, #fff) !important;
+    border-radius: 16px !important;
+    background: linear-gradient(145deg, #fff 8%, color-mix(in srgb, var(--stat-accent) 6%, #fff)) !important;
+    box-shadow: 0 7px 20px rgba(31, 64, 36, .055), inset 0 1px 0 #fff !important;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.client-stat:nth-child(6n + 2),
+.provider-stat:nth-child(6n + 2),
+.project-stat:nth-child(6n + 2),
+.financial-stat:nth-child(6n + 2),
+.notification-stat:nth-child(6n + 2),
+.request-stat:nth-child(6n + 2),
+.service-stat:nth-child(6n + 2) { --stat-accent: #4f82ed; }
+
+.client-stat:nth-child(6n + 3),
+.provider-stat:nth-child(6n + 3),
+.project-stat:nth-child(6n + 3),
+.financial-stat:nth-child(6n + 3),
+.notification-stat:nth-child(6n + 3),
+.request-stat:nth-child(6n + 3),
+.service-stat:nth-child(6n + 3) { --stat-accent: #e6a52e; }
+
+.client-stat:nth-child(6n + 4),
+.provider-stat:nth-child(6n + 4),
+.project-stat:nth-child(6n + 4),
+.financial-stat:nth-child(6n + 4),
+.notification-stat:nth-child(6n + 4),
+.request-stat:nth-child(6n + 4),
+.service-stat:nth-child(6n + 4) { --stat-accent: #9564d7; }
+
+.client-stat:nth-child(6n + 5),
+.provider-stat:nth-child(6n + 5),
+.project-stat:nth-child(6n + 5),
+.financial-stat:nth-child(6n + 5),
+.notification-stat:nth-child(6n + 5),
+.request-stat:nth-child(6n + 5),
+.service-stat:nth-child(6n + 5) { --stat-accent: #13a792; }
+
+.client-stat:nth-child(6n),
+.provider-stat:nth-child(6n),
+.project-stat:nth-child(6n),
+.financial-stat:nth-child(6n),
+.notification-stat:nth-child(6n),
+.request-stat:nth-child(6n),
+.service-stat:nth-child(6n) { --stat-accent: #df6c60; }
+
+.client-stat::before,
+.provider-stat::before,
+.project-stat::before,
+.financial-stat::before,
+.notification-stat::before,
+.request-stat::before,
+.service-stat::before {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    right: 14px;
+    left: 14px;
+    height: 3px;
+    border-radius: 0 0 6px 6px;
+    background: linear-gradient(90deg, transparent, var(--stat-accent), transparent);
+    content: "";
+}
+
+.client-stat::after,
+.provider-stat::after,
+.project-stat::after,
+.financial-stat::after,
+.notification-stat::after,
+.request-stat::after,
+.service-stat::after {
+    position: absolute;
+    z-index: -1;
+    right: -34px;
+    bottom: -48px;
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--stat-accent) 18%, transparent), transparent 70%);
+    content: "";
+    pointer-events: none;
+}
+
+.client-stat:hover,
+.provider-stat:hover,
+.project-stat:hover,
+.financial-stat:hover,
+.notification-stat:hover,
+.request-stat:hover,
+.service-stat:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--stat-accent) 45%, #fff) !important;
+    box-shadow: 0 13px 26px color-mix(in srgb, var(--stat-accent) 14%, transparent), inset 0 1px 0 #fff !important;
+}
+
+.client-stat > *,
+.provider-stat > *,
+.project-stat > *,
+.financial-stat > *,
+.notification-stat > *,
+.request-stat > *,
+.service-stat > * {
+    position: relative;
+    z-index: 1;
+}
+
+.client-stat strong,
+.provider-stat strong,
+.project-stat strong,
+.financial-stat strong,
+.notification-stat strong,
+.request-stat strong,
+.service-stat-copy strong {
+    color: #273a2c !important;
+    font-size: 26px !important;
+    font-weight: 800 !important;
+    letter-spacing: -.035em;
+    font-variant-numeric: tabular-nums;
+}
+
+.client-stat > span,
+.provider-stat > span,
+.project-stat > span,
+.financial-stat > span,
+.notification-stat > span,
+.request-stat > span,
+.service-stat-copy > span {
+    color: #5c6d60 !important;
+    font-size: 12px !important;
+    font-weight: 650 !important;
+}
+
+.financial-stat span i,
+.notification-stat span i,
+.service-stat-icon {
+    color: var(--stat-accent) !important;
+}
+
+.financial-stat small {
+    color: #758278 !important;
+    font-size: 10px !important;
+}
+
+@media (max-width: 520px) {
+    .client-stat strong,
+    .provider-stat strong,
+    .project-stat strong,
+    .financial-stat strong,
+    .notification-stat strong,
+    .request-stat strong,
+    .service-stat-copy strong { font-size: 23px !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .client-stat,
+    .provider-stat,
+    .project-stat,
+    .financial-stat,
+    .notification-stat,
+    .request-stat,
+    .service-stat,
+    .admin-main .status-grid > .stat { transition: none; }
+}
+
+/* Dashboard's secondary KPI tiles (provider/project/request/payment status). */
+.admin-main .status-grid > .stat {
+    --stat-accent: #2ca85b;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-color: color-mix(in srgb, var(--stat-accent) 20%, #fff);
+    border-radius: 15px;
+    background: linear-gradient(145deg, #fff 8%, color-mix(in srgb, var(--stat-accent) 6%, #fff));
+    box-shadow: 0 7px 18px rgba(31, 64, 36, .05), inset 0 1px 0 #fff;
+}
+
+.admin-main .status-grid > .stat:nth-child(6n + 2) { --stat-accent: #4f82ed; }
+.admin-main .status-grid > .stat:nth-child(6n + 3) { --stat-accent: #e6a52e; }
+.admin-main .status-grid > .stat:nth-child(6n + 4) { --stat-accent: #9564d7; }
+.admin-main .status-grid > .stat:nth-child(6n + 5) { --stat-accent: #13a792; }
+.admin-main .status-grid > .stat:nth-child(6n) { --stat-accent: #df6c60; }
+
+.admin-main .status-grid > .stat::before {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    right: 12px;
+    left: 12px;
+    height: 3px;
+    border-radius: 0 0 6px 6px;
+    background: linear-gradient(90deg, transparent, var(--stat-accent), transparent);
+    content: "";
+}
+
+.admin-main .status-grid > .stat::after {
+    position: absolute;
+    z-index: -1;
+    right: -30px;
+    bottom: -40px;
+    width: 95px;
+    height: 95px;
+    border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--stat-accent) 17%, transparent), transparent 70%);
+    content: "";
+}
+
+.admin-main .status-grid > .stat b,
+.admin-main .status-grid > .stat span { position: relative; z-index: 1; }
+.admin-main .status-grid > .stat b { color: #26382b; font-variant-numeric: tabular-nums; }
+.admin-main .status-grid > .stat span { color: #617064; }
+.admin-main .status-grid > .stat:hover { transform: translateY(-2px); box-shadow: 0 12px 22px color-mix(in srgb, var(--stat-accent) 13%, transparent); }

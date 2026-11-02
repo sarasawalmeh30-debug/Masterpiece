@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -34,29 +34,21 @@
                 </div>
 
                 <div>
-                    <h1>Wedding Team</h1>
-                    <p>Group conversation · 4 members</p>
+                    <h1 id="conversation-title">Wedding Team</h1>
+                    <p id="conversation-subtitle">Group conversation · 4 members</p>
                 </div>
 
             </div>
 
             <div class="chat-header-actions">
 
-                <button class="header-action"
+                <button class="header-action circle-action zoom-action"
                         id="zoom-button"
-                        title="Start Zoom Meeting">
+                        type="button"
+                        title="Start Zoom Meeting"
+                        aria-label="Start Zoom Meeting">
 
-                    <i class="fa fa-video-camera"></i>
-                    <span>Zoom</span>
-
-                </button>
-
-                <button class="header-action"
-                        id="payment-button"
-                        title="Payment">
-
-                    <i class="fa fa-credit-card"></i>
-                    <span>Payment</span>
+                    <i class="fa fa-video-camera" aria-hidden="true"></i>
 
                 </button>
 
@@ -154,6 +146,8 @@
         <!-- Composer -->
         <form class="message-composer" id="message-form">
 
+            <div class="composer-pill">
+
             <button type="button"
                     class="attach-button"
                     id="attach-button"
@@ -189,6 +183,8 @@
                 <i class="fa fa-paper-plane"></i>
 
             </button>
+
+            </div>
 
         </form>
 
@@ -227,14 +223,45 @@
     <!-- RIGHT PROJECT DETAILS -->
     <aside class="project-sidebar">
 
+        <section class="conversation-list" aria-labelledby="conversation-list-title">
+            <div class="conversation-list-heading">
+                <h2 id="conversation-list-title">Conversations</h2>
+                <span>4</span>
+            </div>
+
+            <button type="button" class="conversation-item active" data-conversation="team" aria-current="true">
+                <span class="conversation-avatar team-conversation-avatar"><i class="fa fa-users" aria-hidden="true"></i></span>
+                <span class="conversation-copy"><strong>Wedding Team</strong><small>Group chat · 4 members</small></span>
+                <i class="fa fa-angle-right conversation-arrow" aria-hidden="true"></i>
+            </button>
+
+            <button type="button" class="conversation-item" data-conversation="ahmad">
+                <span class="conversation-avatar photographer-avatar">A</span>
+                <span class="conversation-copy"><strong>Ahmad</strong><small>Photography</small></span>
+                <i class="fa fa-angle-right conversation-arrow" aria-hidden="true"></i>
+            </button>
+
+            <button type="button" class="conversation-item" data-conversation="dana">
+                <span class="conversation-avatar decorator-avatar">D</span>
+                <span class="conversation-copy"><strong>Dana</strong><small>Decoration</small></span>
+                <i class="fa fa-angle-right conversation-arrow" aria-hidden="true"></i>
+            </button>
+
+            <button type="button" class="conversation-item" data-conversation="mohammad">
+                <span class="conversation-avatar">M</span>
+                <span class="conversation-copy"><strong>Mohammad</strong><small>Videography</small></span>
+                <i class="fa fa-angle-right conversation-arrow" aria-hidden="true"></i>
+            </button>
+        </section>
+
         <div class="project-details-card">
 
             <div class="project-heading">
-                <h2>Project Details</h2>
+                <h2 id="details-heading-title">Project Details</h2>
 
                 <span class="project-status">
                     <i class="fa fa-check-circle"></i>
-                    Team Confirmed
+                    <span id="details-status-text">Team Confirmed</span>
                 </span>
             </div>
 
@@ -242,37 +269,37 @@
             <div class="project-name-area">
 
                 <div class="project-icon">
-                    <i class="fa fa-heart"></i>
+                    <i class="fa fa-heart" id="details-project-icon"></i>
                 </div>
 
                 <div>
-                    <h3>Wedding Project</h3>
-                    <p>Project #TM-1024</p>
+                    <h3 id="details-name">Wedding Project</h3>
+                    <p id="details-subtitle">Project #TM-1024</p>
                 </div>
 
             </div>
 
 
             <div class="project-detail-row">
-                <span><i class="fa fa-money"></i> Budget</span>
-                <strong>2,500 JOD</strong>
+                <span><i class="fa fa-money"></i> <span id="details-budget-label">Budget</span></span>
+                <strong id="details-budget">2,500 JOD</strong>
             </div>
 
             <div class="project-detail-row">
-                <span><i class="fa fa-map-marker"></i> Location</span>
-                <strong>Amman, Jordan</strong>
+                <span><i class="fa fa-map-marker"></i> <span id="details-location-label">Location</span></span>
+                <strong id="details-location">Amman, Jordan</strong>
             </div>
 
             <div class="project-detail-row">
-                <span><i class="fa fa-calendar"></i> Event Date</span>
-                <strong>25 October 2026</strong>
+                <span><i class="fa fa-calendar"></i> <span id="details-date-label">Event Date</span></span>
+                <strong id="details-event-date">25 October 2026</strong>
             </div>
 
 
             <!-- Team Members -->
-            <div class="team-section">
+            <div class="team-section" id="details-team-section">
 
-                <h3>Team Members</h3>
+                <h3 id="details-members-title">Team Members</h3>
 
                 <div class="team-member">
 

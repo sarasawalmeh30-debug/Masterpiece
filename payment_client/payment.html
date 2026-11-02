@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -31,6 +31,7 @@
                 Back to Project
             </a>
 
+            <span class="payment-kicker"><i class="fa fa-lock" aria-hidden="true"></i> SECURE CHECKOUT</span>
             <h1>Complete Your Payment</h1>
 
             <p>
@@ -39,8 +40,25 @@
         </header>
 
 
+        <section class="group-selector" aria-labelledby="group-selector-title">
+            <div class="section-title">
+                <div class="section-number">1</div>
+                <div>
+                    <h2 id="group-selector-title">Choose a project group</h2>
+                    <p>Select the confirmed team you want to pay for.</p>
+                </div>
+            </div>
+            <label for="project-group-select">Project group</label>
+            <select id="project-group-select" required>
+                <option value="">Choose a group</option>
+                <option value="wedding">Wedding Project · 3 providers</option>
+                <option value="engagement">Engagement Celebration · 2 providers</option>
+                <option value="graduation">Graduation Event · 3 providers</option>
+            </select>
+        </section>
+
         <!-- Project Information -->
-        <section class="payment-project-card">
+        <section class="payment-project-card" id="payment-project-card" hidden>
 
             <div class="project-cover">
                 <i class="fa fa-heart"></i>
@@ -48,7 +66,7 @@
 
             <div class="payment-project-info">
                 <div class="project-title-row">
-                    <h2>Wedding Project</h2>
+                    <h2 id="payment-project-name">Wedding Project</h2>
 
                     <span class="confirmed-badge">
                         <i class="fa fa-check-circle"></i>
@@ -59,12 +77,12 @@
                 <div class="payment-project-meta">
                     <span>
                         <i class="fa fa-map-marker"></i>
-                        Amman, Jordan
+                        <span id="payment-location">Amman, Jordan</span>
                     </span>
 
                     <span>
                         <i class="fa fa-calendar"></i>
-                        25 October 2026
+                        <span id="payment-date">25 October 2026</span>
                     </span>
                 </div>
 
@@ -73,7 +91,7 @@
                     <div class="team-avatar avatar-two">D</div>
                     <div class="team-avatar avatar-three">M</div>
 
-                    <span>3 providers confirmed</span>
+                    <span><strong id="payment-team-count">3</strong> providers confirmed</span>
                 </div>
             </div>
 
@@ -81,10 +99,10 @@
 
 
         <!-- Payment Method -->
-        <section class="payment-section">
+        <section class="payment-section" id="payment-section" hidden>
 
             <div class="section-title">
-                <div class="section-number">1</div>
+                <div class="section-number">2</div>
 
                 <div>
                     <h2>Payment Method</h2>
@@ -180,7 +198,7 @@
                             disabled>
 
                             <i class="fa fa-lock"></i>
-                            Pay <span id="button-total">375.00 JOD</span>
+                            Pay <span id="button-total">—</span>
 
                         </button>
 
@@ -207,17 +225,17 @@
 
                         <div class="summary-row">
                             <span>Project Budget</span>
-                            <strong id="project-budget">2,500.00 JOD</strong>
+                            <strong id="project-budget">—</strong>
                         </div>
 
                         <div class="summary-row">
                             <span>Provider Deposit</span>
-                            <strong id="provider-deposit">300.00 JOD</strong>
+                            <strong id="provider-deposit">—</strong>
                         </div>
 
                         <div class="summary-row">
-                            <span>TEAMLY Service Fee (15%)</span>
-                            <strong id="service-fee">75.00 JOD</strong>
+                            <span>TEAMLY Service Fee</span>
+                            <strong id="service-fee">—</strong>
                         </div>
 
 
@@ -230,7 +248,7 @@
                                 <p>Includes the deposit and service fee.</p>
                             </div>
 
-                            <strong id="total-to-pay">375.00 JOD</strong>
+                            <strong id="total-to-pay">—</strong>
                         </div>
 
 
@@ -260,7 +278,7 @@
         <section class="after-payment-section">
 
             <div class="section-title">
-                <div class="section-number">2</div>
+                <div class="section-number">3</div>
 
                 <div>
                     <h2>What Happens After Payment?</h2>
@@ -272,6 +290,7 @@
             <div class="after-payment-grid">
 
                 <div class="after-payment-item">
+                    <span class="journey-step">STEP 01</span>
                     <div class="after-payment-icon">
                         <i class="fa fa-comments"></i>
                     </div>
@@ -286,6 +305,7 @@
 
 
                 <div class="after-payment-item">
+                    <span class="journey-step">STEP 02</span>
                     <div class="after-payment-icon">
                         <i class="fa fa-users"></i>
                     </div>
@@ -300,6 +320,7 @@
 
 
                 <div class="after-payment-item">
+                    <span class="journey-step">STEP 03</span>
                     <div class="after-payment-icon">
                         <i class="fa fa-calendar-check-o"></i>
                     </div>
@@ -348,7 +369,7 @@
                     class="checkin-option"
                     data-checkin="well">
 
-                    <span class="checkin-emoji">😊</span>
+                    <span class="checkin-emoji">&#128522;</span>
 
                     <strong>Everything is going well</strong>
 
@@ -363,7 +384,7 @@
                     class="checkin-option"
                     data-checkin="concern">
 
-                    <span class="checkin-emoji">🤔</span>
+                    <span class="checkin-emoji">&#129300;</span>
 
                     <strong>I have a concern</strong>
 
@@ -378,7 +399,7 @@
                     class="checkin-option"
                     data-checkin="help">
 
-                    <span class="checkin-emoji">🆘</span>
+                    <span class="checkin-emoji">&#127973;</span>
 
                     <strong>I need help</strong>
 
@@ -413,7 +434,7 @@
             <div class="selected-item-heading">
                 <h2>Selected Items</h2>
 
-                <span class="selected-count">3</span>
+            <span class="selected-count" id="selected-count">—</span>
             </div>
 
             <p class="selected-item-subtitle">
@@ -424,64 +445,30 @@
             <div class="selected-project-image">
                 <i class="fa fa-heart"></i>
 
-                <span>Wedding Project</span>
+                <span id="selected-project-name">Choose a project group</span>
             </div>
 
+            <div id="selected-team-members"></div>
 
-            <div class="selected-item">
-
-                <div class="selected-item-avatar avatar-one">
-                    A
+            <template id="selected-team-member-template">
+                <div class="selected-item">
+                    <div class="selected-item-avatar"></div>
+                    <div class="selected-item-info">
+                        <strong></strong>
+                        <span></span>
+                        <small>Confirmed</small>
+                    </div>
+                    <i class="fa fa-check-circle selected-check"></i>
                 </div>
+            </template>
 
-                <div class="selected-item-info">
-                    <strong>Ahmad</strong>
-                    <span>Photography</span>
-                    <small>Confirmed</small>
-                </div>
-
-                <i class="fa fa-check-circle selected-check"></i>
-
+            <div class="selected-item-empty" id="selected-item-empty">
+                Select a group to see its team.
             </div>
-
-
-            <div class="selected-item">
-
-                <div class="selected-item-avatar avatar-two">
-                    D
-                </div>
-
-                <div class="selected-item-info">
-                    <strong>Dana</strong>
-                    <span>Decoration</span>
-                    <small>Confirmed</small>
-                </div>
-
-                <i class="fa fa-check-circle selected-check"></i>
-
-            </div>
-
-
-            <div class="selected-item">
-
-                <div class="selected-item-avatar avatar-three">
-                    M
-                </div>
-
-                <div class="selected-item-info">
-                    <strong>Mohammad</strong>
-                    <span>Videography</span>
-                    <small>Confirmed</small>
-                </div>
-
-                <i class="fa fa-check-circle selected-check"></i>
-
-            </div>
-
 
             <div class="selected-item-total">
                 <span>Amount Due Now</span>
-                <strong>375.00 JOD</strong>
+                <strong id="selected-item-total-amount">—</strong>
             </div>
 
 

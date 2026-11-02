@@ -47,7 +47,7 @@ const providers = [
         firstName: "Sara",
         lastName: "Omar",
         service: "Photography",
-        rating: 4.8,
+        rating: 4.3,
         location: "Irbid",
         price: 700,
         recommended: 2
@@ -57,7 +57,7 @@ const providers = [
         firstName: "Lina",
         lastName: "Hassan",
         service: "Photography",
-        rating: 4.6,
+        rating: 4.4,
         location: "Amman",
         price: 950,
         recommended: 3
@@ -77,7 +77,7 @@ const providers = [
         firstName: "Maya",
         lastName: "Adel",
         service: "Videography",
-        rating: 4.7,
+        rating: 3.9,
         location: "Zarqa",
         price: 550,
         recommended: 2
@@ -97,7 +97,7 @@ const providers = [
         firstName: "Noor",
         lastName: "Ahmad",
         service: "Decoration",
-        rating: 4.7,
+        rating: 4.2,
         location: "Irbid",
         price: 750,
         recommended: 2
@@ -190,6 +190,7 @@ const requestNote = document.getElementById("request-note");
 const accountModal = document.getElementById("account-modal");
 const messageModal = document.getElementById("message-modal");
 const providerCountModal = document.getElementById("provider-count-modal");
+let trackingAfterMessageOk = false;
 
 
 /* ==================================
@@ -227,6 +228,11 @@ function getInitials(provider) {
 
 function getProviderById(id) {
     return providers.find(provider => provider.id === id);
+}
+
+
+function normalizeFilterValue(value) {
+    return String(value ?? "").trim().toLocaleLowerCase();
 }
 
 
@@ -403,7 +409,8 @@ function getFilteredProviders() {
 
     if (service !== "all") {
         result = result.filter(provider =>
-            provider.service === service
+            normalizeFilterValue(provider.service) === normalizeFilterValue(service) ||
+            normalizeFilterValue(provider.displayService) === normalizeFilterValue(service)
         );
     }
 
@@ -417,16 +424,20 @@ function getFilteredProviders() {
 
     // Filter by maximum price
 
-    result = result.filter(provider =>
-        provider.price <= maxPrice
-    );
+    // Providers without a listed price remain visible for "Any price". A
+    // price cap can only match providers with a known price.
+    if (Number.isFinite(maxPrice)) {
+        result = result.filter(provider =>
+            Number.isFinite(provider.price) && provider.price <= maxPrice
+        );
+    }
 
 
     // Filter by location
 
     if (location !== "all") {
         result = result.filter(provider =>
-            provider.location === location
+            normalizeFilterValue(provider.location) === normalizeFilterValue(location)
         );
     }
 
@@ -439,11 +450,19 @@ function getFilteredProviders() {
             break;
 
         case "price-low":
-            result.sort((a, b) => a.price - b.price);
+            result.sort((a, b) => {
+                if (!Number.isFinite(a.price)) return 1;
+                if (!Number.isFinite(b.price)) return -1;
+                return a.price - b.price;
+            });
             break;
 
         case "price-high":
-            result.sort((a, b) => b.price - a.price);
+            result.sort((a, b) => {
+                if (!Number.isFinite(a.price)) return 1;
+                if (!Number.isFinite(b.price)) return -1;
+                return b.price - a.price;
+            });
             break;
 
         case "recommended":
@@ -678,9 +697,10 @@ function sendRequest() {
       This is only a successful demo message.
     */
 
+    trackingAfterMessageOk = true;
     showMessage(
         "Request prepared",
-        "Your selected team is complete. This demo can confirm the request on screen, but saving or delivering it requires a connected backend or database."
+        "Your selected team is complete."
     );
 }
 
@@ -703,6 +723,11 @@ function confirmProviderCount() {
     if (!Number.isInteger(count) || count < 1 || count > availableServices.length) return;
 
     desiredProviderCount = count;
+    try {
+        sessionStorage.setItem("teamlyDesiredProviderCount", String(count));
+    } catch (error) {
+        console.error("Could not save desired provider count:", error);
+    }
     selectedProviders.clear();
     closeProviderCountModal();
     updateTeam();
@@ -768,6 +793,7 @@ function showMessage(title, message) {
 
 function closeMessageModal() {
     messageModal.hidden = true;
+    trackingAfterMessageOk = false;
 
     document.body.style.overflow = "";
 }
@@ -952,7 +978,14 @@ document.getElementById("close-message-modal")
     .addEventListener("click", closeMessageModal);
 
 document.getElementById("message-ok-btn")
-    .addEventListener("click", closeMessageModal);
+    .addEventListener("click", () => {
+        if (trackingAfterMessageOk) {
+            window.location.href = "../Tracking/tracking.html";
+            return;
+        }
+
+        closeMessageModal();
+    });
 
 
 // Clicking the dark background closes the dialogs.
@@ -994,9 +1027,50 @@ document.getElementById("refresh-btn")
 function initializeProviderPage() {
     renderProjectInformation();
 
-    const requestedService = new URLSearchParams(window.location.search).get("service");
+    const pageParams = new URLSearchParams(window.location.search);
+    const requestedService = pageParams.get("service");
     if (requestedService && [...serviceFilter.options].some(option => option.value === requestedService)) {
         serviceFilter.value = requestedService;
+    }
+
+    const selectedProviderName = pageParams.get("profileSelected");
+    let returnedWithSelectedProvider = false;
+    if (selectedProviderName) {
+        const selectedService = pageParams.get("selectedService");
+        const chosenProvider = providers.find(provider =>
+            getProviderName(provider).toLocaleLowerCase() === selectedProviderName.trim().toLocaleLowerCase() &&
+            (!selectedService || normalizeFilterValue(provider.service) === normalizeFilterValue(selectedService))
+        );
+
+        if (chosenProvider) {
+            selectedProviders.set(chosenProvider.service, chosenProvider.id);
+            returnedWithSelectedProvider = true;
+            if (IS_LOGGED_IN && desiredProviderCount === null) {
+                try {
+                    const savedCount = Number(sessionStorage.getItem("teamlyDesiredProviderCount"));
+                    desiredProviderCount = Number.isInteger(savedCount) && savedCount > 0
+                        ? savedCount
+                        : selectedProviders.size;
+                } catch (error) {
+                    desiredProviderCount = selectedProviders.size;
+                }
+            }
+            try {
+                sessionStorage.removeItem("teamly-selected-provider");
+            } catch (error) {
+                console.error("Could not clear saved provider selection:", error);
+            }
+        }
+
+        // Remove the one-time return marker from the address bar.
+        pageParams.delete("profileSelected");
+        pageParams.delete("selectedService");
+        const cleanQuery = pageParams.toString();
+        window.history.replaceState(
+            {},
+            "",
+            `${window.location.pathname}${cleanQuery ? `?${cleanQuery}` : ""}${window.location.hash}`
+        );
     }
 
     applyFilters();
@@ -1005,7 +1079,7 @@ function initializeProviderPage() {
 
     loadSidebar();
 
-    if (IS_LOGGED_IN) {
+    if (IS_LOGGED_IN && !returnedWithSelectedProvider) {
         openProviderCountModal();
     }
 }

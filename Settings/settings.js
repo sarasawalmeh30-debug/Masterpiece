@@ -56,13 +56,38 @@
         }
     }
 
+    function navigateToView(name) {
+        if (!views[name]) return;
+        const nextUrl = new URL(window.location.href);
+        if (name === "home") nextUrl.searchParams.delete("view");
+        else nextUrl.searchParams.set("view", name);
+        window.history.pushState({ settingsView: name }, "", nextUrl);
+        showView(name);
+    }
+
+    Object.entries(views).forEach(([name, view]) => {
+        if (name === "home") return;
+        const closeButton = document.createElement("button");
+        closeButton.type = "button";
+        closeButton.className = "settings-close";
+        closeButton.setAttribute("aria-label", "Close section and return to settings");
+        closeButton.title = "Back to Settings";
+        closeButton.innerHTML = '<i class="fa fa-times" aria-hidden="true"></i>';
+        closeButton.addEventListener("click", () => navigateToView("home"));
+        view.prepend(closeButton);
+    });
+
     function readJSON(key, fallback) {
         try { return JSON.parse(window.localStorage.getItem(key) || "null") ?? fallback; }
         catch (error) { return fallback; }
     }
 
-    document.querySelectorAll("[data-open-view]").forEach(button => button.addEventListener("click", () => showView(button.dataset.openView)));
-    document.querySelectorAll("[data-back]").forEach(button => button.addEventListener("click", () => showView("home")));
+    document.querySelectorAll("[data-open-view]").forEach(button => button.addEventListener("click", () => navigateToView(button.dataset.openView)));
+    document.querySelectorAll("[data-back]").forEach(button => button.addEventListener("click", () => navigateToView("home")));
+    window.addEventListener("popstate", () => {
+        const viewFromUrl = new URLSearchParams(window.location.search).get("view");
+        showView(viewFromUrl && views[viewFromUrl] ? viewFromUrl : "home");
+    });
     const requestedView = new URLSearchParams(window.location.search).get("view");
     if (requestedView && views[requestedView]) showView(requestedView);
     function setError(key, message) {

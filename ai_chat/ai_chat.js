@@ -118,8 +118,10 @@ document.addEventListener("DOMContentLoaded", function () {
     function persistConversations() {
         try {
             localStorage.setItem(conversationsKey, JSON.stringify(conversations));
+            return true;
         } catch (error) {
-            // Keep the chat working when browser storage is unavailable or full.
+            console.error("Could not save TEAMLY conversations:", error);
+            return false;
         }
     }
 
@@ -530,12 +532,13 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // Clear the composer as soon as the message is accepted.
-        chatInput.value = "";
-        chatInput.style.height = "auto";
-
         if (editingMessageIndex !== null) {
             const editedIndex = editingMessageIndex;
+            if (!currentConversation || !currentConversation.messages[editedIndex] || currentConversation.messages[editedIndex].sender !== "user") {
+                cancelMessageEdit();
+                return;
+            }
+
             const nextMessage = currentConversation.messages[editedIndex + 1];
             currentConversation.messages[editedIndex].text = text;
             if (nextMessage && nextMessage.sender === "ai") {
@@ -548,13 +551,26 @@ document.addEventListener("DOMContentLoaded", function () {
                 text: "Thanks for the update! I've refreshed your project details. You can share more about your services, date, location, or budget."
             });
             currentConversation.project = JSON.parse(JSON.stringify(project));
-            persistConversations();
+            if (!persistConversations()) {
+                // Keep the edited text in the composer so it can be copied or retried.
+                currentConversation.messages[editedIndex].text = text;
+                chatInput.value = text;
+                chatInput.focus();
+                return;
+            }
+
+            chatInput.value = "";
+            chatInput.style.height = "auto";
             chatMessages.replaceChildren();
             currentConversation.messages.forEach(renderStoredMessage);
             cancelMessageEdit();
             renderHistory();
             return;
         }
+
+        // Clear the composer as soon as a new message is accepted.
+        chatInput.value = "";
+        chatInput.style.height = "auto";
 
         addMessage(text, "user");
 

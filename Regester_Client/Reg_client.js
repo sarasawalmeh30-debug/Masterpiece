@@ -11,6 +11,49 @@ const terms = document.getElementById("terms");
 
 const formMessage = document.getElementById("formMessage");
 const submitButton = form.querySelector(".create-account-btn");
+const registrationDraftKey = "teamlyClientRegistrationDraft";
+
+function saveRegistrationDraft() {
+    const draft = {
+        savedAt: Date.now(),
+        fullName: fullName.value,
+        email: email.value,
+        confirmEmail: confirmEmail.value,
+        password: password.value,
+        confirmPassword: confirmPassword.value,
+        terms: terms.checked
+    };
+
+    try {
+        window.localStorage.setItem(registrationDraftKey, JSON.stringify(draft));
+    } catch (error) {
+        // Keep the form usable if browser storage is unavailable.
+    }
+}
+
+function restoreRegistrationDraft() {
+    try {
+        const draft = JSON.parse(window.localStorage.getItem(registrationDraftKey) || "null");
+        if (!draft || typeof draft !== "object") return;
+        if (!Number.isFinite(draft.savedAt) || Date.now() - draft.savedAt > 24 * 60 * 60 * 1000) {
+            window.localStorage.removeItem(registrationDraftKey);
+            return;
+        }
+
+        fullName.value = typeof draft.fullName === "string" ? draft.fullName : "";
+        email.value = typeof draft.email === "string" ? draft.email : "";
+        confirmEmail.value = typeof draft.confirmEmail === "string" ? draft.confirmEmail : "";
+        password.value = typeof draft.password === "string" ? draft.password : "";
+        confirmPassword.value = typeof draft.confirmPassword === "string" ? draft.confirmPassword : "";
+        terms.checked = draft.terms === true;
+    } catch (error) {
+        // Ignore an unavailable or invalid draft and show a fresh form.
+    }
+}
+
+restoreRegistrationDraft();
+form.addEventListener("input", saveRegistrationDraft);
+form.addEventListener("change", saveRegistrationDraft);
 
 // Display field error
 
@@ -245,6 +288,12 @@ form.addEventListener("submit", function (event) {
         formMessage.textContent = "This browser could not save the account. Please check storage settings and try again.";
         formMessage.classList.add("error");
         return;
+    }
+
+    try {
+        window.localStorage.removeItem(registrationDraftKey);
+    } catch (error) {
+        // Registration succeeded; a stale draft is harmless and session-scoped.
     }
 
     try {

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap');
+
 :root {
     color-scheme: light;
     --sage: #a8c9a5;
@@ -163,4 +165,233 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
+
+/* A more inviting, polished TEAMLY meeting room. */
+body {
+    background:
+        radial-gradient(ellipse at 12% 6%, rgba(168, 201, 165, .32), transparent 31%),
+        radial-gradient(ellipse at 92% 42%, rgba(210, 229, 207, .42), transparent 30%),
+        linear-gradient(145deg, #f8fbf7 0%, #f1f7ef 52%, #f9fbf8 100%);
+}
+
+.meeting-header {
+    min-height: 68px;
+    padding: 8px 4px 15px;
+    border-bottom: 0;
+}
+
+.brand img {
+    width: 190px;
+    height: 66px;
+    filter: drop-shadow(0 5px 10px rgba(53, 94, 59, .08));
+}
+
+/* Keep the header links light and unboxed. */
+.back-button,
+.share-button {
+    min-height: 40px;
+    padding: 0 9px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--green);
+    box-shadow: none;
+}
+
+.back-button:hover,
+.share-button:hover {
+    transform: none;
+    background: transparent;
+    color: #6f9b73;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.meeting-intro {
+    position: relative;
+    padding: clamp(14px, 2vw, 24px) 0 22px;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 13px;
+    border: 1px solid #d8e8d5;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .76);
+    color: #47734b;
+    font-size: 10px;
+    letter-spacing: .14em;
+    box-shadow: 0 4px 14px rgba(53, 94, 59, .05);
+}
+
+.meeting-intro h1 {
+    margin: 0;
+    font-family: "Caveat", "Segoe Print", cursive;
+    font-size: clamp(29px, 4.4vw, 46px);
+    font-weight: 700;
+    letter-spacing: .005em;
+}
+
+.meeting-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 15px auto 8px;
+}
+
+.meeting-zoom-icon {
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
+    color: var(--green);
+    filter: drop-shadow(0 2px 5px rgba(53, 94, 59, .16));
+}
+
+.meeting-intro p {
+    max-width: 560px;
+    margin: 0 auto;
+    font-size: 15px;
+}
+
+.meeting-shell {
+    position: relative;
+    border: 1px solid #d8e6d5;
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 26px 70px rgba(38, 70, 42, .14), 0 5px 16px rgba(38, 70, 42, .06);
+}
+
+.meeting-status {
+    min-height: 48px;
+    border-bottom-color: #e8efe6;
+    background: linear-gradient(90deg, #fbfdfb, #f5f9f3);
+}
+
+.status-dot {
+    box-shadow: 0 0 0 4px rgba(213, 163, 61, .12);
+}
+
+.meeting-status.is-ready .status-dot {
+    box-shadow: 0 0 0 4px rgba(77, 155, 98, .14);
+    animation: meetingReadyPulse 1.8s ease-in-out infinite;
+}
+
+#meet {
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(168, 201, 165, .14), transparent 45%),
+        #f4f7f3;
+}
+
+.meeting-fallback {
+    background: transparent;
+    color: var(--green);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.meeting-help {
+    max-width: 600px;
+    margin: 17px auto 0;
+    color: #788379;
+}
+
+@keyframes meetingReadyPulse {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(77, 155, 98, .12); }
+    50% { box-shadow: 0 0 0 7px rgba(77, 155, 98, .05); }
+}
+
+@media (max-width: 640px) {
+    .meeting-header {
+        padding: 2px 0 12px;
+    }
+
+    .brand img {
+        width: 132px;
+        height: 52px;
+    }
+
+    .header-actions {
+        gap: 6px;
+    }
+
+    .back-button,
+    .share-button {
+        min-height: 36px;
+        padding: 0 5px;
+        font-size: 11px;
+    }
+
+    .meeting-intro {
+        padding: 15px 0 18px;
+    }
+
+    .meeting-title-row {
+        gap: 8px;
+    }
+
+    .meeting-zoom-icon {
+        width: 24px;
+        height: 24px;
+        flex-basis: 24px;
+    }
+
+    .meeting-shell {
+        border-radius: 18px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .meeting-status.is-ready .status-dot { animation: none; }
+}
+
+.meeting-page {
+    position: relative;
+    z-index: 1;
+}
+
+.zoom-icon-rain {
+    position: fixed;
+    z-index: 0;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.zoom-rain-icon {
+    position: absolute;
+    top: -48px;
+    left: var(--rain-left);
+    display: block;
+    width: var(--rain-size);
+    height: var(--rain-size);
+    color: #4f9a5c;
+    opacity: 0;
+    animation: cameraIconRain var(--rain-duration) linear var(--rain-delay) infinite;
+    filter: drop-shadow(0 2px 4px rgba(53, 94, 59, .12));
+}
+
+.zoom-rain-icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+}
+
+@keyframes cameraIconRain {
+    0% { transform: translate3d(0, -10vh, 0) rotate(-12deg); opacity: 0; }
+    10%, 88% { opacity: .18; }
+    100% { transform: translate3d(var(--rain-drift), 115vh, 0) rotate(24deg); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .zoom-icon-rain { display: none; }
 }

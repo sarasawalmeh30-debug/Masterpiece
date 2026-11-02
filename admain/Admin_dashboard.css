@@ -321,3 +321,214 @@ body { background: #eceef0; }
 @media (max-width: 900px) {
   .admin-main { padding-top: 72px; }
 }
+
+/* Inset the native-looking chevrons in dashboard filter selects. */
+.report-filters select.form-control,
+.provider-filter-row select.form-control,
+.sec-head select.form-control {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 44px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23546b57' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    background-size: 13px 13px;
+    cursor: pointer;
+}
+
+.report-filters select.form-control:focus,
+.provider-filter-row select.form-control:focus,
+.sec-head select.form-control:focus {
+    background-position: right 18px center;
+}
+
+.dash-header h1 {
+    font-family: 'Caveat', 'Segoe Print', cursive !important;
+    font-size: clamp(32px, 3vw, 40px);
+    font-weight: 700;
+    letter-spacing: .005em;
+}
+
+/* Brighter, more distinct colors for dashboard analytics. */
+#chActivity rect {
+    filter: drop-shadow(0 2px 2px rgba(37, 65, 42, .12));
+    transition: filter .18s ease, opacity .18s ease;
+}
+
+#chActivity rect:hover {
+    filter: brightness(1.08) drop-shadow(0 3px 4px rgba(37, 65, 42, .2));
+}
+
+.report-activity-card .legend span {
+    color: #46534a;
+    font-weight: 600;
+}
+
+.report-activity-card .legend i {
+    box-shadow: 0 0 0 3px rgba(70, 100, 72, .08);
+}
+
+.service-mix-chart svg circle:not(:first-child) {
+    filter: drop-shadow(0 3px 4px rgba(36, 57, 39, .2));
+    stroke-width: 17px;
+}
+
+.service-mix-item i {
+    width: 10px;
+    height: 10px;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--mix-color) 17%, transparent), 0 1px 5px color-mix(in srgb, var(--mix-color) 28%, transparent);
+}
+
+.service-mix-item span {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.service-mix-item b {
+    font-size: 12px;
+}
+
+/* Larger labels and headings across dashboard cards and sections. */
+.report-panel .sec-head h2 {
+    font-size: 17px;
+}
+
+.report-card-heading h2 {
+    font-size: 17px;
+}
+
+.report-overview .kpi-top {
+    font-size: 13px;
+}
+
+.report-overview .kpi-top i {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+    font-size: 14px;
+}
+
+.service-mix-item span,
+.service-mix-item b {
+    font-size: 13px;
+}
+
+@media (max-width: 560px) {
+    .report-panel .sec-head h2,
+    .report-card-heading h2 { font-size: 16px; }
+    .report-overview .kpi-top { font-size: 12px; }
+    .service-mix-item span,
+    .service-mix-item b { font-size: 12px; }
+}
+
+.report-panel .sec-head h2,
+.report-card-heading h2 {
+    font-size: 19px;
+}
+
+.report-overview .kpi-top {
+    font-size: 14px;
+}
+
+.service-mix-item span,
+.service-mix-item b {
+    font-size: 14px;
+}
+
+@media (max-width: 560px) {
+    .report-panel .sec-head h2,
+    .report-card-heading h2 { font-size: 17px; }
+    .report-overview .kpi-top { font-size: 13px; }
+    .service-mix-item span,
+    .service-mix-item b { font-size: 13px; }
+}
+
+/* Color-coded KPI cards with a light glass surface and an accent glow. */
+.report-overview .kpi-main .kpi {
+    --kpi-accent: #25a85a;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 128px;
+    padding: 16px 16px 14px;
+    border: 1px solid color-mix(in srgb, var(--kpi-accent) 22%, #fff);
+    border-radius: 17px;
+    background: linear-gradient(145deg, #fff 8%, color-mix(in srgb, var(--kpi-accent) 7%, #fff));
+    box-shadow: 0 7px 20px rgba(31, 64, 36, .06), inset 0 1px 0 #fff;
+    transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+}
+
+.report-overview .kpi-main .kpi:nth-child(6n + 2) { --kpi-accent: #4f82ed; }
+.report-overview .kpi-main .kpi:nth-child(6n + 3) { --kpi-accent: #e8a52c; }
+.report-overview .kpi-main .kpi:nth-child(6n + 4) { --kpi-accent: #9666d8; }
+.report-overview .kpi-main .kpi:nth-child(6n + 5) { --kpi-accent: #17a995; }
+.report-overview .kpi-main .kpi:nth-child(6n) { --kpi-accent: #e16d61; }
+
+.report-overview .kpi-main .kpi::before {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    right: 14px;
+    left: 14px;
+    height: 3px;
+    border-radius: 0 0 6px 6px;
+    background: linear-gradient(90deg, transparent, var(--kpi-accent), transparent);
+    opacity: .86;
+    content: "";
+}
+
+.report-overview .kpi-main .kpi::after {
+    right: -29px;
+    bottom: -48px;
+    width: 116px;
+    height: 116px;
+    background: radial-gradient(circle, color-mix(in srgb, var(--kpi-accent) 19%, transparent), transparent 70%);
+    opacity: .9;
+}
+
+.report-overview .kpi-main .kpi:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--kpi-accent) 46%, #fff);
+    box-shadow: 0 14px 27px color-mix(in srgb, var(--kpi-accent) 15%, transparent), inset 0 1px 0 #fff;
+}
+
+.report-overview .kpi-main .kpi-top {
+    align-items: center;
+    color: #536158;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.report-overview .kpi-main .kpi-top i {
+    width: 34px;
+    height: 34px;
+    flex-basis: 34px;
+    border: 1px solid color-mix(in srgb, var(--kpi-accent) 17%, #fff);
+    border-radius: 11px;
+    background: color-mix(in srgb, var(--kpi-accent) 12%, #fff);
+    color: var(--kpi-accent);
+    font-size: 15px;
+    box-shadow: 0 3px 8px color-mix(in srgb, var(--kpi-accent) 12%, transparent), inset 0 1px 0 #fff;
+}
+
+.report-overview .kpi-main .kpi-value {
+    margin-top: 3px;
+    color: #26362b;
+    font-size: clamp(23px, 2.2vw, 30px);
+    font-weight: 800;
+    letter-spacing: -.045em;
+}
+
+.report-overview .kpi-main .kpi-sub {
+    color: #6f7d72;
+    font-size: 11px;
+}
+
+@media (max-width: 560px) {
+    .report-overview .kpi-main .kpi { min-height: 116px; padding: 13px; }
+    .report-overview .kpi-main .kpi-top { font-size: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .report-overview .kpi-main .kpi { transition: none; }
+}

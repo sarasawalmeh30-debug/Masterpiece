@@ -18,28 +18,113 @@ const paymentResult = document.getElementById("payment-result");
 // Demo values — replace with real project data
 // =====================================
 
-const projectBudget = 2500;
-const providerDeposit = 300;
-const serviceFee = 75;
-const totalToPay = providerDeposit + serviceFee;
+const projectGroups = {
+    wedding: {
+        name: "Wedding Project",
+        location: "Amman, Jordan",
+        date: "25 October 2026",
+        budget: 2500,
+        deposit: 300,
+        fee: 75,
+        members: [
+            { name: "Ahmad", service: "Photography", initials: "A", avatar: "avatar-one" },
+            { name: "Dana", service: "Decoration", initials: "D", avatar: "avatar-two" },
+            { name: "Mohammad", service: "Videography", initials: "M", avatar: "avatar-three" }
+        ]
+    },
+    engagement: {
+        name: "Engagement Celebration",
+        location: "Irbid, Jordan",
+        date: "14 December 2026",
+        budget: 1800,
+        deposit: 240,
+        fee: 60,
+        members: [
+            { name: "Sara", service: "Photography", initials: "S", avatar: "avatar-one" },
+            { name: "Omar", service: "Videography", initials: "O", avatar: "avatar-three" }
+        ]
+    },
+    graduation: {
+        name: "Graduation Event",
+        location: "Amman, Jordan",
+        date: "10 January 2027",
+        budget: 3200,
+        deposit: 420,
+        fee: 75,
+        members: [
+            { name: "Lina", service: "Photography", initials: "L", avatar: "avatar-one" },
+            { name: "Yazan", service: "Decoration", initials: "Y", avatar: "avatar-two" },
+            { name: "Khaled", service: "Catering", initials: "K", avatar: "avatar-three" }
+        ]
+    }
+};
 
-document.getElementById("project-budget").textContent =
-    `${projectBudget.toFixed(2)} JOD`;
+const groupSelect = document.getElementById("project-group-select");
+const projectCard = document.getElementById("payment-project-card");
+const paymentSection = document.getElementById("payment-section");
+const selectedTeamContainer = document.getElementById("selected-team-members");
+const selectedTeamTemplate = document.getElementById("selected-team-member-template");
+let selectedGroup = null;
 
-document.getElementById("provider-deposit").textContent =
-    `${providerDeposit.toFixed(2)} JOD`;
+function money(amount) {
+    return `${amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} JOD`;
+}
 
-document.getElementById("service-fee").textContent =
-    `${serviceFee.toFixed(2)} JOD`;
+function selectProjectGroup(groupId) {
+    selectedGroup = projectGroups[groupId] || null;
+    projectCard.hidden = !selectedGroup;
+    paymentSection.hidden = !selectedGroup;
 
-document.getElementById("total-to-pay").textContent =
-    `${totalToPay.toFixed(2)} JOD`;
+    if (!selectedGroup) {
+        selectedTeamContainer.replaceChildren();
+        document.getElementById("selected-item-empty").hidden = false;
+        document.getElementById("selected-project-name").textContent = "Choose a project group";
+        document.getElementById("selected-count").textContent = "—";
+        document.getElementById("selected-item-total-amount").textContent = "—";
+        validateCard();
+        return;
+    }
 
-document.getElementById("button-total").textContent =
-    `${totalToPay.toFixed(2)} JOD`;
+    const total = selectedGroup.deposit + selectedGroup.fee;
+    document.getElementById("payment-project-name").textContent = selectedGroup.name;
+    document.getElementById("payment-location").textContent = selectedGroup.location;
+    document.getElementById("payment-date").textContent = selectedGroup.date;
+    document.getElementById("payment-team-count").textContent = selectedGroup.members.length;
+    document.getElementById("selected-project-name").textContent = selectedGroup.name;
+    document.getElementById("selected-count").textContent = selectedGroup.members.length;
+    document.getElementById("project-budget").textContent = money(selectedGroup.budget);
+    document.getElementById("provider-deposit").textContent = money(selectedGroup.deposit);
+    document.getElementById("service-fee").textContent = money(selectedGroup.fee);
+    document.getElementById("total-to-pay").textContent = money(total);
+    document.getElementById("button-total").textContent = money(total);
+    document.getElementById("selected-item-total-amount").textContent = money(total);
 
-document.querySelector(".selected-item-total strong").textContent =
-    `${totalToPay.toFixed(2)} JOD`;
+    const previewAvatars = document.querySelectorAll(".project-team-preview .team-avatar");
+    previewAvatars.forEach((avatar, index) => {
+        const member = selectedGroup.members[index];
+        avatar.hidden = !member;
+        if (member) {
+            avatar.className = `team-avatar ${member.avatar}`;
+            avatar.textContent = member.initials;
+        }
+    });
+
+    selectedTeamContainer.replaceChildren();
+    selectedGroup.members.forEach(member => {
+        const item = selectedTeamTemplate.content.firstElementChild.cloneNode(true);
+        const avatar = item.querySelector(".selected-item-avatar");
+        avatar.classList.add(member.avatar);
+        avatar.textContent = member.initials;
+        item.querySelector(".selected-item-info strong").textContent = member.name;
+        item.querySelector(".selected-item-info span").textContent = member.service;
+        selectedTeamContainer.appendChild(item);
+    });
+    document.getElementById("selected-item-empty").hidden = true;
+    validateCard();
+}
+
+groupSelect.addEventListener("change", () => selectProjectGroup(groupSelect.value));
+selectProjectGroup("");
 
 
 // =====================================
@@ -138,7 +223,7 @@ function validateCard() {
             ? "Enter a 3- or 4-digit CVV."
             : "";
 
-    payButton.disabled = !(numberValid && expiryValid && cvvValid);
+    payButton.disabled = !(selectedGroup && numberValid && expiryValid && cvvValid);
 
     return !payButton.disabled;
 }
@@ -151,14 +236,19 @@ function validateCard() {
 paymentForm.addEventListener("submit", function (event) {
     event.preventDefault();
 
+    if (!selectedGroup) {
+        groupSelect.focus();
+        return;
+    }
+
     if (!validateCard()) {
         return;
     }
 
     // This is a UI demonstration only.
     // No card data is stored and no payment is processed.
-    // paymentResult.textContent =
-       
+    paymentResult.textContent = `Payment for ${selectedGroup.name} is ready, but payment processing is not connected in this demo.`;
+    paymentResult.classList.add("is-demo-message");
 
     paymentResult.scrollIntoView({
         behavior: "smooth",

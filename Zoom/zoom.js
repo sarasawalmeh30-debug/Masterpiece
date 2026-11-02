@@ -8,6 +8,23 @@
         ? roomParam
         : `teamly-${createRoomId()}`;
 
+    const iconRain = document.getElementById("zoom-icon-rain");
+    if (iconRain && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const cameraIcon = '<svg viewBox="0 0 32 32" focusable="false"><rect x="3.5" y="8" width="17" height="16" rx="4"/><path d="m21 13 7-4v14l-7-4"/></svg>';
+        for (let index = 0; index < 16; index++) {
+            const icon = document.createElement("span");
+            const duration = 20 + Math.random() * 12;
+            icon.className = "zoom-rain-icon";
+            icon.innerHTML = cameraIcon;
+            icon.style.setProperty("--rain-left", `${Math.random() * 100}%`);
+            icon.style.setProperty("--rain-size", `${16 + Math.random() * 20}px`);
+            icon.style.setProperty("--rain-duration", `${duration}s`);
+            icon.style.setProperty("--rain-delay", `${-Math.random() * duration}s`);
+            icon.style.setProperty("--rain-drift", `${Math.round(Math.random() * 120 - 60)}px`);
+            iconRain.appendChild(icon);
+        }
+    }
+
     if (!roomParam || roomName !== roomParam) {
         const url = new URL(window.location.href);
         url.searchParams.set("room", roomName);

@@ -22,6 +22,162 @@ const characterCount = document.getElementById("character-count");
 const FREE_MESSAGE_LIMIT = 4;
 const MAX_MESSAGE_LENGTH = 250;
 
+const conversationTitle = document.getElementById("conversation-title");
+const conversationSubtitle = document.getElementById("conversation-subtitle");
+const conversationButtons = [...document.querySelectorAll("[data-conversation]")];
+const conversations = {
+    team: {
+        title: "Wedding Team",
+        subtitle: "Group conversation · 4 members",
+        system: "Welcome to your Wedding Team group chat! Coordinate your project with your team members.",
+        messages: [
+            { sender: "Ahmad · Photographer", initials: "A", role: "received", text: "Hello everyone! I'm excited to work with you.", time: "10:30 AM" },
+            { sender: "Dana · Decorator", initials: "D", role: "received", text: "Hi! I'll prepare the decoration ideas for the project.", time: "10:32 AM" },
+            { sender: "You", role: "sent", text: "Great! Let's discuss the details and our timeline.", time: "10:35 AM" }
+        ]
+    },
+    ahmad: {
+        title: "Ahmad",
+        subtitle: "Photography · Wedding Project",
+        messages: [
+            { sender: "Ahmad", initials: "A", role: "received", text: "Hi! I'll prepare a photography plan for your wedding.", time: "10:30 AM" },
+            { sender: "You", role: "sent", text: "Great. What time should we plan for the first photos?", time: "10:35 AM" },
+            { sender: "Ahmad", initials: "A", role: "received", text: "I'll share a suggested timeline with the team shortly.", time: "10:38 AM" }
+        ]
+    },
+    dana: {
+        title: "Dana",
+        subtitle: "Decoration · Wedding Project",
+        messages: [
+            { sender: "Dana", initials: "D", role: "received", text: "I've started putting together decoration ideas for the venue.", time: "10:32 AM" },
+            { sender: "You", role: "sent", text: "Thank you! I'll share the color palette here.", time: "10:36 AM" }
+        ]
+    },
+    mohammad: {
+        title: "Mohammad",
+        subtitle: "Videography · Wedding Project",
+        messages: [
+            { sender: "Mohammad", initials: "M", role: "received", text: "Hello! Let's coordinate the video coverage and key moments.", time: "10:40 AM" },
+            { sender: "You", role: "sent", text: "Sounds good. I'll send the event schedule when it's ready.", time: "10:43 AM" }
+        ]
+    }
+};
+const conversationContacts = {
+    ahmad: { name: "Ahmad", service: "Photography" },
+    dana: { name: "Dana", service: "Decoration" },
+    mohammad: { name: "Mohammad", service: "Videography" }
+};
+let activeConversationId = "team";
+
+function updateConversationDetails(id) {
+    const isTeamChat = id === "team";
+    const contact = conversationContacts[id];
+    const detailsHeading = document.getElementById("details-heading-title");
+    const detailsStatus = document.getElementById("details-status-text");
+    const detailsIcon = document.getElementById("details-project-icon");
+    const detailsName = document.getElementById("details-name");
+    const detailsSubtitle = document.getElementById("details-subtitle");
+
+    detailsHeading.textContent = isTeamChat ? "Project Details" : "Conversation Details";
+    detailsStatus.textContent = isTeamChat ? "Team Confirmed" : "Team Member";
+    detailsIcon.className = `fa ${isTeamChat ? "fa-heart" : "fa-user"}`;
+    detailsName.textContent = isTeamChat ? "Wedding Project" : contact.name;
+    detailsSubtitle.textContent = isTeamChat ? "Project #TM-1024" : `${contact.service} · Wedding Project`;
+    document.getElementById("details-budget-label").textContent = isTeamChat ? "Budget" : "Service";
+    document.getElementById("details-budget").textContent = isTeamChat ? "2,500 JOD" : contact.service;
+    document.getElementById("details-location-label").textContent = isTeamChat ? "Location" : "Project Location";
+    document.getElementById("details-location").textContent = "Amman, Jordan";
+    document.getElementById("details-date-label").textContent = isTeamChat ? "Event Date" : "Provider Status";
+    document.getElementById("details-event-date").textContent = isTeamChat ? "25 October 2026" : "Accepted";
+    document.getElementById("details-members-title").textContent = isTeamChat ? "Team Members" : "Conversation With";
+
+    document.querySelectorAll(".team-member").forEach(member => {
+        const memberName = member.querySelector(".member-info strong")?.textContent.trim();
+        member.hidden = !isTeamChat && memberName !== contact.name;
+    });
+}
+
+function renderConversationMessage(entry) {
+    const message = document.createElement("div");
+    message.className = `message ${entry.role}`;
+
+    if (entry.role === "received") {
+        const avatar = document.createElement("div");
+        avatar.className = `message-avatar${entry.initials === "D" ? " decoration-avatar" : ""}`;
+        avatar.textContent = entry.initials || entry.sender.charAt(0);
+        message.appendChild(avatar);
+    }
+
+    const content = document.createElement("div");
+    content.className = "message-content";
+    const sender = document.createElement("span");
+    sender.className = "sender-name";
+    sender.textContent = entry.sender;
+    const bubble = document.createElement("div");
+    bubble.className = "message-bubble";
+    bubble.textContent = entry.text;
+    if (entry.imageUrl) {
+        const image = document.createElement("img");
+        image.className = "message-image";
+        image.alt = "Attached image";
+        image.src = entry.imageUrl;
+        bubble.appendChild(image);
+    }
+    const time = document.createElement("span");
+    time.className = "message-time";
+    time.textContent = entry.time;
+    content.append(sender, bubble, time);
+    message.appendChild(content);
+    return message;
+}
+
+function renderConversation(id, updateAddress = true) {
+    const conversation = conversations[id];
+    if (!conversation) return;
+
+    activeConversationId = id;
+    conversationTitle.textContent = conversation.title;
+    conversationSubtitle.textContent = conversation.subtitle;
+    updateConversationDetails(id);
+    conversationButtons.forEach(button => {
+        const selected = button.dataset.conversation === id;
+        button.classList.toggle("active", selected);
+        if (selected) button.setAttribute("aria-current", "true");
+        else button.removeAttribute("aria-current");
+    });
+
+    messagesArea.replaceChildren();
+    const date = document.createElement("div");
+    date.className = "chat-date";
+    const dateLabel = document.createElement("span");
+    dateLabel.textContent = "Today";
+    date.appendChild(dateLabel);
+    messagesArea.appendChild(date);
+
+    if (conversation.system) {
+        const system = document.createElement("div");
+        system.className = "system-message";
+        system.textContent = conversation.system;
+        messagesArea.appendChild(system);
+    }
+
+    conversation.messages.forEach(entry => messagesArea.appendChild(renderConversationMessage(entry)));
+    messagesArea.scrollTop = messagesArea.scrollHeight;
+
+    if (updateAddress) {
+        const url = new URL(window.location.href);
+        url.searchParams.set("conversation", id);
+        window.history.replaceState({}, "", url);
+    }
+}
+
+conversationButtons.forEach(button => button.addEventListener("click", () => {
+    renderConversation(button.dataset.conversation);
+}));
+
+const requestedConversation = new URLSearchParams(window.location.search).get("conversation");
+renderConversation(conversations[requestedConversation] ? requestedConversation : "team", false);
+
 // Four messages sent by the current user are allowed.
 // This demo keeps the count for this browser tab.
 let sentMessages = 0;
@@ -34,6 +190,7 @@ let selectedImage = null;
 
 function addMessage(text, imageFile = null) {
     const message = document.createElement("div");
+    let imageUrl = "";
 
     message.className = "message sent";
 
@@ -58,7 +215,8 @@ function addMessage(text, imageFile = null) {
 
         image.className = "message-image";
         image.alt = "Attached image";
-        image.src = URL.createObjectURL(imageFile);
+        imageUrl = URL.createObjectURL(imageFile);
+        image.src = imageUrl;
 
         bubble.appendChild(image);
     }
@@ -74,6 +232,13 @@ function addMessage(text, imageFile = null) {
     content.append(sender, bubble, time);
     message.appendChild(content);
 
+    conversations[activeConversationId].messages.push({
+        sender: "You",
+        role: "sent",
+        text,
+        imageUrl,
+        time: time.textContent
+    });
     messagesArea.appendChild(message);
     messagesArea.scrollTop = messagesArea.scrollHeight;
 }
@@ -216,9 +381,6 @@ function goToPayment() {
     window.location.href = "../payment_client/payment.html";
 }
 
-document.getElementById("payment-button")
-    .addEventListener("click", goToPayment);
-
 document.getElementById("project-payment-button")
     .addEventListener("click", goToPayment);
 
@@ -246,6 +408,7 @@ document.getElementById("zoom-button")
         } catch (error) { /* continue to meeting even if activity cannot be stored */ }
         window.location.href = "../Zoom/zoom.html";
     });
+
 
 
 // ======================================
