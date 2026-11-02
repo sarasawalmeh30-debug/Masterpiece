@@ -22,7 +22,7 @@
                     <h1 id="hero-title">Bringing People, Projects, and Ideas Together.</h1>
                     <p>TEAMLY is a platform designed to simplify project planning and connect clients with service providers. We help bring project ideas, service discovery, and collaboration together in one organized digital experience.</p>
                     <div class="about-actions">
-                        <a class="about-button about-button-primary" href="../select_provider/select_provider.html">Explore TEAMLY <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                        <button class="about-button about-button-primary" id="exploreVideoButton" type="button">Explore TEAMLY <i class="fa fa-play" aria-hidden="true"></i></button>
                     </div>
                     <a class="hero-story-link" href="#our-story">
                         <span class="scroll-worm" aria-hidden="true">
@@ -202,6 +202,14 @@
             <a class="about-button about-button-primary" href="../ai_information/ai.html">Get Started <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
         </section>
     </main>
+
+    <dialog class="about-video-dialog" id="exploreVideoDialog" aria-label="TEAMLY introduction video">
+        <button class="about-video-close" id="closeExploreVideo" type="button" aria-label="Close video"><i class="fa fa-times" aria-hidden="true"></i></button>
+        <video id="exploreVideo" controls playsinline preload="metadata">
+            <source src="assets/teamly-explore.mp4" type="video/mp4">
+            Your browser does not support video playback.
+        </video>
+    </dialog>
 
     <div id="footer-container"></div>
     <script src="../navbar/nav.js"></script>

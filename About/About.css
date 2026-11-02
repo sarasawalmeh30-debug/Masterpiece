@@ -468,6 +468,76 @@
     }
 }
 
+.about-video-dialog {
+    position: fixed;
+    inset: 0;
+    width: min(1000px, calc(100vw - 36px));
+    max-width: none;
+    max-height: calc(100dvh - 36px);
+    margin: auto;
+    padding: 54px 14px 14px;
+    overflow: visible;
+    border: 1px solid rgba(255, 255, 255, .2);
+    border-radius: 22px;
+    background: linear-gradient(145deg, #243b2a, #142119);
+    box-shadow: 0 28px 90px rgba(10, 24, 13, .45), inset 0 1px 0 rgba(255, 255, 255, .12);
+}
+
+.about-video-dialog[open] {
+    display: grid;
+    place-items: center;
+}
+
+.about-video-dialog::backdrop {
+    background: rgba(18, 30, 20, .76);
+    backdrop-filter: blur(8px);
+}
+
+.about-video-dialog video {
+    display: block;
+    width: 100%;
+    max-height: calc(100dvh - 112px);
+    border-radius: 12px;
+    background: #0a100c;
+    object-fit: contain;
+}
+
+.about-video-close {
+    position: absolute;
+    top: 11px;
+    right: 11px;
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .11);
+    color: #fff;
+    cursor: pointer;
+    transition: background .18s ease, transform .18s ease;
+}
+
+.about-video-close:hover {
+    transform: rotate(90deg);
+    background: rgba(255, 255, 255, .2);
+}
+
+.about-video-close:focus-visible {
+    outline: 3px solid rgba(196, 224, 188, .7);
+    outline-offset: 3px;
+}
+
+@media (max-width: 560px) {
+    .about-video-dialog {
+        width: calc(100vw - 20px);
+        padding: 48px 8px 8px;
+        border-radius: 16px;
+    }
+
+    .about-video-dialog video { border-radius: 9px; }
+}
+
 .placeholder-caption {
     position: absolute;
     right: 16px;

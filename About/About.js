@@ -1,6 +1,32 @@
 const contactForm = document.getElementById("contact-form");
 const contactStatus = document.getElementById("contact-status");
 
+const exploreVideoButton = document.getElementById("exploreVideoButton");
+const exploreVideoDialog = document.getElementById("exploreVideoDialog");
+const exploreVideo = document.getElementById("exploreVideo");
+const closeExploreVideo = document.getElementById("closeExploreVideo");
+
+if (exploreVideoButton && exploreVideoDialog && exploreVideo && closeExploreVideo) {
+    exploreVideoButton.addEventListener("click", async () => {
+        exploreVideoDialog.showModal();
+        try { await exploreVideo.play(); }
+        catch (error) { /* Browser playback may require the visitor to press Play. */ }
+    });
+
+    const closeVideo = () => {
+        exploreVideo.pause();
+        exploreVideo.currentTime = 0;
+        exploreVideoDialog.close();
+        exploreVideoButton.focus();
+    };
+
+    closeExploreVideo.addEventListener("click", closeVideo);
+    exploreVideoDialog.addEventListener("click", event => {
+        if (event.target === exploreVideoDialog) closeVideo();
+    });
+    exploreVideoDialog.addEventListener("close", () => exploreVideo.pause());
+}
+
 const heroHubSvg = document.querySelector(".hero-hub-svg");
 const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
 const storyWorm = document.querySelector(".hero-story-link");
