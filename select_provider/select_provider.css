@@ -1522,3 +1522,141 @@ body.provider-guest .provider-main {
     body.provider-guest { padding-top: 100px; }
     body.provider-guest .provider-main { padding: 20px 14px; }
 }
+
+/* Clearer, brighter filter controls with fewer competing outlines. */
+.search-box {
+    min-height: 58px;
+    border-color: #d9e7d5;
+    border-radius: 16px;
+    background: linear-gradient(110deg, #fff, #fbfef9);
+    box-shadow: 0 7px 20px rgba(43, 76, 44, .055), inset 0 1px 0 #fff;
+}
+
+.search-box > i {
+    color: #4d8053;
+    font-size: 18px;
+}
+
+.search-box input {
+    font-size: 15px;
+}
+
+.filters-panel {
+    padding: 23px 25px 21px;
+    border-color: #d5e5d1;
+    border-radius: 22px;
+    background:
+        radial-gradient(ellipse at 100% 0%, rgba(197, 225, 189, .24), transparent 36%),
+        linear-gradient(145deg, #fff 0%, #f8fcf6 100%);
+    box-shadow: 0 14px 34px rgba(41, 75, 43, .075), inset 0 1px 0 #fff;
+}
+
+.filter-heading {
+    padding-bottom: 9px;
+    border: 0;
+}
+
+.filter-heading h3 {
+    gap: 11px;
+    color: #294d30;
+    font-size: 19px;
+}
+
+.filter-heading h3 i {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: linear-gradient(145deg, #e5f3e1, #d5ebd1);
+    color: #397445;
+    font-size: 16px;
+}
+
+.filter-heading button {
+    min-height: 40px;
+    padding: 0 14px;
+    border-color: #d2e3cf;
+    border-radius: 11px;
+    background: linear-gradient(145deg, #fff, #f4f9f2);
+    color: #3d6c43;
+    font-size: 12px;
+    font-weight: 750;
+    transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+}
+
+.filter-heading button:hover {
+    transform: translateY(-1px);
+    border-color: #9fc49c;
+    background: #edf6eb;
+    box-shadow: 0 5px 12px rgba(47, 91, 51, .1);
+}
+
+.filters-grid {
+    gap: 10px 14px;
+}
+
+.filter-field {
+    gap: 7px;
+    padding: 12px 13px;
+    border: 0;
+    border-radius: 13px;
+    background: rgba(233, 243, 230, .54);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9);
+}
+
+.filter-field label,
+.sort-control label {
+    color: #405c45;
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.filter-field select,
+.sort-control select {
+    min-height: 47px;
+    padding: 9px 38px 9px 14px;
+    border-color: #d5e4d1;
+    border-radius: 11px;
+    background-color: rgba(255, 255, 255, .96);
+    color: #293d2e;
+    font-size: 14px;
+    font-weight: 550;
+    box-shadow: 0 2px 6px rgba(38, 65, 40, .035), inset 0 1px 0 #fff;
+}
+
+.filter-field select:hover,
+.sort-control select:hover {
+    border-color: #91b98c;
+    box-shadow: 0 4px 10px rgba(47, 91, 51, .08);
+}
+
+.filter-field select:focus-visible,
+.sort-control select:focus-visible {
+    border-color: #5b9560;
+    box-shadow: 0 0 0 4px rgba(91, 149, 96, .16);
+}
+
+.sort-row {
+    margin-top: 9px;
+    padding-top: 14px;
+    border-top: 0;
+}
+
+#results-count {
+    min-height: 36px;
+    padding: 0 14px;
+    background: linear-gradient(135deg, #e2f2df, #d4ead0);
+    color: #356b3b;
+    font-size: 12px;
+    font-weight: 800;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.85);
+}
+
+@media (max-width: 650px) {
+    .filters-panel { padding: 17px 15px 15px; }
+    .filter-heading h3 { font-size: 17px; }
+    .filter-field { padding: 10px; }
+    .filter-field label,
+    .sort-control label { font-size: 12px; }
+    .filter-field select,
+    .sort-control select { min-height: 45px; font-size: 13px; }
+}
