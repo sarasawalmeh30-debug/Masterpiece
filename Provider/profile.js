@@ -61,6 +61,14 @@
         return { main, additional: additional || "Not added" };
     }
 
+    function pricingUnitText(unit, quantity = 1) {
+        const labels = { hour: ["hour", "hours"], photo: ["photo", "photos"], video: ["finished video", "finished videos"], favor: ["favor", "favors"], item: ["item", "items"], package: ["package", "packages"] };
+        const label = labels[unit];
+        if (!label) return "";
+        const count = Number(quantity) > 0 ? Number(quantity) : 1;
+        return `${count} ${count === 1 ? label[0] : label[1]}`;
+    }
+
     function renderProfile() {
         const name = providerName();
         const serviceData = services();
@@ -85,7 +93,8 @@
         document.getElementById("aboutAdditionalServices").textContent = cleanPublicText(serviceData.additional);
         const price = Number(profile.startingPrice ?? profile.price);
         const currency = typeof profile.currency === "string" && profile.currency.trim() ? profile.currency.trim() : "";
-        document.getElementById("startingPrice").textContent = Number.isFinite(price) && price >= 0 && profile.startingPrice !== "" && profile.price !== "" && (profile.startingPrice != null || profile.price != null) ? `Starting from ${price.toLocaleString()}${currency ? ` ${currency}` : ""}` : "Not set";
+        const priceUnit = pricingUnitText(profile.pricingUnit, profile.pricingQuantity);
+        document.getElementById("startingPrice").textContent = Number.isFinite(price) && price >= 0 && profile.startingPrice !== "" && profile.price !== "" && (profile.startingPrice != null || profile.price != null) ? `Starting from ${price.toLocaleString()}${currency ? ` ${currency}` : ""}${priceUnit ? ` / ${priceUnit}` : ""}` : "Not set";
         renderRating();
         renderExperience();
         renderPortfolio();
@@ -223,6 +232,8 @@
         document.getElementById("editDescription").value = profile.description || profile.companyDescription || profile.bio || "";
         const price = profile.startingPrice ?? profile.price;
         document.getElementById("editPrice").value = price == null ? "" : price;
+        document.getElementById("editPricingUnit").value = profile.pricingUnit || "";
+        document.getElementById("editPricingQuantity").value = Number(profile.pricingQuantity) > 0 ? profile.pricingQuantity : 1;
         document.getElementById("portfolioFiles").value = "";
         document.getElementById("portfolioVideoUrl").value = "";
         editingPortfolio = portfolioItems().map(item => ({ ...item }));
@@ -306,9 +317,13 @@
         setMessage("");
         const name = document.getElementById("editDisplayName");
         const priceInput = document.getElementById("editPrice");
+        const pricingUnitInput = document.getElementById("editPricingUnit");
+        const pricingQuantityInput = document.getElementById("editPricingQuantity");
         const priceValue = priceInput.value.trim();
         if (!name.value.trim()) { name.setCustomValidity("Enter your full name or company name."); name.reportValidity(); name.setCustomValidity(""); return; }
         if (priceValue && (!Number.isFinite(Number(priceValue)) || Number(priceValue) < 0)) { priceInput.setCustomValidity("Enter a valid price of zero or more."); priceInput.reportValidity(); priceInput.setCustomValidity(""); return; }
+        if (priceValue && !pricingUnitInput.value) { pricingUnitInput.setCustomValidity("Choose what the price covers."); pricingUnitInput.reportValidity(); pricingUnitInput.setCustomValidity(""); return; }
+        if (!Number.isInteger(Number(pricingQuantityInput.value)) || Number(pricingQuantityInput.value) < 1) { pricingQuantityInput.setCustomValidity("Enter a whole quantity of at least 1."); pricingQuantityInput.reportValidity(); pricingQuantityInput.setCustomValidity(""); return; }
 
         const updated = { ...profile };
         if (profile.accountType === "company" || profile.companyName) updated.companyName = name.value.trim();
@@ -318,6 +333,8 @@
         updated.service = document.getElementById("editService").value;
         updated.additionalServices = document.getElementById("editAdditionalServices").value.split(",").map(value => value.trim()).filter(Boolean);
         updated.description = document.getElementById("editDescription").value.trim();
+        updated.pricingUnit = document.getElementById("editPricingUnit").value;
+        updated.pricingQuantity = Number(pricingQuantityInput.value);
         if (priceValue) updated.startingPrice = Number(priceValue);
         else { delete updated.startingPrice; delete updated.price; }
         updated.experience = collectExperience();

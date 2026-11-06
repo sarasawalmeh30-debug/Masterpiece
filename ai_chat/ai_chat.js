@@ -617,7 +617,15 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // Replace this with the actual team-search page.
+        try {
+            const name = project.type || project.description[0] || "My project";
+            sessionStorage.setItem("teamlyAiProjectDraft", JSON.stringify({
+                name: String(name).slice(0, 100),
+                location: project.location || "Amman, Jordan",
+                services: project.services
+            }));
+        } catch (error) { /* Team search can still continue without project metadata storage. */ }
+
         window.location.href = "../select_provider/select_provider.html";
     });
 

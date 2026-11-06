@@ -484,6 +484,14 @@
     margin-top: 16px;
 }
 
+.provider-selection-hint {
+    margin: 9px 0 0;
+    color: #b42318;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
 .view-profile-btn,
 .select-provider-btn {
     display: flex;

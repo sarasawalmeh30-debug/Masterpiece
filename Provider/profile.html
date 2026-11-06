@@ -40,6 +40,8 @@
                                 <div class="profile-field"><label for="editAdditionalServices">Additional Services</label><input id="editAdditionalServices" type="text" maxlength="250" placeholder="Separate services with commas"></div>
                                 <div class="profile-field full-width"><label for="editDescription">Professional Description</label><textarea id="editDescription" rows="5" maxlength="1500" placeholder="Describe your experience and the work you offer."></textarea></div>
                                 <div class="profile-field"><label for="editPrice">Starting Price</label><input id="editPrice" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Enter your starting price"><small>Currency is shown only when your profile provides it. Leave blank if no price is set.</small></div>
+                                <div class="profile-field"><label for="editPricingUnit">Price is for</label><select id="editPricingUnit" required><option value="">Choose a pricing unit</option><option value="hour">Per hour</option><option value="photo">Per photo</option><option value="video">Per finished video</option><option value="favor">Per favor / giveaway</option><option value="item">Per item</option><option value="package">Per package</option></select></div>
+                                <div class="profile-field"><label for="editPricingQuantity">Quantity covered by price</label><input id="editPricingQuantity" type="number" min="1" step="1" value="1"><small>For example, 50 favors for the package price.</small></div>
                             </div>
                         </section>
 

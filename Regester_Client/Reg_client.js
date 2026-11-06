@@ -12,6 +12,11 @@ const terms = document.getElementById("terms");
 const formMessage = document.getElementById("formMessage");
 const submitButton = form.querySelector(".create-account-btn");
 const registrationDraftKey = "teamlyClientRegistrationDraft";
+const registrationReturnTo = new URLSearchParams(window.location.search).get("returnTo");
+if (registrationReturnTo === "../select_provider/select_provider.html") {
+    const loginLink = document.querySelector(".register-login a");
+    if (loginLink) loginLink.href += `?returnTo=${encodeURIComponent(registrationReturnTo)}`;
+}
 
 function saveRegistrationDraft() {
     const draft = {
@@ -304,7 +309,10 @@ form.addEventListener("submit", function (event) {
         // The demo can still continue to AI Chat if session storage is unavailable.
     }
 
-    window.location.href="../ai_chat/ai_chat.html";
+    const returnTo = new URLSearchParams(window.location.search).get("returnTo");
+    window.location.href = returnTo === "../select_provider/select_provider.html"
+        ? returnTo
+        : "../ai_chat/ai_chat.html";
 
 });
 

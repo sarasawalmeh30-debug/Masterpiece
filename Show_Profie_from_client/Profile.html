@@ -245,9 +245,13 @@
                 </p>
 
                 <section class="time-availability" id="time-availability" aria-labelledby="time-availability-title" hidden>
-                    <h3 id="time-availability-title">Choose a time</h3>
+                    <h3 id="time-availability-title">Choose a start time</h3>
                     <p class="availability-note" id="availability-note" role="status" aria-live="polite" hidden></p>
                     <div class="time-options" id="time-options" role="group" aria-label="Available times"></div>
+                    <label class="duration-control" for="duration-hours">How many consecutive hours?</label>
+                    <select id="duration-hours" class="duration-select" disabled>
+                        <option value="">Choose a start time first</option>
+                    </select>
                     <p class="selected-time" id="selected-time" aria-live="polite"></p>
                 </section>
 

@@ -44,6 +44,17 @@
 
         </header>
 
+        <div class="tracking-provider-picker">
+            <label for="trackingProviderSelect">Tracking provider</label>
+            <select id="trackingProviderSelect" aria-label="Choose a provider to track"></select>
+        </div>
+
+        <div class="demo-status-controls" aria-label="Demo request status controls">
+            <button type="button" data-demo-status="Rejected">Reject</button>
+            <button type="button" data-demo-status="Accepted">Confirm</button>
+            <button type="button" data-demo-status="Pending">Pending</button>
+        </div>
+
 
         <div class="tracking-grid">
 
@@ -245,7 +256,7 @@
                             <h3>Team AI found alternative providers</h3>
                         </div>
 
-                        <p class="state-description">
+                        <p class="state-description" id="alternativesDescription">
                             Here are matched photography providers based on
                             your project. Choose the provider that works
                             best for you.
@@ -416,7 +427,7 @@
                     </div>
 
                     <div class="detail-item">
-                        <span>Budget</span>
+                        <span>Selected Provider Estimate</span>
                         <strong id="detailBudget">850 JOD</strong>
                     </div>
 

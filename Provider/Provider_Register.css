@@ -375,3 +375,10 @@
 @media (prefers-reduced-motion: reduce) {
     .service-glass-card::before { animation: none; opacity: .18; transform: rotate(28deg); }
 }
+.pricing-help {
+    display: block;
+    margin-top: 6px;
+    color: var(--text-secondary, #68736a);
+    font-size: 12px;
+    line-height: 1.45;
+}

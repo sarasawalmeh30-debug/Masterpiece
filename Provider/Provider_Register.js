@@ -291,6 +291,8 @@ document.addEventListener("DOMContentLoaded", function () {
         password: document.getElementById("companyPassword"),
         confirmPassword: document.getElementById("companyConfirmPassword"),
         startingPrice: document.getElementById("companyStartingPrice"),
+        pricingUnit: document.getElementById("companyPricingUnit"),
+        pricingQuantity: document.getElementById("companyPricingQuantity"),
         location: document.getElementById("companyLocation")
     };
     const fields = {
@@ -300,6 +302,8 @@ document.addEventListener("DOMContentLoaded", function () {
         confirmPassword: document.getElementById("confirmPassword"),
         service: document.getElementById("service"),
         startingPrice: document.getElementById("startingPrice"),
+        pricingUnit: document.getElementById("pricingUnit"),
+        pricingQuantity: document.getElementById("pricingQuantity"),
         location: document.getElementById("providerLocation")
     };
     const photosInput = document.getElementById("photos");
@@ -632,6 +636,11 @@ document.addEventListener("DOMContentLoaded", function () {
             fail("startingPrice", "Enter a valid starting price of 0 JOD or more.", fields.startingPrice);
         } else setError("startingPrice", "", fields.startingPrice);
 
+        if (!fields.pricingUnit.value) fail("pricingUnit", "Choose what your price covers.", fields.pricingUnit);
+        else setError("pricingUnit", "", fields.pricingUnit);
+        if (!Number.isInteger(Number(fields.pricingQuantity.value)) || Number(fields.pricingQuantity.value) < 1) fail("pricingQuantity", "Enter a whole quantity of at least 1.", fields.pricingQuantity);
+        else setError("pricingQuantity", "", fields.pricingQuantity);
+
         if (fields.location.value.trim().length < 2) fail("providerLocation", "Enter at least one service location.", fields.location);
         else setError("providerLocation", "", fields.location);
 
@@ -659,6 +668,8 @@ document.addEventListener("DOMContentLoaded", function () {
             email: fields.email.value.trim(),
             service: fields.service.value,
             startingPrice: Number(fields.startingPrice.value),
+            pricingUnit: fields.pricingUnit.value,
+            pricingQuantity: Number(fields.pricingQuantity.value),
             currency: "JOD",
             location: fields.location.value.split(",").map(function (city) { return city.trim(); }).filter(Boolean).join(", "),
             currentPlan: null,
@@ -719,6 +730,8 @@ document.addEventListener("DOMContentLoaded", function () {
         validateCompanyField(companyFields.password, companyFields.password.value.length >= 8, "Use at least 8 characters for the password.");
         validateCompanyField(companyFields.confirmPassword, Boolean(companyFields.confirmPassword.value) && companyFields.confirmPassword.value === companyFields.password.value, "Passwords do not match.");
         validateCompanyField(companyFields.startingPrice, companyFields.startingPrice.value !== "" && companyFields.startingPrice.validity.valid && Number(companyFields.startingPrice.value) >= 0, "Enter a valid starting price of 0 JOD or more.");
+        validateCompanyField(companyFields.pricingUnit, Boolean(companyFields.pricingUnit.value), "Choose what your price covers.");
+        validateCompanyField(companyFields.pricingQuantity, Number.isInteger(Number(companyFields.pricingQuantity.value)) && Number(companyFields.pricingQuantity.value) >= 1, "Enter a whole quantity of at least 1.");
         validateCompanyField(companyFields.location, companyFields.location.value.trim().length >= 2, "Enter at least one service location.");
 
         const selectedServices = Array.from(companyServiceCheckboxes)
@@ -759,6 +772,8 @@ document.addEventListener("DOMContentLoaded", function () {
             services: selectedServices,
             service: selectedServices[0],
             startingPrice: Number(companyFields.startingPrice.value),
+            pricingUnit: companyFields.pricingUnit.value,
+            pricingQuantity: Number(companyFields.pricingQuantity.value),
             currency: "JOD",
             location: companyFields.location.value.split(",").map(function (city) { return city.trim(); }).filter(Boolean).join(", "),
             description: document.getElementById("companyDescription").value.trim(),

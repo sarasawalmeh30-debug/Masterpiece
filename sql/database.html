@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TEAMLY database</title>
+<link rel="stylesheet" href="database.css">
+</head>
+<body>
+<header class="top">
+  <h1>TEAMLY database</h1>
+  <p id="about"></p>
+  <p class="stats" id="stats"></p>
+</header>
+<p class="loaderr" id="loaderr">The page did not finish loading. Put database.html, database.css, database.js and database-data.js in one folder with exactly these names, then reload.</p>
+<div class="tabs" role="tablist" aria-label="Database documentation">
+  <button role="tab" id="tab-er" aria-controls="panel-er">ER diagram</button>
+  <button role="tab" id="tab-schema" aria-controls="panel-schema">Schema</button>
+  <button role="tab" id="tab-tables" aria-controls="panel-tables">Tables</button>
+  <button role="tab" id="tab-sql" aria-controls="panel-sql">SQL script</button>
+  <button role="tab" id="tab-rules" aria-controls="panel-rules">Rules</button>
+  <button role="tab" id="tab-basics" aria-controls="panel-basics">SQL basics</button>
+  <button role="tab" id="tab-topics" aria-controls="panel-topics">SQL topics</button>
+</div>
+<main>
+  <section role="tabpanel" id="panel-er" aria-labelledby="tab-er" tabindex="0"></section>
+  <section role="tabpanel" id="panel-schema" aria-labelledby="tab-schema" tabindex="0"></section>
+  <section role="tabpanel" id="panel-tables" aria-labelledby="tab-tables" tabindex="0"></section>
+  <section role="tabpanel" id="panel-sql" aria-labelledby="tab-sql" tabindex="0"></section>
+  <section role="tabpanel" id="panel-rules" aria-labelledby="tab-rules" tabindex="0"></section>
+  <section role="tabpanel" id="panel-basics" aria-labelledby="tab-basics" tabindex="0"></section>
+  <section role="tabpanel" id="panel-topics" aria-labelledby="tab-topics" tabindex="0"></section>
+</main>
+<script src="database-data.js"></script>
+<script src="database.js"></script>
+</body>
+</html>

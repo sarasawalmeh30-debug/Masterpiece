@@ -20,11 +20,22 @@ if (projectDetailsCard) projectDetailsCard.hidden = !IS_LOGGED_IN;
    PROJECT DATA
 ================================== */
 
-const project = {
+let project = {
     name: "Wedding Photography Project",
     location: "Amman, Jordan",
-    budget: 2000
+    budget: 0
 };
+try {
+    const incomingProject = JSON.parse(sessionStorage.getItem("teamlyAiProjectDraft") || "null");
+    if (incomingProject && typeof incomingProject === "object") {
+        project = {
+            ...project,
+            name: typeof incomingProject.name === "string" && incomingProject.name.trim() ? incomingProject.name.trim() : project.name,
+            location: typeof incomingProject.location === "string" && incomingProject.location.trim() ? incomingProject.location.trim() : project.location
+        };
+        sessionStorage.removeItem("teamlyAiProjectDraft");
+    }
+} catch (error) { /* Keep the default project details if browser storage is unavailable. */ }
 
 
 /* ==================================
@@ -37,6 +48,8 @@ const providers = [
         firstName: "Ahmad",
         lastName: "Khaled",
         service: "Photography",
+        pricingUnit: "hour",
+        pricingQuantity: 1,
         rating: 4.9,
         location: "Amman",
         price: 850,
@@ -47,6 +60,8 @@ const providers = [
         firstName: "Sara",
         lastName: "Omar",
         service: "Photography",
+        pricingUnit: "hour",
+        pricingQuantity: 1,
         rating: 4.3,
         location: "Irbid",
         price: 700,
@@ -57,6 +72,8 @@ const providers = [
         firstName: "Lina",
         lastName: "Hassan",
         service: "Photography",
+        pricingUnit: "hour",
+        pricingQuantity: 1,
         rating: 4.4,
         location: "Amman",
         price: 950,
@@ -67,6 +84,8 @@ const providers = [
         firstName: "Omar",
         lastName: "Naser",
         service: "Videography",
+        pricingUnit: "hour",
+        pricingQuantity: 1,
         rating: 4.9,
         location: "Amman",
         price: 650,
@@ -77,6 +96,8 @@ const providers = [
         firstName: "Maya",
         lastName: "Adel",
         service: "Videography",
+        pricingUnit: "hour",
+        pricingQuantity: 1,
         rating: 3.9,
         location: "Zarqa",
         price: 550,
@@ -87,6 +108,8 @@ const providers = [
         firstName: "Yazan",
         lastName: "Saleh",
         service: "Decoration",
+        pricingUnit: "package",
+        pricingQuantity: 1,
         rating: 4.9,
         location: "Amman",
         price: 600,
@@ -97,6 +120,8 @@ const providers = [
         firstName: "Noor",
         lastName: "Ahmad",
         service: "Decoration",
+        pricingUnit: "package",
+        pricingQuantity: 1,
         rating: 4.2,
         location: "Irbid",
         price: 750,
@@ -107,12 +132,43 @@ const providers = [
         firstName: "Khaled",
         lastName: "Sami",
         service: "Catering",
+        pricingUnit: "package",
+        pricingQuantity: 1,
         rating: 4.8,
         location: "Amman",
         price: 500,
         recommended: 1
     }
 ];
+
+// Include the provider profile registered in this browser so clients see its saved rate card.
+try {
+    const profile = JSON.parse(localStorage.getItem("teamlyProviderProfile") || "null");
+    if (profile && profile.registrationComplete && Number.isFinite(Number(profile.startingPrice))) {
+        const fullName = String(profile.companyName || profile.fullName || "Registered provider").trim();
+        const nameParts = fullName.split(/\s+/);
+        const emailCode = Array.from(String(profile.email || "registered")).reduce((sum, char) => sum + char.charCodeAt(0), 0);
+        const offeredServices = Array.isArray(profile.services) && profile.services.length
+            ? profile.services
+            : [profile.service || "Provider"];
+        offeredServices.forEach((service, index) => {
+            providers.push({
+                id: 100000 + emailCode * 20 + index,
+                firstName: nameParts[0] || "Registered",
+                lastName: nameParts.slice(1).join(" "),
+                service,
+                rating: Number(profile.averageRating) || 0,
+                location: String(profile.location || "").split(",")[0].trim(),
+                price: Number(profile.startingPrice),
+                currency: profile.currency || "JOD",
+                pricingUnit: profile.pricingUnit || "package",
+                pricingQuantity: Number(profile.pricingQuantity) > 0 ? Number(profile.pricingQuantity) : 1,
+                description: profile.description || "",
+                recommended: 0
+            });
+        });
+    }
+} catch (error) { /* Continue with sample providers if the saved profile cannot be read. */ }
 
 const availableServices = [...new Set(providers.map(provider => provider.service))];
 
@@ -156,7 +212,22 @@ if (trackingParams.get("source") === "tracking" && trackingProviderName) {
 */
 
 const selectedProviders = new Map();
-let desiredProviderCount = null;
+
+// Keep the in-progress team while a guest visits login or registration.
+const providerSelectionKey = "teamlyProviderSelectionDraft";
+function saveProviderSelectionDraft() {
+    try {
+        sessionStorage.setItem(providerSelectionKey, JSON.stringify({
+            selected: [...selectedProviders.entries()],
+            searchQuery,
+            filters: {
+                service: serviceFilter.value, rating: ratingFilter.value,
+                price: priceFilter.value, location: locationFilter.value, sort: sortFilter.value
+            },
+            scrollY: window.scrollY
+        }));
+    } catch (error) { /* The selection still works when session storage is unavailable. */ }
+}
 
 let searchQuery = "";
 
@@ -173,6 +244,11 @@ const ratingFilter = document.getElementById("rating-filter");
 const priceFilter = document.getElementById("price-filter");
 const locationFilter = document.getElementById("location-filter");
 const sortFilter = document.getElementById("sort-filter");
+availableServices.forEach(service => {
+    if (![...serviceFilter.options].some(option => option.value === service)) {
+        serviceFilter.add(new Option(service, service));
+    }
+});
 
 const resultsCount = document.getElementById("results-count");
 const emptyState = document.getElementById("empty-state");
@@ -189,7 +265,6 @@ const requestNote = document.getElementById("request-note");
 
 const accountModal = document.getElementById("account-modal");
 const messageModal = document.getElementById("message-modal");
-const providerCountModal = document.getElementById("provider-count-modal");
 let trackingAfterMessageOk = false;
 
 
@@ -197,8 +272,39 @@ let trackingAfterMessageOk = false;
    HELPERS
 ================================== */
 
-function formatPrice(price) {
-    return `${price.toLocaleString("en-US")} JOD`;
+function formatPrice(price, currency = "JOD") {
+    return `${price.toLocaleString("en-US")} ${currency}`;
+}
+
+function pricingUnitText(provider) {
+    const labels = { hour: "hour", photo: "photo", video: "finished video", favor: "favor", item: "item", package: "package" };
+    const unit = labels[provider.pricingUnit] || "service";
+    const quantity = Number(provider.pricingQuantity) > 0 ? Number(provider.pricingQuantity) : 1;
+    return `${quantity} ${quantity === 1 ? unit : `${unit}s`}`;
+}
+
+function getProviderBooking(provider) {
+    try {
+        const bookings = JSON.parse(sessionStorage.getItem("teamlyProviderBookings") || "[]");
+        if (Array.isArray(bookings)) return bookings.find(booking => booking.id != null
+            ? Number(booking.id) === Number(provider.id)
+            : String(booking.name || "").toLowerCase() === getProviderName(provider).toLowerCase() &&
+              String(booking.service || "").toLowerCase() === String(provider.service || "").toLowerCase()
+        ) || null;
+        const booking = JSON.parse(sessionStorage.getItem("teamly-selected-provider") || "null");
+        return booking && String(booking.name || "").toLowerCase() === getProviderName(provider).toLowerCase() ? booking : null;
+    } catch (error) { return null; }
+}
+
+function calculateProviderPrice(provider, booking = getProviderBooking(provider)) {
+    if (!Number.isFinite(provider.price)) return null;
+    const covered = Number(provider.pricingQuantity) > 0 ? Number(provider.pricingQuantity) : 1;
+    const requested = provider.pricingUnit === "hour"
+        ? Number(booking?.durationHours) || covered
+        : Number(booking?.quantity) || covered;
+    return provider.pricingUnit === "hour"
+        ? (requested / covered) * provider.price
+        : Math.ceil(requested / covered) * provider.price;
 }
 
 
@@ -214,7 +320,7 @@ function escapeHTML(value) {
 
 
 function getProviderName(provider) {
-    return `${provider.firstName} ${provider.lastName}`;
+    return `${provider.firstName} ${provider.lastName}`.trim();
 }
 
 
@@ -300,7 +406,7 @@ function renderProviders(list) {
             ? `
                 <div class="provider-price">
                     <span>Starting from</span>
-                    <strong>${formatPrice(provider.price)}</strong>
+                    <strong>${formatPrice(provider.price, provider.currency || "JOD")} / ${escapeHTML(pricingUnitText(provider))}</strong>
                 </div>
             `
             : "";
@@ -509,54 +615,14 @@ function selectProvider(providerId) {
         return;
     }
 
-    if (!isRequiredService(provider.service)) {
-        showMessage(
-            "Service not required",
-            `Your current project does not require ${provider.service}.`
-        );
-
-        return;
-    }
-
-    if (IS_LOGGED_IN && desiredProviderCount === null) {
-        openProviderCountModal();
-        return;
-    }
-
-
-    // Clicking a selected provider again removes the selection.
-
-    if (selectedProviders.get(provider.service) === providerId) {
-        selectedProviders.delete(provider.service);
-
-        updateTeam();
-        applyFilters();
-
-        return;
-    }
-
-    if (
-        IS_LOGGED_IN &&
-        !selectedProviders.has(provider.service) &&
-        selectedProviders.size >= desiredProviderCount
-    ) {
-        showMessage(
-            "Your team is full",
-            `You chose ${desiredProviderCount} provider${desiredProviderCount === 1 ? "" : "s"}. Remove one before choosing another.`
-        );
-        return;
-    }
-
-
-    /*
-      If another provider is already selected for this service,
-      replace the old provider with the new one.
-    */
-
-    selectedProviders.set(provider.service, providerId);
-
-    updateTeam();
-    applyFilters();
+    const card = [...providersGrid.querySelectorAll(".provider-card")]
+        .find(item => Number(item.querySelector('[data-action="select-provider"]')?.dataset.providerId) === Number(providerId));
+    if (!card) return;
+    card.querySelector(".provider-selection-hint")?.remove();
+    const hint = document.createElement("p");
+    hint.className = "provider-selection-hint";
+    hint.textContent = "Open View Profile and choose a day and time before selecting this provider.";
+    card.appendChild(hint);
 }
 
 
@@ -566,14 +632,12 @@ function selectProvider(providerId) {
 
 function updateTeam() {
     const selectedCount = selectedProviders.size;
-    const progressTarget = IS_LOGGED_IN ? desiredProviderCount : availableServices.length;
+    const progressTarget = providers.length;
     const percent = !progressTarget
         ? 0
         : Math.round((selectedCount / progressTarget) * 100);
 
-    teamProgressText.textContent = IS_LOGGED_IN && desiredProviderCount !== null
-        ? `${selectedCount} of ${desiredProviderCount} providers selected`
-        : `${selectedCount} service${selectedCount === 1 ? "" : "s"} selected`;
+    teamProgressText.textContent = `${selectedCount} provider${selectedCount === 1 ? "" : "s"} selected`;
 
     teamProgressPercent.textContent = `${percent}%`;
     progressFill.style.width = `${percent}%`;
@@ -593,15 +657,17 @@ function updateTeam() {
         teamServices.innerHTML = '<p class="team-selection-empty">Choose any providers you need to build your team.</p>';
     }
 
-    selectedProviders.forEach((providerId, service) => {
+    selectedProviders.forEach(providerId => {
         const provider = getProviderById(providerId);
         if (!provider) return;
+        const service = provider.service;
         const item = document.createElement("div");
         item.className = "team-service-item";
 
-        if (Number.isFinite(provider.price)) totalPrice += provider.price;
+        const calculatedPrice = calculateProviderPrice(provider);
+        if (Number.isFinite(calculatedPrice)) totalPrice += calculatedPrice;
         const location = provider.location ? `${provider.location}, Jordan` : "Location not provided";
-        const price = Number.isFinite(provider.price) ? formatPrice(provider.price) : "Price on request";
+        const price = Number.isFinite(calculatedPrice) ? formatPrice(calculatedPrice) : "Price on request";
         item.innerHTML = `
             <div class="team-service-top">
                 <strong>${escapeHTML(service)}</strong>
@@ -613,7 +679,7 @@ function updateTeam() {
                     <strong>${escapeHTML(getProviderName(provider))}</strong>
                     <span>${escapeHTML(location)}</span>
                 </div>
-                <button type="button" class="remove-provider-btn" data-action="remove-provider" data-service="${escapeHTML(service)}" aria-label="Remove ${escapeHTML(getProviderName(provider))}">
+                <button type="button" class="remove-provider-btn" data-action="remove-provider" data-provider-id="${provider.id}" aria-label="Remove ${escapeHTML(getProviderName(provider))}">
                     <i class="fa fa-times"></i>
                 </button>
             </div>
@@ -624,21 +690,23 @@ function updateTeam() {
     });
 
     teamTotalPrice.textContent = formatPrice(totalPrice);
+    project.budget = totalPrice;
+    const budgetText = formatPrice(totalPrice);
+    const projectBudget = document.getElementById("project-budget");
+    const detailsBudget = document.getElementById("details-budget");
+    if (projectBudget) projectBudget.textContent = budgetText;
+    if (detailsBudget) detailsBudget.textContent = budgetText;
 
     // Guests can open the login prompt from Send Request even before making a selection.
-    const canSendRequest = !IS_LOGGED_IN || (
-        desiredProviderCount !== null && selectedCount === desiredProviderCount
-    );
+    const canSendRequest = !IS_LOGGED_IN || selectedCount > 0;
     sendRequestButton.disabled = !canSendRequest;
     sendRequestButton.style.opacity = canSendRequest ? "1" : "0.55";
     sendRequestButton.style.cursor = canSendRequest ? "pointer" : "not-allowed";
 
     if (!IS_LOGGED_IN) {
         requestNote.textContent = "Please log in before sending your request.";
-    } else if (desiredProviderCount === null) {
-        requestNote.textContent = "Choose how many providers you need to start your team.";
-    } else if (selectedCount < desiredProviderCount) {
-        requestNote.textContent = `Select ${desiredProviderCount - selectedCount} more provider${desiredProviderCount - selectedCount === 1 ? "" : "s"} to send your request.`;
+    } else if (selectedCount === 0) {
+        requestNote.textContent = "Select any providers you need to send your request.";
     } else {
         requestNote.textContent = "Your team is ready to receive your request.";
     }
@@ -655,12 +723,18 @@ function viewProviderProfile(providerId) {
     if (!provider) {
         return;
     }
+    // Preserve all previously selected providers while the client books this provider's date and time.
+    saveProviderSelectionDraft();
     const params = new URLSearchParams({
+        providerId: String(provider.id),
         name: getProviderName(provider),
         service: provider.service,
         rating: String(provider.rating),
-        location: `${provider.location}, Jordan`,
-        price: `${provider.price} JOD`
+        location: provider.location ? `${provider.location}, Jordan` : "Location not provided",
+        price: `${provider.price} ${provider.currency || "JOD"}`,
+        pricingUnit: provider.pricingUnit || "package",
+        pricingQuantity: String(provider.pricingQuantity || 1),
+        description: provider.description || ""
     });
     window.location.href = `../Show_Profie_from_client/Profile.html?${params}`;
 }
@@ -677,19 +751,58 @@ function sendRequest() {
         return;
     }
 
-    if (desiredProviderCount === null) {
-        openProviderCountModal();
+    if (selectedProviders.size === 0) {
+        showMessage("Choose providers", "Please select at least one provider before sending your request.");
         return;
     }
 
-    if (selectedProviders.size !== desiredProviderCount) {
-        showMessage(
-            "Complete your team",
-            `Please select exactly ${desiredProviderCount} provider${desiredProviderCount === 1 ? "" : "s"} before sending your request.`
-        );
-
-        return;
-    }
+    try {
+        let savedBookings = [];
+        try {
+            savedBookings = JSON.parse(sessionStorage.getItem("teamlyProviderBookings") || "[]");
+            if (!Array.isArray(savedBookings)) savedBookings = [];
+        } catch (error) { savedBookings = []; }
+        try {
+            const legacyBooking = JSON.parse(sessionStorage.getItem("teamly-selected-provider") || "null");
+            if (legacyBooking && !savedBookings.some(booking => booking.id === legacyBooking.id || booking.name === legacyBooking.name)) savedBookings.push(legacyBooking);
+        } catch (error) { /* Ignore an invalid legacy booking draft. */ }
+        const selectedTeam = [...selectedProviders.values()].map(providerId => {
+            const provider = getProviderById(providerId);
+            const providerName = provider ? getProviderName(provider) : "";
+            const booking = provider ? getProviderBooking(provider) || savedBookings.find(item =>
+                String(item.name || "").toLowerCase() === providerName.toLowerCase() &&
+                String(item.service || "").toLowerCase() === String(provider.service || "").toLowerCase()
+            ) : null;
+            return provider ? {
+                id: provider.id,
+                name: providerName,
+                initials: getInitials(provider),
+                service: provider.displayService || provider.service,
+                rating: provider.rating,
+                price: Number.isFinite(provider.price) ? provider.price : null,
+                currency: provider.currency || "JOD",
+                pricingUnit: provider.pricingUnit || "package",
+                pricingQuantity: provider.pricingQuantity || 1,
+                location: provider.location || "",
+                ...(booking ? {
+                    date: booking.date,
+                    time: booking.time,
+                    timeRange: booking.timeRange,
+                    durationHours: booking.durationHours,
+                    quantity: booking.quantity,
+                    estimatedPrice: calculateProviderPrice(provider, booking)
+                } : {})
+            } : null;
+        }).filter(Boolean);
+        const totalBudget = selectedTeam.reduce((sum, provider) => sum + (Number.isFinite(provider.estimatedPrice) ? provider.estimatedPrice : calculateProviderPrice(provider, provider)), 0);
+        sessionStorage.setItem("teamlyTrackingProjectDraft", JSON.stringify({
+            name: project.name,
+            location: project.location,
+            budget: totalBudget,
+            currency: "JOD",
+            providers: selectedTeam
+        }));
+    } catch (error) { /* Continue to the demo tracking page if draft storage is unavailable. */ }
 
 
     /*
@@ -702,36 +815,6 @@ function sendRequest() {
         "Request prepared",
         "Your selected team is complete."
     );
-}
-
-
-function openProviderCountModal() {
-    providerCountModal.hidden = false;
-    document.body.style.overflow = "hidden";
-    document.getElementById("provider-count-select").focus();
-}
-
-
-function closeProviderCountModal() {
-    providerCountModal.hidden = true;
-    document.body.style.overflow = "";
-}
-
-
-function confirmProviderCount() {
-    const count = Number(document.getElementById("provider-count-select").value);
-    if (!Number.isInteger(count) || count < 1 || count > availableServices.length) return;
-
-    desiredProviderCount = count;
-    try {
-        sessionStorage.setItem("teamlyDesiredProviderCount", String(count));
-    } catch (error) {
-        console.error("Could not save desired provider count:", error);
-    }
-    selectedProviders.clear();
-    closeProviderCountModal();
-    updateTeam();
-    applyFilters();
 }
 
 
@@ -760,7 +843,9 @@ function openContinuePage() {
       Replace this with your actual registration page path.
     */
 
-    window.location.href = "../choose_account/choose_account.html";
+    saveProviderSelectionDraft();
+    const returnTo = encodeURIComponent("../select_provider/select_provider.html");
+    window.location.href = `../choose_account/choose_account.html?returnTo=${returnTo}`;
 }
 
 
@@ -769,6 +854,7 @@ function openLoginPage() {
       Replace this with your actual login page path.
     */
 
+    saveProviderSelectionDraft();
     const returnTo = encodeURIComponent("../select_provider/select_provider.html");
     window.location.href = `../login/login.html?returnTo=${returnTo}`;
 }
@@ -924,11 +1010,11 @@ teamServices.addEventListener("click", event => {
     }
 
     const action = button.dataset.action;
-    const service = button.dataset.service;
+        const providerId = Number(button.dataset.providerId);
 
 
     if (action === "remove-provider") {
-        selectedProviders.delete(service);
+        selectedProviders.delete(providerId);
 
         updateTeam();
         applyFilters();
@@ -968,9 +1054,6 @@ document.getElementById("continue-btn")
 document.getElementById("login-btn")
     .addEventListener("click", openLoginPage);
 
-document.getElementById("confirm-provider-count")
-    .addEventListener("click", confirmProviderCount);
-
 
 // Message modal
 
@@ -990,7 +1073,7 @@ document.getElementById("message-ok-btn")
 
 // Clicking the dark background closes the dialogs.
 
-[accountModal, messageModal, providerCountModal].forEach(modal => {
+[accountModal, messageModal].forEach(modal => {
     modal.addEventListener("click", event => {
         if (event.target === modal) {
             modal.hidden = true;
@@ -1006,7 +1089,6 @@ document.addEventListener("keydown", event => {
     if (event.key === "Escape") {
         closeAccountModal();
         closeMessageModal();
-        if (desiredProviderCount !== null) closeProviderCountModal();
     }
 });
 
@@ -1033,6 +1115,28 @@ function initializeProviderPage() {
         serviceFilter.value = requestedService;
     }
 
+    let restoredDraft = false;
+    let restoredScrollY = 0;
+    try {
+        const draft = JSON.parse(sessionStorage.getItem(providerSelectionKey) || "null");
+        if (draft && Array.isArray(draft.selected)) {
+            draft.selected.forEach(([service, providerId]) => {
+                const id = Number(providerId);
+                if (providers.some(provider => provider.id === id)) selectedProviders.set(id, id);
+            });
+            if (draft.filters) {
+                [[serviceFilter, draft.filters.service], [ratingFilter, draft.filters.rating], [priceFilter, draft.filters.price], [locationFilter, draft.filters.location], [sortFilter, draft.filters.sort]].forEach(([control, value]) => {
+                    if (control && [...control.options].some(option => option.value === value)) control.value = value;
+                });
+            }
+            if (typeof draft.searchQuery === "string") searchQuery = draft.searchQuery;
+            if (Number.isFinite(draft.scrollY)) restoredScrollY = draft.scrollY;
+            if (searchInput) searchInput.value = searchQuery;
+            restoredDraft = selectedProviders.size > 0;
+            sessionStorage.removeItem(providerSelectionKey);
+        }
+    } catch (error) { /* Ignore an unavailable or malformed draft. */ }
+
     const selectedProviderName = pageParams.get("profileSelected");
     let returnedWithSelectedProvider = false;
     if (selectedProviderName) {
@@ -1043,18 +1147,8 @@ function initializeProviderPage() {
         );
 
         if (chosenProvider) {
-            selectedProviders.set(chosenProvider.service, chosenProvider.id);
+            selectedProviders.set(chosenProvider.id, chosenProvider.id);
             returnedWithSelectedProvider = true;
-            if (IS_LOGGED_IN && desiredProviderCount === null) {
-                try {
-                    const savedCount = Number(sessionStorage.getItem("teamlyDesiredProviderCount"));
-                    desiredProviderCount = Number.isInteger(savedCount) && savedCount > 0
-                        ? savedCount
-                        : selectedProviders.size;
-                } catch (error) {
-                    desiredProviderCount = selectedProviders.size;
-                }
-            }
             try {
                 sessionStorage.removeItem("teamly-selected-provider");
             } catch (error) {
@@ -1079,9 +1173,7 @@ function initializeProviderPage() {
 
     loadSidebar();
 
-    if (IS_LOGGED_IN && !returnedWithSelectedProvider) {
-        openProviderCountModal();
-    }
+    if (restoredDraft && restoredScrollY > 0) window.scrollTo(0, restoredScrollY);
 }
 
 initializeProviderPage();
