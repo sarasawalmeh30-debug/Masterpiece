@@ -55,6 +55,7 @@
             <div id="individualRegistration" class="registration-panel">
             <form id="providerRegisterForm" novalidate>
                 <div class="field-grid">
+                    <div class="form-stage-heading"><span class="stage-number">01</span><div><h3>Account details</h3><p>Your name and contact information</p></div></div>
                     <div class="field">
                         <label for="fullName">Full Name</label>
                         <div class="input-wrap"><i class="fa fa-user-o" aria-hidden="true"></i><input id="fullName" name="fullName" type="text" autocomplete="name" placeholder="Your full name" required aria-describedby="fullNameError"></div>
@@ -66,6 +67,12 @@
                         <small class="field-error" id="emailError"></small>
                     </div>
                     <div class="field">
+                        <label for="providerPhone">Phone Number</label>
+                        <div class="input-wrap"><i class="fa fa-phone" aria-hidden="true"></i><input id="providerPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="e.g. +962 7X XXX XXXX" required aria-describedby="providerPhoneError"></div>
+                        <small class="pricing-help">One phone number can be used for one provider account only.</small>
+                        <small class="field-error" id="providerPhoneError"></small>
+                    </div>
+                    <div class="field">
                         <label for="password">Password</label>
                         <div class="input-wrap"><i class="fa fa-lock" aria-hidden="true"></i><input id="password" name="password" type="password" autocomplete="new-password" placeholder="At least 8 characters" required aria-describedby="passwordError"></div>
                         <small class="field-error" id="passwordError"></small>
@@ -75,6 +82,7 @@
                         <div class="input-wrap"><i class="fa fa-lock" aria-hidden="true"></i><input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" placeholder="Enter your password again" required aria-describedby="confirmPasswordError"></div>
                         <small class="field-error" id="confirmPasswordError"></small>
                     </div>
+                    <div class="form-stage-heading"><span class="stage-number">02</span><div><h3>Pricing</h3><p>Set a clear starting rate for your service</p></div></div>
                     <div class="field">
                         <label for="pricingUnit">This price is for</label>
                         <div class="input-wrap select-wrap"><i class="fa fa-tag" aria-hidden="true"></i><select id="pricingUnit" name="pricingUnit" required><option value="">Choose a pricing unit</option><option value="hour">Per hour</option><option value="photo">Per photo</option><option value="video">Per finished video</option><option value="favor">Per favor / giveaway</option><option value="item">Per item</option><option value="package">Per package</option></select><i class="fa fa-angle-down select-caret" aria-hidden="true"></i></div>
@@ -86,23 +94,24 @@
                         <small class="pricing-help">Example: enter 50 for 10 JOD per 50 favors.</small><small class="field-error" id="pricingQuantityError"></small>
                     </div>
                     <div class="field">
-                        <small class="pricing-help">Enter the starting amount for the unit and quantity above. For example, 30 JOD per hour or 10 JOD per 50 favors.</small>
                         <label for="startingPrice">Starting Price (JOD)</label>
                         <div class="input-wrap"><i class="fa fa-money" aria-hidden="true"></i><input id="startingPrice" name="startingPrice" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Price for the selected unit and quantity" required aria-describedby="startingPriceError"></div>
+                        <small class="pricing-help">Enter the starting amount for the unit and quantity above. For example, 30 JOD per hour or 10 JOD per 50 favors.</small>
                         <small class="field-error" id="startingPriceError"></small>
-                    </div>
-                    <div class="field">
-                        <label for="providerLocation">Service Location(s)</label>
-                        <div class="input-wrap"><i class="fa fa-map-marker" aria-hidden="true"></i><input id="providerLocation" name="location" type="text" autocomplete="address-level2" placeholder="Type your service location(s)" required aria-describedby="providerLocationHint providerLocationError"></div>
-                        <small class="location-hint" id="providerLocationHint">Enter one or more cities, separated by commas.</small>
-                        <small class="field-error" id="providerLocationError"></small>
                     </div>
                 </div>
 
+                <div class="form-stage-heading standalone-stage"><span class="stage-number">03</span><div><h3>Your service</h3><p>Tell clients what you offer and where you work</p></div></div>
                 <div class="field service-field">
                     <label for="service">Service Offered</label>
                     <div class="input-wrap select-wrap"><i class="fa fa-briefcase" aria-hidden="true"></i><select id="service" name="service" required aria-describedby="serviceError"><option value="">Choose your service</option><option>Photography</option><option>Videography</option><option>Event Staff</option><option>Event Planners</option><option>Favors &amp; Gifts</option><option>Decoration</option><option>Catering</option><option>Music &amp; DJ</option><option>Video Editing</option><option>Venues &amp; Halls</option><option>Special Effects</option></select><i class="fa fa-angle-down select-caret" aria-hidden="true"></i></div>
                     <small class="field-error" id="serviceError"></small>
+                </div>
+                <div class="field service-field">
+                    <label for="providerLocation">Service Location(s)</label>
+                    <div class="input-wrap"><i class="fa fa-map-marker" aria-hidden="true"></i><input id="providerLocation" name="location" type="text" autocomplete="address-level2" placeholder="Type your service location(s)" required aria-describedby="providerLocationHint providerLocationError"></div>
+                    <small class="location-hint" id="providerLocationHint">Enter one or more cities, separated by commas.</small>
+                    <small class="field-error" id="providerLocationError"></small>
                 </div>
 
                 <section class="portfolio-section" aria-labelledby="portfolio-title">
@@ -149,20 +158,25 @@
 
             <form id="companyRegistration" class="registration-panel company-registration" aria-labelledby="company-form-title" novalidate hidden>
                 <header class="company-heading">
+                    <span class="form-eyebrow">COMPANY ACCOUNT</span>
                     <h3 id="company-form-title">Company Profile</h3>
                     <p>Introduce your company, services, and portfolio.</p>
                 </header>
                 <div class="field-grid">
+                    <div class="form-stage-heading"><span class="stage-number">01</span><div><h3>Company details</h3><p>Business and representative contact information</p></div></div>
                     <div class="field"><label for="companyName">Company Name</label><div class="input-wrap"><i class="fa fa-building-o" aria-hidden="true"></i><input id="companyName" type="text" autocomplete="organization" placeholder="Your company name" aria-describedby="companyNameError"></div><small class="field-error" id="companyNameError"></small></div>
                     <div class="field"><label for="companyRepresentative">Authorized Representative</label><div class="input-wrap"><i class="fa fa-user-o" aria-hidden="true"></i><input id="companyRepresentative" type="text" autocomplete="name" placeholder="Representative's full name" aria-describedby="companyRepresentativeError"></div><small class="field-error" id="companyRepresentativeError"></small></div>
                     <div class="field"><label for="companyEmail">Business Email Address</label><div class="input-wrap"><i class="fa fa-envelope-o" aria-hidden="true"></i><input id="companyEmail" type="email" autocomplete="email" placeholder="you@company.com" aria-describedby="companyEmailError"></div><small class="field-error" id="companyEmailError"></small></div>
+                    <div class="field"><label for="companyPhone">Phone Number</label><div class="input-wrap"><i class="fa fa-phone" aria-hidden="true"></i><input id="companyPhone" type="tel" autocomplete="tel" inputmode="tel" placeholder="e.g. +962 7X XXX XXXX" aria-describedby="companyPhoneError"></div><small class="pricing-help">One phone number can be used for one provider account only.</small><small class="field-error" id="companyPhoneError"></small></div>
                     <div class="field"><label for="companyPassword">Password</label><div class="input-wrap"><i class="fa fa-lock" aria-hidden="true"></i><input id="companyPassword" type="password" autocomplete="new-password" placeholder="At least 8 characters" aria-describedby="companyPasswordError"></div><small class="field-error" id="companyPasswordError"></small></div>
                     <div class="field"><label for="companyConfirmPassword">Confirm Password</label><div class="input-wrap"><i class="fa fa-lock" aria-hidden="true"></i><input id="companyConfirmPassword" type="password" autocomplete="new-password" placeholder="Enter your password again" aria-describedby="companyConfirmPasswordError"></div><small class="field-error" id="companyConfirmPasswordError"></small></div>
+                    <div class="form-stage-heading"><span class="stage-number">02</span><div><h3>Pricing</h3><p>Set the unit, quantity, and starting amount</p></div></div>
                     <div class="field"><label for="companyPricingUnit">This price is for</label><div class="input-wrap select-wrap"><i class="fa fa-tag" aria-hidden="true"></i><select id="companyPricingUnit" required><option value="">Choose a pricing unit</option><option value="hour">Per hour</option><option value="photo">Per photo</option><option value="video">Per finished video</option><option value="favor">Per favor / giveaway</option><option value="item">Per item</option><option value="package">Per package</option></select><i class="fa fa-angle-down select-caret" aria-hidden="true"></i></div><small class="pricing-help">Example: 30 JOD per hour, or 10 JOD per 50 favors.</small><small class="field-error" id="companyPricingUnitError"></small></div>
                     <div class="field"><label for="companyPricingQuantity">Quantity covered by this price</label><div class="input-wrap"><i class="fa fa-cubes" aria-hidden="true"></i><input id="companyPricingQuantity" type="number" min="1" step="1" value="1" required></div><small class="pricing-help">Enter how many hours, photos, videos, favors, items, or packages the price covers.</small><small class="field-error" id="companyPricingQuantityError"></small></div>
-                    <div class="field"><small class="pricing-help">Enter the starting amount for the unit and quantity above.</small><label for="companyStartingPrice">Starting Price (JOD)</label><div class="input-wrap"><i class="fa fa-money" aria-hidden="true"></i><input id="companyStartingPrice" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Price for the selected unit and quantity" aria-describedby="companyStartingPriceError"></div><small class="field-error" id="companyStartingPriceError"></small></div>
+                    <div class="field"><label for="companyStartingPrice">Starting Price (JOD)</label><div class="input-wrap"><i class="fa fa-money" aria-hidden="true"></i><input id="companyStartingPrice" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Price for the selected unit and quantity" aria-describedby="companyStartingPriceError"></div><small class="pricing-help">Enter the starting amount for the unit and quantity above. For example, 30 JOD per hour or 10 JOD per 50 favors.</small><small class="field-error" id="companyStartingPriceError"></small></div>
                     <div class="field"><label for="companyLocation">Service Location(s)</label><div class="input-wrap"><i class="fa fa-map-marker" aria-hidden="true"></i><input id="companyLocation" name="companyLocation" type="text" autocomplete="address-level2" placeholder="Type your service location(s)" required aria-describedby="companyLocationHint companyLocationError"></div><small class="location-hint" id="companyLocationHint">Enter one or more cities, separated by commas.</small><small class="field-error" id="companyLocationError"></small></div>
                 </div>
+                <div class="form-stage-heading standalone-stage"><span class="stage-number">03</span><div><h3>Services &amp; introduction</h3><p>Choose everything your company provides</p></div></div>
                 <div class="field company-services">
                     <label>Main Service Offered</label>
                     <div class="company-service-dropdown" id="companyServiceDropdown">

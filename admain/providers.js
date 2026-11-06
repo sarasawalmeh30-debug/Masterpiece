@@ -84,6 +84,12 @@
     }
     function renderDetail(provider) {
         const records = related(provider), paid = successfulTotal(records.transactions), services = servicesFor(provider);
+        const companyStaff = Array.isArray(provider.authorizedProviders) ? provider.authorizedProviders : [];
+        const companyStaffSection = provider.type === "company" ? `<section class="provider-section"><h3>Company employees</h3>${companyStaff.length ? `<ul class="admin-company-staff">${companyStaff.map(person => {
+            const name = typeof person === "string" ? person : person && person.name || "";
+            const specialty = typeof person === "object" && person ? person.specialty || person.service || "" : "";
+            return `<li><strong>${esc(name || "Name not provided")}</strong><span>${esc(specialty || "Specialty not provided")}</span></li>`;
+        }).join("")}</ul>` : `<p class="provider-note">No employees have been added to this company's internal roster.</p>`}</section>` : "";
         const projectTable = detailTable(["Project", "Client", "Services", "Date", "Status", "Budget"], tableRows(records.projects, [
             { value: "name" }, { value: "client" }, { value: project => (project.services || []).join(", ") }, { value: project => date(project.created) }, { value: "status" }, { value: project => `${fmt(project.budget)} JOD` }
         ], "No project records for this provider."));
@@ -107,6 +113,7 @@
             </div>
             <section class="provider-section"><h3>Provider profile</h3><dl class="provider-facts">${fact("Account ID", provider.id)}${fact("Name", provider.name)}${fact("Account type", provider.type === "company" ? "Company" : "Individual")}${fact("Email", provider.email || "Not stored in current record")}${fact("Phone", provider.phone)}${fact("Status", provider.status)}${fact("Registered", stamp(provider.created))}${fact("Starting price", provider.startingPrice == null ? "Not stored in current record" : `${fmt(provider.startingPrice)} ${provider.currency || "JOD"}`)}${fact("Location", Array.isArray(provider.location) ? provider.location.join(", ") : provider.location)}${fact("Description", provider.description || provider.companyDescription)}</dl></section>
             <section class="provider-section"><h3>Services offered</h3><div class="provider-detail-services">${services.length ? services.map(service => `<span class="provider-service-chip">${esc(service)}</span>`).join("") : `<p class="provider-note">No service details stored.</p>`}</div></section>
+            ${companyStaffSection}
             <section class="provider-section"><h3>Projects and clients</h3>${projectTable}</section>
             <section class="provider-section"><h3>Service requests</h3>${requestTable}</section>
             <section class="provider-section"><h3>Payments</h3><p class="provider-note">Successful transactions total ${fmt(paid)} JOD. Other statuses remain listed in the table.</p>${transactionTable}</section>
@@ -173,8 +180,11 @@
         data.providers = data.providers.map(provider => Object.assign({}, provider, edits[provider.id] || {}));
         try {
             const profile = JSON.parse(localStorage.getItem("teamlyProviderProfile") || "null");
-            if (profile && profile.email && !data.providers.some(provider => provider.email && provider.email.toLowerCase() === profile.email.toLowerCase())) {
-                data.providers.push({ id: `local-${profile.email.toLowerCase()}`, name: profile.companyName || profile.fullName || "Registered provider", email: profile.email, type: profile.companyName ? "company" : "individual", services: profile.services || (profile.service ? [profile.service] : []), startingPrice: profile.startingPrice, currency: profile.currency || "JOD", location: profile.location, description: profile.description, status: "active", created: profile.created || profile.registeredAt });
+            if (profile && profile.email) {
+                const existingProvider = data.providers.find(provider => provider.email && provider.email.toLowerCase() === profile.email.toLowerCase());
+                const localRecord = { id: `local-${profile.email.toLowerCase()}`, name: profile.companyName || profile.fullName || "Registered provider", email: profile.email, type: profile.providerType === "company" || profile.accountType === "company" || profile.companyName ? "company" : "individual", services: profile.services || (profile.service ? [profile.service] : []), authorizedProviders: Array.isArray(profile.authorizedProviders) ? profile.authorizedProviders : [], startingPrice: profile.startingPrice, currency: profile.currency || "JOD", location: profile.location, description: profile.description, status: "active", created: profile.created || profile.registeredAt };
+                if (existingProvider) Object.assign(existingProvider, localRecord, { id: existingProvider.id });
+                else data.providers.push(localRecord);
             }
         } catch (e) { /* ignore malformed local preview profile */ }
         const name = result.admin && result.admin.name || "Admin";

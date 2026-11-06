@@ -290,6 +290,7 @@ document.addEventListener("DOMContentLoaded", function () {
         email: document.getElementById("companyEmail"),
         password: document.getElementById("companyPassword"),
         confirmPassword: document.getElementById("companyConfirmPassword"),
+        phone: document.getElementById("companyPhone"),
         startingPrice: document.getElementById("companyStartingPrice"),
         pricingUnit: document.getElementById("companyPricingUnit"),
         pricingQuantity: document.getElementById("companyPricingQuantity"),
@@ -300,6 +301,7 @@ document.addEventListener("DOMContentLoaded", function () {
         email: document.getElementById("email"),
         password: document.getElementById("password"),
         confirmPassword: document.getElementById("confirmPassword"),
+        phone: document.getElementById("providerPhone"),
         service: document.getElementById("service"),
         startingPrice: document.getElementById("startingPrice"),
         pricingUnit: document.getElementById("pricingUnit"),
@@ -340,6 +342,30 @@ document.addEventListener("DOMContentLoaded", function () {
             control.classList.toggle("input-invalid", Boolean(message));
             control.setAttribute("aria-invalid", String(Boolean(message)));
         }
+    }
+
+    function normalizePhone(value) {
+        return String(value || "").replace(/\D/g, "");
+    }
+
+    function phoneAlreadyRegistered(value) {
+        const normalized = normalizePhone(value);
+        try {
+            const registered = JSON.parse(window.localStorage.getItem("teamlyRegisteredProviderPhones") || "[]");
+            if (Array.isArray(registered) && registered.some(phone => normalizePhone(typeof phone === "string" ? phone : phone.phone) === normalized)) return true;
+            const currentProfile = JSON.parse(window.localStorage.getItem("teamlyProviderProfile") || "null");
+            return Boolean(currentProfile && currentProfile.phone && normalizePhone(currentProfile.phone) === normalized);
+        } catch (error) {
+            return false;
+        }
+    }
+
+    function saveRegisteredPhone(value, email) {
+        const normalized = normalizePhone(value);
+        const stored = JSON.parse(window.localStorage.getItem("teamlyRegisteredProviderPhones") || "[]");
+        const phones = Array.isArray(stored) ? stored : [];
+        phones.push({ phone: normalized, email: String(email || "").trim().toLowerCase() });
+        window.localStorage.setItem("teamlyRegisteredProviderPhones", JSON.stringify(phones));
     }
 
     Object.values(fields).forEach(function (field) {
@@ -623,6 +649,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!fields.email.validity.valid || !fields.email.value.trim()) fail("email", "Enter a valid email address.", fields.email);
         else setError("email", "", fields.email);
 
+        const phoneDigits = normalizePhone(fields.phone.value);
+        if (phoneDigits.length < 7 || phoneDigits.length > 15) fail("providerPhone", "Enter a valid phone number with 7 to 15 digits.", fields.phone);
+        else if (phoneAlreadyRegistered(fields.phone.value)) fail("providerPhone", "This phone number is already linked to a provider account. Use a different number.", fields.phone);
+        else setError("providerPhone", "", fields.phone);
+
         if (fields.password.value.length < 8) fail("password", "Use at least 8 characters.", fields.password);
         else setError("password", "", fields.password);
 
@@ -664,8 +695,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const providerProfile = {
+            providerType: "individual",
+            accountType: "individual",
             fullName: fields.fullName.value.trim(),
             email: fields.email.value.trim(),
+            phone: fields.phone.value.trim(),
+            normalizedPhone: phoneDigits,
             service: fields.service.value,
             startingPrice: Number(fields.startingPrice.value),
             pricingUnit: fields.pricingUnit.value,
@@ -678,6 +713,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         try {
             window.localStorage.setItem("teamlyProviderProfile", JSON.stringify(providerProfile));
+            saveRegisteredPhone(providerProfile.phone, providerProfile.email);
             const savedProfile = JSON.parse(window.localStorage.getItem("teamlyProviderProfile") || "null");
             if (!savedProfile || savedProfile.email !== providerProfile.email) {
                 throw new Error("Provider profile could not be verified.");
@@ -727,6 +763,14 @@ document.addEventListener("DOMContentLoaded", function () {
         validateCompanyField(companyFields.name, companyFields.name.value.trim().length >= 2, "Enter your company name.");
         validateCompanyField(companyFields.representative, companyFields.representative.value.trim().length >= 2, "Enter the authorized representative's name.");
         validateCompanyField(companyFields.email, Boolean(companyFields.email.value.trim()) && companyFields.email.validity.valid, "Enter a valid business email address.");
+        const companyPhoneDigits = normalizePhone(companyFields.phone.value);
+        validateCompanyField(companyFields.phone, companyPhoneDigits.length >= 7 && companyPhoneDigits.length <= 15, "Enter a valid phone number with 7 to 15 digits.");
+        if (companyPhoneDigits.length >= 7 && companyPhoneDigits.length <= 15 && phoneAlreadyRegistered(companyFields.phone.value)) {
+            companyFields.phone.classList.add("input-invalid");
+            companyFields.phone.setAttribute("aria-invalid", "true");
+            document.getElementById("companyPhoneError").textContent = "This phone number is already linked to a provider account. Use a different number.";
+            invalidControls.push({ control: companyFields.phone, message: "This phone number is already linked to a provider account." });
+        }
         validateCompanyField(companyFields.password, companyFields.password.value.length >= 8, "Use at least 8 characters for the password.");
         validateCompanyField(companyFields.confirmPassword, Boolean(companyFields.confirmPassword.value) && companyFields.confirmPassword.value === companyFields.password.value, "Passwords do not match.");
         validateCompanyField(companyFields.startingPrice, companyFields.startingPrice.value !== "" && companyFields.startingPrice.validity.valid && Number(companyFields.startingPrice.value) >= 0, "Enter a valid starting price of 0 JOD or more.");
@@ -766,11 +810,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const companyProfile = {
             providerType: "company",
+            accountType: "company",
             companyName: companyFields.name.value.trim(),
             fullName: companyFields.representative.value.trim(),
             email: companyFields.email.value.trim().toLowerCase(),
+            phone: companyFields.phone.value.trim(),
+            normalizedPhone: companyPhoneDigits,
             services: selectedServices,
             service: selectedServices[0],
+            authorizedProviders: [],
             startingPrice: Number(companyFields.startingPrice.value),
             pricingUnit: companyFields.pricingUnit.value,
             pricingQuantity: Number(companyFields.pricingQuantity.value),
@@ -783,6 +831,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         try {
             window.localStorage.setItem("teamlyProviderProfile", JSON.stringify(companyProfile));
+            saveRegisteredPhone(companyProfile.phone, companyProfile.email);
             const savedProfile = JSON.parse(window.localStorage.getItem("teamlyProviderProfile") || "null");
             if (!savedProfile || savedProfile.email !== companyProfile.email || savedProfile.providerType !== "company") {
                 throw new Error("Company profile could not be verified.");

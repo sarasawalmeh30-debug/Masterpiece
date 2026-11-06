@@ -52,6 +52,13 @@
 
     function renderAccountStatus() {
         renderPlanPrices();
+        const isCompany = window.TEAMLY_PROVIDER_ACCOUNT_TYPE === "company";
+        document.querySelector(".subscription-eyebrow").textContent = isCompany ? "COMPANY MEMBERSHIP" : "PROVIDER MEMBERSHIP";
+        if (isCompany) {
+            document.querySelector(".subscription-heading h1").textContent = "Plans for your company team";
+            document.querySelector(".plan-card[data-plan-card='professional'] .plan-description").textContent = "More visibility and reach for your service team.";
+            document.querySelector(".plan-card[data-plan-card='business'] .plan-description").textContent = "Maximum exposure and priority for your company.";
+        }
         const remaining = getRemainingFreeRequests(profile);
         if (remaining !== null) {
             document.getElementById("free-request-count").textContent = `Free project requests remaining: ${remaining}`;

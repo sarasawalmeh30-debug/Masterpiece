@@ -164,6 +164,7 @@ try {
                 pricingUnit: profile.pricingUnit || "package",
                 pricingQuantity: Number(profile.pricingQuantity) > 0 ? Number(profile.pricingQuantity) : 1,
                 description: profile.description || "",
+                providerType: profile.providerType || profile.accountType || "individual",
                 recommended: 0
             });
         });
@@ -734,7 +735,8 @@ function viewProviderProfile(providerId) {
         price: `${provider.price} ${provider.currency || "JOD"}`,
         pricingUnit: provider.pricingUnit || "package",
         pricingQuantity: String(provider.pricingQuantity || 1),
-        description: provider.description || ""
+        description: provider.description || "",
+        providerType: provider.providerType || "individual"
     });
     window.location.href = `../Show_Profie_from_client/Profile.html?${params}`;
 }

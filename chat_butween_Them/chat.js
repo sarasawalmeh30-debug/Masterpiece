@@ -18,6 +18,9 @@ const paymentPrompt = document.getElementById("payment-prompt");
 const unlockChatButton = document.getElementById("unlock-chat-button");
 
 const characterCount = document.getElementById("character-count");
+const chatParams = new URLSearchParams(window.location.search);
+const isProviderView = chatParams.get("role") === "provider";
+let currentUserName = "You";
 
 const FREE_MESSAGE_LIMIT = 4;
 const MAX_MESSAGE_LENGTH = 250;
@@ -62,6 +65,31 @@ const conversations = {
         ]
     }
 };
+
+if (isProviderView) {
+    document.body.classList.add("provider-chat-view");
+    try {
+        const providerProfile = JSON.parse(localStorage.getItem("teamlyProviderProfile") || "null");
+        currentUserName = providerProfile && (providerProfile.companyName || providerProfile.fullName) || "Provider";
+    } catch (error) { currentUserName = "Provider"; }
+    const providerName = String(currentUserName).trim();
+    conversations.team.messages.forEach(entry => { if (entry.sender === "You") entry.sender = providerName; });
+    conversations.team.subtitle = "Shared project group · Client and providers";
+    conversations.team.system = `Welcome to the project group, ${providerName}. Coordinate directly with the client and other accepted providers.`;
+    document.querySelector(".conversation-list-heading h2").textContent = "Project Group";
+    document.querySelector(".conversation-list-heading span").textContent = "1";
+    document.querySelectorAll(".conversation-item:not([data-conversation='team'])").forEach(item => { item.hidden = true; });
+    document.querySelector(".conversation-item[data-conversation='team'] .conversation-copy strong").textContent = "Project Team";
+    document.querySelector(".conversation-item[data-conversation='team'] .conversation-copy small").textContent = "Wedding Project · 4 members";
+    document.getElementById("details-heading-title").textContent = "Project Group";
+    document.getElementById("details-status-text").closest(".project-status").hidden = true;
+    document.querySelectorAll(".project-detail-row, #details-team-section, .project-state").forEach(section => { section.hidden = true; });
+    document.getElementById("details-subtitle").textContent = "4 members in this group";
+    document.querySelector(".usage-container").hidden = true;
+    paymentPrompt.hidden = true;
+    document.getElementById("project-payment-button").hidden = true;
+}
+
 const conversationContacts = {
     ahmad: { name: "Ahmad", service: "Photography" },
     dana: { name: "Dana", service: "Decoration" },
@@ -78,11 +106,11 @@ function updateConversationDetails(id) {
     const detailsName = document.getElementById("details-name");
     const detailsSubtitle = document.getElementById("details-subtitle");
 
-    detailsHeading.textContent = isTeamChat ? "Project Details" : "Conversation Details";
+    detailsHeading.textContent = isTeamChat ? (isProviderView ? "Project Group" : "Project Details") : "Conversation Details";
     detailsStatus.textContent = isTeamChat ? "Team Confirmed" : "Team Member";
     detailsIcon.className = `fa ${isTeamChat ? "fa-heart" : "fa-user"}`;
     detailsName.textContent = isTeamChat ? "Wedding Project" : contact.name;
-    detailsSubtitle.textContent = isTeamChat ? "Project #TM-1024" : `${contact.service} · Wedding Project`;
+    detailsSubtitle.textContent = isTeamChat ? (isProviderView ? "4 members in this group" : "Project #TM-1024") : `${contact.service} · Wedding Project`;
     document.getElementById("details-budget-label").textContent = isTeamChat ? "Budget" : "Service";
     document.getElementById("details-budget").textContent = isTeamChat ? "2,500 JOD" : contact.service;
     document.getElementById("details-location-label").textContent = isTeamChat ? "Location" : "Project Location";
@@ -90,6 +118,12 @@ function updateConversationDetails(id) {
     document.getElementById("details-date-label").textContent = isTeamChat ? "Event Date" : "Provider Status";
     document.getElementById("details-event-date").textContent = isTeamChat ? "25 October 2026" : "Accepted";
     document.getElementById("details-members-title").textContent = isTeamChat ? "Team Members" : "Conversation With";
+
+    if (isTeamChat && !isProviderView) {
+        const clientName = sessionStorage.getItem("teamlyUserName") || "You";
+        const ownerName = [...document.querySelectorAll(".team-member")].find(member => member.querySelector(".member-info span")?.textContent.trim() === "Project Owner")?.querySelector(".member-info strong");
+        if (ownerName) ownerName.textContent = clientName;
+    }
 
     document.querySelectorAll(".team-member").forEach(member => {
         const memberName = member.querySelector(".member-info strong")?.textContent.trim();
@@ -154,6 +188,25 @@ function renderConversation(id, updateAddress = true) {
     date.appendChild(dateLabel);
     messagesArea.appendChild(date);
 
+    const guide = document.createElement("aside");
+    guide.className = "chat-guide-note";
+    guide.setAttribute("aria-label", "What to discuss in this project chat");
+    guide.innerHTML = `
+        <div class="chat-guide-icon" aria-hidden="true"><i class="fa fa-comments-o"></i></div>
+        <div class="chat-guide-copy">
+            <h2>Make sure every project detail feels right</h2>
+            <p>Use this chat to talk things through with your client and providers, and agree on:</p>
+            <ul>
+                <li>Design ideas, theme, colors, and references</li>
+                <li>Event date, exact time, and schedule</li>
+                <li>Services, deliverables, and any special requests</li>
+                <li>Pricing, budget, and what is included</li>
+                <li>Location, setup details, and the next steps</li>
+            </ul>
+            <p class="chat-guide-footnote">Share your ideas and confirm the details together so everyone is on the same page.</p>
+        </div>`;
+    messagesArea.appendChild(guide);
+
     if (conversation.system) {
         const system = document.createElement("div");
         system.className = "system-message";
@@ -199,7 +252,7 @@ function addMessage(text, imageFile = null) {
 
     const sender = document.createElement("span");
     sender.className = "sender-name";
-    sender.textContent = "You";
+    sender.textContent = currentUserName;
 
     const bubble = document.createElement("div");
     bubble.className = "message-bubble";
@@ -233,7 +286,7 @@ function addMessage(text, imageFile = null) {
     message.appendChild(content);
 
     conversations[activeConversationId].messages.push({
-        sender: "You",
+        sender: currentUserName,
         role: "sent",
         text,
         imageUrl,
@@ -249,13 +302,21 @@ function addMessage(text, imageFile = null) {
 // ======================================
 
 function updateUsage() {
+    if (isProviderView) {
+        messageInput.disabled = false;
+        attachButton.disabled = false;
+        imageInput.disabled = false;
+        sendButton.disabled = false;
+        paymentPrompt.hidden = true;
+        return;
+    }
     usageCount.textContent =
         `${sentMessages} / ${FREE_MESSAGE_LIMIT}`;
 
     usageProgress.style.width =
         `${(sentMessages / FREE_MESSAGE_LIMIT) * 100}%`;
 
-    if (sentMessages >= FREE_MESSAGE_LIMIT) {
+    if (!isProviderView && sentMessages >= FREE_MESSAGE_LIMIT) {
         usageText.textContent = "Free messages used";
 
         messageInput.disabled = true;
@@ -296,7 +357,7 @@ function updateUsage() {
 messageForm.addEventListener("submit", function (event) {
     event.preventDefault();
 
-    if (sentMessages >= FREE_MESSAGE_LIMIT) {
+    if (!isProviderView && sentMessages >= FREE_MESSAGE_LIMIT) {
         updateUsage();
         return;
     }
@@ -347,7 +408,7 @@ messageInput.addEventListener("input", function () {
 // ======================================
 
 attachButton.addEventListener("click", function () {
-    if (sentMessages >= FREE_MESSAGE_LIMIT) {
+    if (!isProviderView && sentMessages >= FREE_MESSAGE_LIMIT) {
         goToPayment();
         return;
     }
@@ -400,13 +461,15 @@ document.getElementById("zoom-button")
                 id: `zoom-${Date.now()}`,
                 kind: "zoom",
                 title: "Zoom meeting requested",
-                actor: "Client",
+                actor: isProviderView ? currentUserName : "Client",
                 detail: "A team member opened the project Zoom meeting.",
                 timestamp: new Date().toISOString()
             });
             window.localStorage.setItem("teamlyAdminNotifications", JSON.stringify(savedNotifications.slice(0, 500)));
         } catch (error) { /* continue to meeting even if activity cannot be stored */ }
-        window.location.href = "../Zoom/zoom.html";
+        const zoomUrl = new URL("../Zoom/zoom.html", window.location.href);
+        if (isProviderView) zoomUrl.searchParams.set("role", "provider");
+        window.location.href = zoomUrl.href;
     });
 
 
@@ -419,6 +482,19 @@ async function loadSidebar() {
     const container = document.getElementById("sidebar-container");
 
     try {
+        if (isProviderView) {
+            container.id = "provider-sidebar-container";
+            container.classList.add("provider-sidebar-container");
+            const sidebarCss = document.createElement("link");
+            sidebarCss.rel = "stylesheet";
+            sidebarCss.href = "../Provider/provider_sidebar.css";
+            document.head.appendChild(sidebarCss);
+            const providerSidebarScript = document.createElement("script");
+            providerSidebarScript.src = "../Provider/provider_sidebar.js";
+            document.body.appendChild(providerSidebarScript);
+            return;
+        }
+
         const response = await fetch("../sidebar_client/sidbar.html");
 
         if (!response.ok) {

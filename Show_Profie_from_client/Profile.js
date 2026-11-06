@@ -22,6 +22,7 @@ const provider = {
     description:
         params.get("description") ||
         "Capturing beautiful moments and creating memorable photography experiences.",
+    providerType: params.get("providerType") || "individual",
 
     video: params.get("video") || "",
 

@@ -95,6 +95,7 @@
 
     function renderCard(request) {
         const isNew = request.status === "new";
+        const isAccepted = request.status === "accepted";
         return `
             <article class="request-card" tabindex="-1" data-request-id="${escapeHTML(request.id)}">
                 <header class="request-card-head">
@@ -123,7 +124,7 @@
                     ${isNew ? `<div class="request-actions">
                         <button class="action-button reject-button" type="button" data-action="reject" data-id="${escapeHTML(request.id)}"><i class="fa fa-times" aria-hidden="true"></i> Reject</button>
                         <button class="action-button accept-button" type="button" data-action="accept" data-id="${escapeHTML(request.id)}"><i class="fa fa-check" aria-hidden="true"></i> Accept</button>
-                    </div>` : ""}
+                    </div>` : isAccepted ? `<a class="action-button accept-button" href="../chat_butween_Them/chat.html?role=provider&amp;conversation=team"><i class="fa fa-comments-o" aria-hidden="true"></i> Open Group Chat</a>` : ""}
                 </footer>
                 <p class="request-feedback" data-feedback-for="${escapeHTML(request.id)}" role="status" aria-live="polite"></p>
             </article>`;

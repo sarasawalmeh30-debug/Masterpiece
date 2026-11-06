@@ -2,20 +2,27 @@
     const container = document.getElementById("provider-sidebar-container");
     if (!container) return;
 
-    fetch("provider_sidebar.html")
+    const sidebarMarkupUrl = new URL("provider_sidebar.html", document.currentScript.src);
+    fetch(sidebarMarkupUrl)
         .then(response => {
             if (!response.ok) throw new Error(`Could not load provider sidebar (${response.status}).`);
             return response.text();
         })
         .then(markup => {
             container.innerHTML = markup;
-            initializeProviderSidebar(container);
+            initializeProviderSidebar(container, sidebarMarkupUrl);
         })
         .catch(error => {
             console.error("Provider sidebar failed to load:", error);
         });
 
-    function initializeProviderSidebar(root) {
+    function initializeProviderSidebar(root, markupUrl) {
+        root.querySelectorAll("a[href]").forEach(link => {
+            const href = link.getAttribute("href");
+            if (!href || href.startsWith("#") || /^[a-z][a-z\d+.-]*:/i.test(href)) return;
+            link.href = new URL(href, markupUrl).href;
+        });
+
         const sidebar = root.querySelector("#providerSidebar");
         const openButton = root.querySelector("#providerSidebarToggle");
         const closeButton = root.querySelector("#providerSidebarClose");

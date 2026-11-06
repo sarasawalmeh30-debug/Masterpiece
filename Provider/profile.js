@@ -8,6 +8,7 @@
     const alertBox = document.getElementById("profileAlert");
     const experienceEditorList = document.getElementById("experienceEditorList");
     const portfolioEditList = document.getElementById("portfolioEditList");
+    const authorizedProviderEditorList = document.getElementById("authorizedProviderEditorList");
     const companyTypeLabel = value => value === "company" ? "Company" : value === "individual" ? "Individual" : "Account type unavailable";
     let profile = null;
     let editing = false;
@@ -74,9 +75,11 @@
         const serviceData = services();
         const photo = safeMediaUrl(profile.profilePhoto);
         const accountType = String(profile.accountType || "").toLowerCase();
+        const isCompany = accountType === "company" || profile.providerType === "company" || Boolean(profile.companyName);
+        document.querySelectorAll(".company-only").forEach(element => { element.hidden = !isCompany; });
         document.getElementById("profileName").textContent = cleanPublicText(name);
-        document.getElementById("accountTypeBadge").textContent = companyTypeLabel(accountType);
-        document.getElementById("aboutHeading").textContent = accountType === "company" ? "Company Description" : "About Me";
+        document.getElementById("accountTypeBadge").textContent = companyTypeLabel(isCompany ? "company" : "individual");
+        document.getElementById("aboutHeading").textContent = isCompany ? "Company Description" : "About Me";
         document.getElementById("profileSpecialty").textContent = cleanPublicText(serviceData.main);
         const tagline = document.getElementById("profileTagline");
         tagline.textContent = cleanPublicText(profile.tagline || "");
@@ -91,6 +94,25 @@
         document.getElementById("aboutLocation").textContent = cleanPublicText(profile.location || "Not added");
         document.getElementById("aboutService").textContent = cleanPublicText(serviceData.main);
         document.getElementById("aboutAdditionalServices").textContent = cleanPublicText(serviceData.additional);
+        const authorizedNames = Array.isArray(profile.authorizedProviders) ? profile.authorizedProviders : [];
+        const authorizedList = document.getElementById("authorizedProvidersList");
+        authorizedList.replaceChildren();
+        authorizedNames.forEach(person => {
+            const name = typeof person === "string" ? person : person && person.name;
+            if (!name || !String(name).trim()) return;
+            const item = document.createElement("li");
+            const nameText = document.createElement("strong");
+            nameText.textContent = cleanPublicText(name);
+            item.append(nameText);
+            const specialty = typeof person === "object" && person ? person.specialty || person.service : "";
+            if (specialty) {
+                const specialtyText = document.createElement("span");
+                specialtyText.textContent = cleanPublicText(specialty);
+                item.append(specialtyText);
+            }
+            authorizedList.append(item);
+        });
+        document.getElementById("authorizedProvidersCard").hidden = !isCompany || authorizedList.children.length === 0;
         const price = Number(profile.startingPrice ?? profile.price);
         const currency = typeof profile.currency === "string" && profile.currency.trim() ? profile.currency.trim() : "";
         const priceUnit = pricingUnitText(profile.pricingUnit, profile.pricingQuantity);
@@ -230,6 +252,7 @@
         const currentServices = services(profile);
         document.getElementById("editAdditionalServices").value = currentServices.additional === "Not added" ? "" : currentServices.additional;
         document.getElementById("editDescription").value = profile.description || profile.companyDescription || profile.bio || "";
+        renderAuthorizedProviderEditors(Array.isArray(profile.authorizedProviders) ? profile.authorizedProviders : []);
         const price = profile.startingPrice ?? profile.price;
         document.getElementById("editPrice").value = price == null ? "" : price;
         document.getElementById("editPricingUnit").value = profile.pricingUnit || "";
@@ -250,6 +273,27 @@
         experienceEditorList.replaceChildren();
         document.getElementById("experienceEditorEmpty").hidden = items.length > 0;
         items.forEach(item => addExperienceEditor(item));
+    }
+
+    function renderAuthorizedProviderEditors(items) {
+        authorizedProviderEditorList.replaceChildren();
+        items.forEach(person => addAuthorizedProviderEditor(typeof person === "string" ? { name: person } : person || {}));
+    }
+
+    function addAuthorizedProviderEditor(person = {}) {
+        const row = document.createElement("div");
+        row.className = "authorized-provider-editor-row";
+        row.innerHTML = `<input type="text" data-team-field="name" maxlength="100" placeholder="Employee name" aria-label="Employee name" value="${escapeHTML(person.name || "")}"><input type="text" data-team-field="service" maxlength="100" placeholder="Specialty or service" aria-label="Employee specialty or service" value="${escapeHTML(person.specialty || person.service || "")}"><button type="button" class="authorized-provider-remove" aria-label="Remove employee"><i class="fa fa-trash" aria-hidden="true"></i></button>`;
+        row.querySelectorAll("input").forEach(input => input.addEventListener("input", markDirty));
+        row.querySelector("button").addEventListener("click", () => { row.remove(); markDirty(); });
+        authorizedProviderEditorList.append(row);
+    }
+
+    function collectAuthorizedProviders() {
+        return Array.from(authorizedProviderEditorList.children).map(row => ({
+            name: row.querySelector('[data-team-field="name"]').value.trim(),
+            specialty: row.querySelector('[data-team-field="service"]').value.trim()
+        })).filter(person => person.name || person.specialty);
     }
 
     function addExperienceEditor(item = {}) {
@@ -326,13 +370,23 @@
         if (!Number.isInteger(Number(pricingQuantityInput.value)) || Number(pricingQuantityInput.value) < 1) { pricingQuantityInput.setCustomValidity("Enter a whole quantity of at least 1."); pricingQuantityInput.reportValidity(); pricingQuantityInput.setCustomValidity(""); return; }
 
         const updated = { ...profile };
-        if (profile.accountType === "company" || profile.companyName) updated.companyName = name.value.trim();
-        else updated.fullName = name.value.trim();
+        if (profile.accountType === "company" || profile.providerType === "company" || profile.companyName) {
+            updated.companyName = name.value.trim();
+            updated.accountType = "company";
+            updated.providerType = "company";
+        } else {
+            updated.fullName = name.value.trim();
+            updated.accountType = "individual";
+            updated.providerType = "individual";
+        }
         updated.tagline = document.getElementById("editTagline").value.trim();
         updated.location = document.getElementById("editLocation").value.trim();
         updated.service = document.getElementById("editService").value;
         updated.additionalServices = document.getElementById("editAdditionalServices").value.split(",").map(value => value.trim()).filter(Boolean);
         updated.description = document.getElementById("editDescription").value.trim();
+        if (updated.accountType === "company" || updated.providerType === "company" || updated.companyName) {
+            updated.authorizedProviders = collectAuthorizedProviders();
+        }
         updated.pricingUnit = document.getElementById("editPricingUnit").value;
         updated.pricingQuantity = Number(pricingQuantityInput.value);
         if (priceValue) updated.startingPrice = Number(priceValue);
@@ -367,6 +421,7 @@
     document.getElementById("editProfileButton").addEventListener("click", beginEdit);
     document.getElementById("cancelEditButton").addEventListener("click", cancelEdit);
     document.getElementById("addExperienceButton").addEventListener("click", () => { addExperienceEditor(); markDirty(); });
+    document.getElementById("addAuthorizedProvider").addEventListener("click", () => { addAuthorizedProviderEditor(); markDirty(); });
     editForm.addEventListener("input", markDirty);
     editForm.addEventListener("change", markDirty);
     editForm.addEventListener("submit", saveProfile);

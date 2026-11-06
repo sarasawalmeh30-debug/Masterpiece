@@ -33,9 +33,12 @@
         const billing = plan.billing === "month" ? "Monthly" : plan.billing;
         document.getElementById("selected-plan-billing").textContent = billing;
         document.getElementById("summary-billing").textContent = billing;
-        const description = selectedPlan === "business"
-            ? "For providers who want maximum exposure and priority tools."
-            : "Designed for active providers who want more opportunities.";
+        const isCompany = window.TEAMLY_PROVIDER_ACCOUNT_TYPE === "company";
+        const description = isCompany
+            ? (selectedPlan === "business" ? "Maximum exposure and priority for your company team." : "More visibility and reach for your service team.")
+            : (selectedPlan === "business" ? "For providers who want maximum exposure and priority tools." : "Designed for active providers who want more opportunities.");
+        document.querySelector(".checkout-heading .eyebrow").textContent = isCompany ? "COMPANY MEMBERSHIP" : "PROVIDER MEMBERSHIP";
+        if (isCompany) document.querySelector(".checkout-heading h1").textContent = "Complete Your Company Subscription";
         document.getElementById("selected-plan-description").textContent = description;
         document.getElementById("checkout-subtitle").textContent = `Activate your ${plan.name} plan and continue growing with TEAMLY.`;
         document.getElementById("subscription-activation-note").textContent = `Your ${plan.name} subscription will become active after successful payment.`;

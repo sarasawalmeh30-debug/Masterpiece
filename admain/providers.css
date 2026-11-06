@@ -74,3 +74,7 @@
 @media(max-width:900px) { .providers-main { min-height:100vh;padding-top:76px; } }
 @media(max-width:700px) { .providers-stats { grid-template-columns:repeat(2,minmax(0,1fr)); }.providers-card-head { align-items:flex-start;flex-direction:column; }.providers-controls { width:100%;flex-wrap:wrap; }.provider-search { flex:1; }.provider-search input { width:100%; }.provider-facts { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:520px) { .providers-header { align-items:flex-start; }.providers-admin { font-size:0; }.providers-controls { align-items:stretch;flex-direction:column; }.provider-modal { padding:8px; }.provider-modal-card { max-height:94vh;border-radius:14px; }.provider-modal-head,.provider-detail-content,.provider-edit-form { padding-inline:13px; }.provider-detail-top { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+.admin-company-staff { display:grid; gap:8px; margin:0; padding:0; list-style:none; }
+.admin-company-staff li { display:flex; justify-content:space-between; gap:14px; padding:10px 12px; border:1px solid #e5ebe3; border-radius:10px; background:#f8faf7; }
+.admin-company-staff li strong { color:#26332a; }
+.admin-company-staff li span { color:#68756b; text-align:right; }

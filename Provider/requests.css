@@ -377,6 +377,10 @@ button:focus-visible, a:focus-visible { outline: 3px solid rgba(53, 94, 59, .28)
     font-size: 19px;
 }
 
+/* Keep the request list as the only main column; the overview card is not needed here. */
+.requests-layout { grid-template-columns: minmax(0, 1fr); }
+.request-status-panel { display: none; }
+
 .overview-list > div {
     padding: 13px 0;
     border-top-color: rgba(53, 94, 59, .1);

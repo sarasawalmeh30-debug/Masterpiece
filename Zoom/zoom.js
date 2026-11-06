@@ -2,7 +2,14 @@
     const meetContainer = document.getElementById("meet");
     const status = document.getElementById("meeting-status");
     const shareButton = document.getElementById("share-meeting");
-    const roomParam = new URLSearchParams(window.location.search).get("room");
+    const pageParams = new URLSearchParams(window.location.search);
+    const roomParam = pageParams.get("room");
+    const returnToChat = new URL("../chat_butween_Them/chat.html", window.location.href);
+    if (pageParams.get("role") === "provider") {
+        returnToChat.searchParams.set("role", "provider");
+        returnToChat.searchParams.set("conversation", "team");
+    }
+    document.getElementById("back-link").href = returnToChat.href;
     const safeRoom = /^[a-zA-Z0-9_-]{6,80}$/;
     const roomName = roomParam && safeRoom.test(roomParam)
         ? roomParam
@@ -84,7 +91,8 @@
         setStatus("You are now in the meeting", "ready");
     });
     api.addEventListener("readyToClose", () => {
-        setStatus("The meeting has ended. You can close this page or rejoin.");
+        setStatus("The meeting has ended. Returning to your project chat...");
+        window.setTimeout(() => { window.location.href = returnToChat.href; }, 700);
     });
     api.addEventListener("errorOccurred", () => {
         setStatus("There was a connection problem. Please refresh the page.", "error");
